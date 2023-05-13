@@ -39,6 +39,7 @@ import { UserNotificationListComponent } from "../notification/user-notification
 import { InputSwitchModule } from 'primeng/inputswitch';
 
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { DataListComponent } from './components/data-list/data-list.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(
@@ -67,6 +68,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     CustomReportComponent,
     DynamicReportViewerComponent,
     UserNotificationListComponent,
+    DataListComponent,
   ],
   entryComponents: [NotAuthorizedComponent],
   imports: [

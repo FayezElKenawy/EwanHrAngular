@@ -1,12 +1,12 @@
-<!-- <div class="shimmer" style="margin-bottom: 30px;">
-  <div class="row" *ngFor=" let r of repeat"  style="margin-bottom: 30px;">
-    <div class="col" *ngFor=" let r of cols">
+<div class="shimmer" style="margin-bottom: 30px;">
+  <div class="row" *ngForOf=" let r of repeat"  style="margin-bottom: 30px;">
+    <div class="col" *ngForOf=" let r of cols">
       <div class="animated">
-        <div *ngFor="let n of rows">
+        <div *ngForOf="let n of rows">
           <div class="padding"></div>
           <div class="line"></div>
         </div>
       </div>
     </div>
   </div>
-</div> -->
+</div>

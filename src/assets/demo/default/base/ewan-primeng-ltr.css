@@ -1,100 +1,3 @@
-/* PrimeNG Multi Select */
-
-body .ui-multiselect .ui-multiselect-label {
-  text-align: left;
-}
-
-body .ui-multiselect {
-  border: 0;
-  width: 100%;
-  height: 100%;
-}
-
-body .ui-multiselect-panel .ui-multiselect-items .ui-multiselect-item {
-  text-align: left;
-}
-
-body
-  .ui-multiselect-panel
-  .ui-multiselect-items
-  .ui-multiselect-item
-  .ui-chkbox {
-  margin: 0 0.5em 0 0;
-}
-
-.ui-multiselect .ui-multiselect-trigger {
-  right: 0;
-  left: auto;
-}
-
-.ui-multiselect .ui-multiselect-trigger .ui-multiselect-trigger-icon {
-  left: 50%;
-  margin-left: -0.5em;
-}
-
-.ui-multiselect .ui-multiselect-label-container {
-  height: 100%;
-}
-
-body .ui-multiselect .ui-multiselect-label {
-  padding-right: 2em;
-  height: 100%;
-}
-
-.ui-multiselect-filter-container {
-  border: 1px solid #a6a6a6;
-}
-
-.ui-multiselect-header .ui-multiselect-close {
-  right: 0.375em;
-  left: auto;
-}
-
-body
-  .ui-multiselect-panel
-  .ui-multiselect-header
-  .ui-multiselect-filter-container
-  .ui-inputtext {
-  padding-right: 2em;
-}
-
-body
-  .ui-multiselect-panel
-  .ui-multiselect-header
-  .ui-multiselect-filter-container
-  .ui-multiselect-filter-icon {
-  right: 0.5em;
-  left: auto;
-}
-
-body
-  .ui-multiselect-panel
-  .ui-multiselect-header
-  .ui-multiselect-filter-container {
-  width: 80%;
-}
-
-.ui-multiselect-header {
-  text-align: left;
-}
-
-body .ui-multiselect-panel .ui-multiselect-header .ui-chkbox {
-  margin-right: 0.5em;
-  margin-left: 0;
-}
-
-.multi-select body .ui-multiselec .ui-helper-clearfix div {
-  padding: 0 !important;
-  margin-left: 0.5em !important;
-}
-
-body
-  .ui-multiselect-panel
-  .ui-multiselect-items
-  .ui-multiselect-item.ui-state-highlight {
-  color: #000000;
-  background-color: #e5e3df;
-}
 /*Styling  Table*/
 
 body .ui-table .ui-table-tbody > tr.ui-state-highlight {
@@ -145,11 +48,11 @@ body .list .ui-table .ui-table-tbody > tr > td {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  height: 35px !important;
+  height: 33.5px !important;
   width: 150px;
   max-width: 150px;
   vertical-align: middle;
-  padding: 0 0.857em;
+  padding: 0.6em 0.857em;
   text-align: center;
 }
 
@@ -163,6 +66,21 @@ body .ui-table .ui-table-tbody > tr > td {
   text-align: center;
 }
 
+body .list .customTable .ui-table .ui-table-tbody > tr > td{
+  word-break: break-all !important;
+  white-space: pre-wrap !important;
+}
+
+body .list .customTable .ui-table .ui-table-thead > tr > th:last-child,
+body .list .customTable .ui-table .ui-table-tbody > tr > td:last-child {
+  width: 450px !important;
+  min-width: 450px !important;
+  max-width: 450px !important;
+}
+
+body .list .customTable .ui-table-scrollable-wrapper {
+  overflow: auto;
+}
 body .ui-table .ui-table-tbody > tr.ui-contextmenu-selected,
 body .ui-table .ui-table-tbody > tr:nth-child(even).ui-contextmenu-selected {
   background-color: #8d317f;
@@ -187,6 +105,16 @@ body
   padding: 16px 0 !important;
   color: #5b646d !important;
   font-size: 14px !important;
+}
+
+.ui-table-frozen-view
+  > .ui-table-scrollable-body
+  > table
+  > .ui-table-tbody
+  > tr
+  > td.empty-grid-table
+  .emp-msg {
+  display: none;
 }
 
 /* table issue scrolling */
@@ -230,7 +158,7 @@ body .ui-table .ui-editable-column input:focus {
   > td:last-child {
   border-right: 0 none;
   padding: 0px 0.857em;
-  height: 35px;
+  height: 33px;
   overflow: visible;
   width: fit-content;
 }
@@ -252,7 +180,7 @@ body .ui-table .ui-table-thead .frozeheader th {
 .grid-search input {
   /* position: absolute; */
   /* top: -15px; */
-  height: 28px !important;
+  height: 28px;
   min-width: 80%;
   padding-left: 2rem;
   border-left: 0;
@@ -333,13 +261,9 @@ body .ui-table .ui-table-thead .frozeheader th {
 .ui-paginator .ui-dropdown .ui-dropdown-trigger,
 .ui-paginator .ui-dropdown .ui-dropdown-label {
   color: #848484;
-  padding-top: 0;
+  padding-top: 0.25rem;
   padding-left: 0;
   border-radius: 2px;
-}
-
-.ui-dropdown .ui-dropdown-panel {
-  padding: 0 !important;
 }
 
 .ui-paginator .page-number {
@@ -471,7 +395,7 @@ body .ui-table .ui-table-tbody > tr:focus {
 .grid-buttons {
   min-width: 60px;
   display: flex;
-  justify-content: center;
+  justify-content: start;
 }
 
 .grid-buttons button {
@@ -498,6 +422,9 @@ body .ui-table .ui-table-tbody > tr:focus {
   direction: rtl !important;
 }
 
+.customTable .ui-table-scrollable-wrapper {
+  direction: ltr !important;
+}
 /* two no avialable data appear */
 
 .ui-table-frozen-view
@@ -505,11 +432,7 @@ body .ui-table .ui-table-tbody > tr:focus {
   > table
   > .ui-table-tbody
   > tr
-  > .emp-msg {
-  display: none;
-}
-
-.ui-table-frozen-view > .ui-table-scrollable-body .emp-msg {
+  > .empty-msg {
   display: none;
 }
 
@@ -530,14 +453,14 @@ body .ui-radiobutton .ui-radiobutton-box.ui-state-active {
 /* widget  */
 
 body .ui-widget {
-  font-family: 'CairoRegular', serif;
+  font-family: "CairoRegular", serif;
   font-size: 12px;
   /* text-align: center; */
 }
 
 @media (min-width: 768px) {
   body .ui-widget {
-    font-family: 'CairoRegular', serif;
+    font-family: "CairoRegular", serif;
     font-size: 11px;
     /* text-align: center; */
     overflow-x: unset;
@@ -554,6 +477,19 @@ body .ui-widget:disabled {
 
 body .ui-datepicker .ui-timepicker span {
   font-size: 13px;
+}
+
+body .ui-datepicker .ui-datepicker-buttonbar {
+  position: relative;
+}
+
+body .ui-datepicker .ui-datepicker-buttonbar .ui-g-6 .ui-button {
+  position: unset;
+}
+
+.ui-datepicker .ui-datepicker-prev,
+.ui-datepicker .ui-datepicker-next {
+  width: unset;
 }
 
 .ui-timepicker,
@@ -678,7 +614,11 @@ body .ui-dropdown .ui-dropdown-label {
 }
 
 .ui-dropdown .ui-dropdown-trigger {
-  left: 30px;
+  left: 27px;
+}
+
+.ui-dropdown .ui-dropdown-trigger .ui-dropdown-trigger-icon {
+  margin-top: -0.6em;
 }
 
 body .ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item.ui-state-highlight,
@@ -758,7 +698,7 @@ body .ui-autocomplete-panel .ui-autocomplete-items .ui-autocomplete-list-item {
   width: 100%;
   min-height: 100%;
   border-radius: 3px;
-  border: 1px solid #c3c3c3;
+  border: 1px solid rgba(206, 212, 218, 0.33);
   text-align: left;
   font-size: 11px;
   padding: 10px;
@@ -833,10 +773,11 @@ body .ui-button:disabled {
 }
 
 .ui-helper-clearfix div {
-  padding: 4px 12px !important;
+  /* padding: 4px 9px !important; */
   font-size: 12px !important;
-  /* margin: 0 !important; */
+  margin: 0 !important;
   text-align: left;
+  word-break: break-all;
 }
 
 /* check box  */
@@ -851,16 +792,6 @@ body .ui-chkbox .ui-chkbox-box.ui-state-active:not(.ui-state-disabled):hover {
   border-color: #3a0f33;
   background-color: #3a0f33;
   color: #ffffff;
-}
-
-/* Rating star colors */
-body .ui-rating-icon.pi-star-o {
-  font-size: 26px !important;
-  color: #a1a1a1 !important;
-}
-body .ui-rating-icon.pi-star {
-  font-size: 26px !important;
-  color: #f4d70c !important;
 }
 
 /* remove input icon  */
@@ -880,8 +811,7 @@ input::-webkit-outer-spin-button {
 .ui-table-scrollable-wrapper::-webkit-scrollbar,
 .ui-table-unfrozen-view::-webkit-scrollbar,
 .ui-autocomplete-panel::-webkit-scrollbar,
-.m-menu__submenu::-webkit-scrollbar,
-.scrollable::-webkit-scrollbar {
+.m-menu__submenu::-webkit-scrollbar {
   height: 8px;
   width: 8px;
 }
@@ -892,7 +822,7 @@ input::-webkit-outer-spin-button {
 .ui-table-scrollable-wrapper::-webkit-scrollbar-track,
 .ui-table-unfrozen-view::-webkit-scrollbar-track,
 .ui-autocomplete-panel::-webkit-scrollbar-track,
-.m-menu__submenu::-webkit-scrollbar-track .scrollable::-webkit-scrollbar-track {
+.m-menu__submenu::-webkit-scrollbar-track {
   background-color: #f1f1f1;
 }
 
@@ -902,76 +832,8 @@ input::-webkit-outer-spin-button {
 .ui-table-scrollable-wrapper::-webkit-scrollbar-thumb,
 .ui-table-unfrozen-view::-webkit-scrollbar-thumb,
 .ui-autocomplete-panel::-webkit-scrollbar-thumb,
-.m-menu__submenu::-webkit-scrollbar-thumb,
-.scrollable::-webkit-scrollbar-thumb {
+.m-menu__submenu::-webkit-scrollbar-thumb {
   background-color: #cecdcd;
   outline: 1px solid #e0e0e0;
   border-radius: 3px;
-}
-
-/* Refactor 2021 - MAHMOUD RABIE */
-
-/* TABLE */
-.p-datatable-scrollable-wrapper .p-datatable-scrollable-view{
-  left: 0 !important;
-}
-
-/* DDL Searchable Table */
-select.form-control{
-  background: url(../slc_down.png) no-repeat right top;
-}
-table select.form-control{
-  position: absolute;
-    right: 0px !important;
-    left: initial !important;
-}
-table input.form-control{
-  padding: 0 30px 0 5px;
-}
-p-multiselect > div.p-multiselect .p-multiselect-trigger{
-  border-radius: 2px;
-  border-bottom-left-radius: 0;
-  border-top-left-radius: 0;
-}
-/* custom-details-card */
-.custom-details-card .details-value{
-  text-align: right;
-}
-.logo_img{
-  margin-bottom: 30px;
-}
-.is-invalid .invalid-feedback{
-  display: block;
-}
-.rec_txt{
-  color: #5fa8dc;
-  font-size: 0.9em;
-  margin: 0 5px !important;
-}
-.rec_txt i{
-  margin-right: 5px;
-}
-.imgUpload_bx{
-  margin-bottom: 5px;
-}
-.imgUpload_bx img{
-  height: 80px !important;
-}
-.p-calendar .p-datepicker{
-  width: initial !important;
-}
-.periodsCreate_popup .grid-buttons{
-  margin-top: 0.7rem !important;
-  justify-content: flex-start !important;
-}
-.periodsCreate_popup .grid-buttons button{
-  height: 32px;
-    line-height: 32px;
-    width: 20px !important;
-    border-radius: 4px;
-    text-align: center;
-    margin-right: 3px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
