@@ -22,7 +22,7 @@ import { LaborReplacementComponent } from "../labor-replacement/labor-replacemen
 import { HoldContractComponent } from "../hold-contract/hold-contract.component";
 import { AvailableLaborsForHoldingComponent } from "../available-labors-for-holding/available-labors-for-holding.component";
 import { MenuItem } from "primeng/api";
-import { DialogService } from "primeng/dynamicDialog";
+import { DialogService } from "primeng/dynamicdialog";
 
 declare let $: any;
 

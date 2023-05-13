@@ -35,9 +35,10 @@ import { NotAuthorizedComponent } from "./components/not-authorized/not-authoriz
 import { AuthorizationDirective } from "./directives/authorization.directive";
 import { UserNotificationListComponent } from "../notification/user-notification/user-notification-list/user-notification-list.component";
 
-import { DynamicDialogModule } from "primeng/dynamicDialog";
+
 import { InputSwitchModule } from 'primeng/inputswitch';
 
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(

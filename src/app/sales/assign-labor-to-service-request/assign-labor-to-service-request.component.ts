@@ -9,7 +9,7 @@ import { GlobalService, MessageType } from '@shared/services/global.service';
 
 import { LaborerDetailsComponent } from '../requests-services/laborer-details/laborer-details.component';
 import { ServiceRequestService } from '../requests-services/service-request.service';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicDialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-assign-labor-to-service-request',

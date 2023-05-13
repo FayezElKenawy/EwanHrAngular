@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { DialogService } from 'primeng/dynamicDialog';
+import { DialogService } from 'primeng/dynamicdialog';
 import { ServiceRequestService } from "../service-request.service";
 import { Router } from "@angular/router";
 import { PagingMetaData } from "@shared/interfaces/paging-meta-data";
