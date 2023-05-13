@@ -1,0 +1,30 @@
+<div class="m-dropdown__inner notification-dropdown">
+  <div class="notifications py-3 pb-5">
+    <div *ngFor="let notification of userNotifications" class="notification-card px-3 py-2 border-bottom cursor-pointer"
+      (click)="onClickNotification(notification)">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <div>
+          <p class="fs-12">{{notification.Message}}</p>
+
+          <i class="la la-calendar align-middle pr-1"></i>
+          <span>{{notification.GenerationDate | date: 'dd-MM-yyyy'}}</span>
+          <i class="la la-clock-o align-middle px-1"></i>
+          <span>{{notification.GenerationDate | date: 'mediumTime'}}</span>
+        </div>
+        <!-- <div>
+        <i class="la la-trash pr-1"></i>
+        <i class="la la-eye-slash"></i>
+      </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Show All Notifications Message -->
+<div class="text-center fixed-bottom bg-white py-3">
+  <a [href]="environment.coreUrl + '/notification/user-notification-all'">{{
+    "App.Fields.ShowAll" | translate
+    }}</a>
+</div>
+
+<!-- Progress Spinner -->
+<app-shared-progress-spinner *ngIf="progressSpinner"></app-shared-progress-spinner>

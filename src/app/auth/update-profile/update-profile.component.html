@@ -1,0 +1,123 @@
+<div class="row m-0">
+  <!-- #region Navigation Links -->
+  <div class="col-xl-3 pl-lg-0 mb-2 col-lg-4">
+    <div class="m-portlet m-portlet--full-height">
+      <div class="m-portlet__body">
+        <ul class="m-nav m-nav--hover-bg m-portlet-fit--sides">
+          <!-- ProfilePage Link -->
+          <li class="m-nav__item">
+            <a [routerLink]="['/auth/profile/user-profile']" class="m-nav__link">
+              <i class="m-nav__link-icon flaticon-profile-1"></i>
+              <span class="m-nav__link-title">
+                <span class="m-nav__link-text">{{"Auth.Titles.ProfilePage" | translate}}</span>
+              </span>
+            </a>
+          </li>
+          <!-- ChangePasswordPage Link -->
+          <li class="m-nav__item">
+            <a [routerLink]="['/auth/profile/update-profile']" class="m-nav__link">
+              <i class="m-nav__link-icon flaticon-share"></i>
+              <span class="m-nav__link-text">{{"Auth.Titles.ChangePasswordPage" | translate}}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- #endregion -->
+
+  <div class="col-xl-9 px-lg-0  mb-2 col-lg-8">
+    <div class="m-portlet">
+      <!-- #region Change Password Form -->
+      <form class="m-form m-form--fit" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="m-portlet__body">
+          <!-- Title -->
+          <div class="form-group m-form__group row">
+            <div class="col-10 ml-auto">
+              <h5 class="m-form__section">{{"Auth.Titles.ChangePasswordPage" | translate}}</h5>
+            </div>
+          </div>
+          <!-- OldPassword -->
+          <div class="form-group m-form__group row">
+            <label for="old_password" class="col-lg-2 col-6 col-form-label">{{"Auth.Fields.PreviousPass" | translate}}</label>
+            <div class="col-lg-7 col-6">
+              <input type="password" 
+              [ngClass]="{
+                'is-invalid': submitted && form.controls.oldPassword.errors
+                }"
+                class="form-control m-input" formControlName="oldPassword" autocomplete="off" placeholder='{{"Auth.Fields.PreviousPass" | translate}}'
+              />
+              <div class="invalid-feedback">
+                <div class="invalidMesg" *ngIf="form.controls.oldPassword.errors?.required">
+                  {{"App.Fields.RequiredField" | translate}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- NewPassword -->
+          <div class="form-group m-form__group row">
+            <label for="new_password" class="col-lg-2 col-6 col-form-label">{{"Auth.Fields.NewPassword" | translate}}</label>
+            <div class="col-lg-7 col-6">
+              <input type="password" class="form-control m-input"
+               formControlName="newPassword" autocomplete="off" placeholder='{{"Auth.Fields.NewPassword" | translate}}'
+               [ngClass]="{
+                'is-invalid': submitted && form.controls.newPassword.errors
+              }"
+              />
+              <div class="invalid-feedback">
+                <div class="invalidMesg" *ngIf="form.controls.newPassword.errors?.required">
+                  {{"App.Fields.RequiredField" | translate}}
+                </div>
+                <div class="invalidMesg" *ngIf="form.controls.newPassword.errors?.pattern">
+                  {{"App.Fields.InvalidPassword" | translate}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- NewPasswordAgain -->
+          <div class="form-group m-form__group row">
+            <label for="new_repeated_password" class="col-lg-2 col-6 col-form-label">{{"Auth.Fields.NewPasswordAgain" | translate}}</label>
+            <div class="col-lg-7 col-6">
+              <input type="password" class="form-control m-input" 
+                formControlName="newPassword2" autocomplete="off" 
+                placeholder='{{"Auth.Fields.NewPasswordAgain" | translate}}'
+                [ngClass]="{
+                  'is-invalid': submitted 
+                  && (form.controls.newPassword2.errors
+                   ||form.controls.newPassword2.value 
+                   != form.controls.newPassword.value)
+                }"
+              />
+              <div class="invalid-feedback" >
+                <div class="invalidMesg" *ngIf="form.controls.newPassword2.errors?.required">
+                  {{"App.Fields.RequiredField" | translate}}
+                </div>
+                <div class="invalidMesg" *ngIf="form.controls.newPassword2.value 
+                  != form.controls.newPassword.value">
+                  {{"App.validation.PasswordNotMatched" | translate}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Save/Cancel Btns -->
+        <div class="m-portlet__foot m-portlet__foot--fit">
+          <div class="m-form__actions">
+            <div class="row">
+              <div class="col-2"></div>
+              <div class="col-12 ml-lg-auto ">
+                <button type="submit" class="btn btn-brand btn-save-cancel  mb-1   m-btn--custom">
+                  {{"App.Buttons.Save" | translate}} </button>&nbsp;&nbsp;
+                <button type="button" routerLink="/auth/profile/user-profile" class="btn btn-secondary btn-save-cancel  mb-1   m-btn--custom">
+                  {{"App.Buttons.Cancel" | translate}}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <!-- #endregion -->
+    </div>
+  </div>
+</div>
+<app-shared-progress-spinner *ngIf="progressSpinner"></app-shared-progress-spinner>

@@ -1,0 +1,67 @@
+<div class="modal-dialog modal-85 modal-report" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title text-center">
+        <p class="text-center">{{reportName | translate}}</p>
+        <!-- <p class="text-center">{{reportName | translate}}</p> -->
+      </div>
+      <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close" tabindex="-1">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <iframe (load)="onLoad()" (loadstart)="onLoadStart()" [hidden]="hidden" id="ReportIFrame" [src]="fileUrl"
+        width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
+    </div>
+
+    <div class="report modal-footer">
+
+
+      <div *ngIf="paging">
+        <ul [hidden]="hidden" class="pagination" id="Pagination">
+          <li class="page-item">
+            <a class="page-link" (click)="Next()" id="Next">
+              <i class="fa fa-forward"></i>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" (click)="Last()" id="Last">
+              <i class="fa fa-fast-forward"></i>
+            </a>
+          </li>
+          <li class="page-item ">
+            <a class="page-link">
+              <span id="PageNo">{{ pageNo }}/{{ totalPages }}</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" id="First" (click)="First()">
+              <i class="fa fa-fast-backward"></i>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" id="Previous" (click)="Previous()">
+              <i class="fa fa-backward"></i>
+            </a>
+          </li>
+        </ul>
+
+      </div>
+      <div class="d-flex m-auto">
+        <div class="dropdown ">
+          <button class="btn btn-save-cancel mb-1 btn-brand dropdown-toggle" type="button" id="dropdownMenu2"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ 'App.Buttons.Extract' | translate}}
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu custom-drop" [innerHTML]="exportItems" id="Export">
+          </ul>
+        </div>
+
+      </div>
+
+
+      <!--end::Form-->
+    </div>
+  </div>
+  <app-shared-progress-spinner *ngIf="progressSpinner"></app-shared-progress-spinner>

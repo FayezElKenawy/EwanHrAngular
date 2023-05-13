@@ -1,0 +1,260 @@
+<div class="details cv-modal">
+  <div class="modal-dialog modal-lg modalW90">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{ 'Sales.Fields.LaborData' | translate}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!--begin::Form-->
+      <div class="modal-body">
+        <div class="row mx-0 px-0">
+          <div class="col-12 tableBody">
+            <div class="row mx-0 cv-card">
+              <div
+                class="d-flex flex-wrap justify-content-center align-items-center justify-content-sm-center img-border mt-3">
+                <app-imageviewer
+                  [imgStyle]="'smile-face__wrapper d-flex justify-content-center align-items-center img-thumbnail'"
+                  [defaultImage]="'assets/demo/default/media/img/user-dummy.jpg'"
+                  [src]=" uploadPath+'/'+viewModel?.LaborerImageId"></app-imageviewer>
+              </div>
+
+              <div class="col-md-5  col-12 mt-2">
+                <div class="d-flex align-items-center justify-content-start">
+                  <div class="icon">
+                    <i class="flaticon-profile"></i>
+                  </div>
+                  <div class="value">
+                    <span> {{ viewModel?.FullName || '----'}} </span>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-start">
+                  <div class="icon">
+                    <i class="flaticon-profile-1"></i>
+                  </div>
+                  <div class="value">
+                    <span>{{ viewModel?.ProfessionName || '----'}} </span>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-start">
+                  <div class="icon">
+                    <i class="la	la-globe"></i>
+
+                  </div>
+                  <div class="value">
+                    <span>{{ viewModel?.NationalityName || '----'}} </span>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-start">
+                  <div class="icon">
+                    <i class="la la-hourglass-2"></i>
+
+                  </div>
+                  <div class="value">
+                    <span class="">{{ viewModel?.GenderName || '----'}} </span>
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-lg-5 col-md-6 col-12 mt-2">
+                <div class="d-flex align-items-center justify-content-start">
+                  <div class="icon">
+                    <i class="la la-users"></i>
+                  </div>
+                  <div class="label">
+                    <span>{{ 'App.Fields.MaritalStatus' | translate}}</span>
+                  </div>
+                  <div class="value">
+                    <span>{{ viewModel?.MaritalStatusName || '----'}} </span>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-start">
+                  <div class="icon">
+                    <i class="la la-book"></i>
+                  </div>
+
+                  <div class="label">
+                    <span>{{ 'App.Fields.Religion' | translate}}</span>
+                  </div>
+                  <div class="value">
+                    <span>{{ viewModel?.ReligionName || '----'}} </span>
+                  </div>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-start">
+                  <div class="icon">
+                    <i class="la la-calendar-o"></i>
+                  </div>
+                  <div class="label">
+                    <span>{{ 'App.Fields.BirthDate' | translate}}</span>
+                  </div>
+                  <div class="value">
+                    <span>{{ viewModel?.BirthDate || '----'}}</span>
+                    <span class="p-2">{{ viewModel?.BirthPlace || '----'}}</span>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-start">
+                  <div class="icon">
+                    <i class="la la-list-ol"></i>
+                  </div>
+                  <div class="label">
+                    <span>{{ 'App.Fields.NumberOfChildren' | translate}}
+
+
+                    </span>
+                  </div>
+                  <div class="value">
+                    <span>{{ viewModel?.NumberOfChildern || '----' }} </span>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+
+          <div class="col-12 tableHeader  px-0 mt-0">
+            <label class="form-control-label mb-0">{{ 'Sales.Fields.PersonalInfo' | translate}}</label>
+            <!-- <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x my-3"></div> -->
+          </div>
+          <div class="col-12 tableBody">
+            <div class="row mx-0  details-card">
+              <!-- <div class="details-label"> -->
+              <!-- <span>اسم العامل </span>
+                </div>
+                <div class="details-value">
+                  <span> {{ viewModel?.FullName }} </span>
+                </div>
+                <div class="details-label">
+                  <span>اسم الاب </span>
+                </div>
+                <div class="details-value">
+                  <span> {{ viewModel?.SecondName }}</span>
+                </div> -->
+              <!-- <div class="details-label">
+                  <span>الوظيفه</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel?.ProfessionName }} </span>
+                </div> -->
+              <!-- <div class="details-label">
+                  <span>الجنسيه</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel?.NationalityName }} </span>
+                </div> -->
+              <!-- <div class="details-label">
+                  <span>الديانه</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel?.ReligionName }} </span>
+                </div> -->
+              <!-- <div class="details-label">
+                  <span>تاريخ الميلاد</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel?.BirthDate }}</span>
+                </div> -->
+              <!-- <div class="details-label">
+                  <span> مكان الميلاد</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel?.BirthPlace }} </span>
+                </div> -->
+              <div class="details-label">
+                  <span>{{ 'App.Fields.HouseName' | translate}} </span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel?.HouseName }}</span>
+              </div>
+              <div class="details-label">
+                <span>{{ 'App.Fields.NumberOfChildren' | translate}} </span>
+              </div>
+              <div class="details-value">
+                <span>{{ viewModel?.NumberOfChildern }}</span>
+              </div>
+              <!-- <div class="details-label">
+                  <span>الحاله الاجتماعيه </span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel?.MaritalStatusName }} </span>
+                </div> -->
+              <!-- <div class="details-label">
+                  <span>عدد الاطفال</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel?.NumberOfChildern }} </span>
+                </div> -->
+              <div class="details-label">
+                <span>{{ 'App.Fields.LaborerWeight' | translate}}</span>
+              </div>
+              <div class="details-value">
+                <span>{{ viewModel?.LaborerWeight }} </span>
+              </div>
+              <div class="details-label">
+                <span>{{ 'App.Fields.LaborerTallness' | translate}}</span>
+              </div>
+              <div class="details-value">
+                <span>{{ viewModel?.LaborerTallness }} </span>
+              </div>
+              <div class="details-label">
+                <span>{{ 'App.Fields.Age' | translate}}</span>
+              </div>
+              <div class="details-value">
+                <span>{{ viewModel?.Age }} </span>
+              </div>
+              <div class="details-label">
+                <span>{{ 'App.Fields.Qualifications' | translate}} </span>
+              </div>
+              <div class="details-value">
+                <span> {{ viewModel?.Qualifications }}</span>
+              </div>
+              <div class="details-label">
+                <span>{{ 'App.Fields.Experience' | translate}} </span>
+              </div>
+              <div class="details-value">
+                <span>{{ viewModel?.Experiences }} </span>
+              </div>
+              <div class="details-label">
+                <span>{{ 'App.Fields.ExperienceYears' | translate}}</span>
+              </div>
+              <div class="details-value">
+                <span>{{ viewModel?.ExperienceYears }} </span>
+              </div>
+              <div class="details-label">
+                <span>{{ 'App.Fields.ArabicLevel' | translate}} </span>
+              </div>
+              <div class="details-value">
+                <span>{{ viewModel?.ArabicLevelArabicName }} </span>
+              </div>
+              <div class="details-label">
+                <span>{{ 'App.Fields.EnglishLevel' | translate}}</span>
+              </div>
+              <div class="details-value">
+                <span>{{ viewModel?.EnglishLevelArabicName }} </span>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-12 tableHeader  px-0 mt-0">
+            <label class="form-control-label mb-0"> {{ 'App.Fields.InterviewRemarks' | translate}} </label>
+            <!-- <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x my-3"></div> -->
+          </div>
+          <div class="col-12 tableBody">
+            <div class="details-value m-5">
+              {{ viewModel?.InterviewRemarks }}
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!--
+      <div class="modal-footer"></div> -->
+      <!--end::Form-->
+    </div>
+  </div>
+</div>
+<!-- Progress Spinner -->
+<app-shared-progress-spinner *ngIf="progressSpinner"></app-shared-progress-spinner>

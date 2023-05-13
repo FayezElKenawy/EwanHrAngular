@@ -1,0 +1,90 @@
+<!-- BEGIN: Header -->
+<app-header></app-header>
+<!-- END: Header -->
+<!-- begin::Body -->
+<div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body"
+  style="min-height: 100%; position: absolute; left: 0; right: 0; overflow: hidden;">
+
+  <!-- BEGIN: Left Aside -->
+  <div id="m_aside_left" class="m-grid__item	m-aside-left  m-aside-left--skin-light"
+    style="min-height: 100% !important;">
+    <!-- BEGIN: Aside Menu -->
+    <div id="m_ver_menu" class="m-aside-menu  m-aside-menu--skin-light m-aside-menu--submenu-skin-light"
+      data-menu-vertical="1" m-menu-scrollable="1" m-menu-dropdown-timeout="500">
+      <ul
+        class="m-menu__nav  m-menu__nav--dropdown-submenu-arrow m-menu__item--parent m-menu__item--submenu-fullheight">
+
+        <!-- أنظمة الشركة -->
+        <!-- <li class=" m-menu__item" aria-haspopup="true" m-menu-link-redirect="1">
+          <a [href]="coreUrl" class="m-menu__link">
+            <i class="m-menu__link-icon flaticon-layers"></i>
+            <span>{{'App.Titles.CompanySystems' | translate}}</span>
+          </a>
+        </li> -->
+
+        <li class=" m-menu__item" aria-haspopup="true" m-menu-link-redirect="1">
+          <a routerLink="/" class="m-menu__link ">
+            <i class="m-menu__link-icon flaticon-home-1"></i>
+            <span>{{'App.Titles.MainPage' | translate}}</span>
+          </a>
+        </li>
+
+
+        <li *ngFor="let menu of mainmenus" class="m-menu__item  m-menu__item--submenu" aria-haspopup="true"
+          m-menu-submenu-toggle="hover" m-menu-link-redirect="1">
+          <a *ngIf="menu.URLPath" [routerLink]="menu.URLPath" href="javascript:;" class="m-menu__link m-menu__toggle">
+            <i [ngClass]="{'m-menu__link-icon': true}" [class]="menu.IconFont"></i>
+            <span *ngIf="lang=='ar'"> {{menu.ArabicName}}</span>
+            <span *ngIf="lang=='en'"> {{menu.EnglishName}}</span>
+            <!-- <span class="m-menu__link-text">Add</span><i class="m-menu__ver-arrow la la-angle-right"></i></a> -->
+          </a>
+          <a *ngIf="!menu.URLPath" href="javascript:;" class="m-menu__link m-menu__toggle">
+            <i [ngClass]="{'m-menu__link-icon': true}" [class]="menu.IconFont"></i>
+            <span *ngIf="lang=='ar'"> {{menu.ArabicName}}</span>
+            <span *ngIf="lang=='en'"> {{menu.EnglishName}}</span>
+            <!-- <span class="m-menu__link-text">Add</span><i class="m-menu__ver-arrow la la-angle-right"></i></a> -->
+          </a>
+          <div *ngIf="getChildMenus(menu.Id).length > 0" class="m-menu__submenu">
+            <!-- <span class="m-menu__arrow"></span> -->
+            <ng-template #recursiveList let-list>
+              <ul class="m-menu__subnav m-menu__thirdLevel" style="padding:1px;margin-top: 10px">
+                <li *ngFor="let submenu of list" class="m-menu__item m-menu__item--submenu" aria-haspopup="true"
+                  m-menu-submenu-toggle="hover" m-menu-link-redirect="1">
+                  <a [routerLink]="submenu.URLPath" class="m-menu__link m-menu__toggle">
+                    <i [ngClass]="{'m-menu__link-icon': true}" [class]="submenu.IconFont">
+                      <span></span>
+                    </i>
+                    <span class="m-menu__link-text" *ngIf="lang=='en'">{{submenu.EnglishName}} </span>
+                    <span class="m-menu__link-text" *ngIf="lang=='ar'">{{submenu.ArabicName}} </span>
+                  </a>
+                  <div *ngIf="getChildMenus(submenu.Id).length > 0" class="m-menu__submenu m-menu__third">
+                    <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: getChildMenus(submenu.Id) }">
+                    </ng-container>
+                  </div>
+                </li>
+              </ul>
+            </ng-template>
+            <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: getChildMenus(menu.Id) }">
+            </ng-container>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="m-aside-menu-overlay"></div>
+  <!-- End: Left Aside -->
+
+  <div class="m-grid__item m-grid__item--fluid m-wrapper mb-0">
+    <div class="m-content ui-rtl">
+      <div class="shimmer-wrapper" *ngIf="isRouteLoadedStart">
+        <app-shimmer></app-shimmer>
+      </div>
+      <div [ngClass]="{'invisible': hideContent}">
+        <router-outlet *ngIf="!isRouteLoadedStart"></router-outlet>
+
+      </div>
+
+      <app-shared-progress-spinner *ngIf=hideContent> </app-shared-progress-spinner>
+    </div>
+  </div>
+</div>

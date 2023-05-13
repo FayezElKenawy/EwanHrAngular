@@ -1,0 +1,97 @@
+<div class="modal-dialog modal-85 modal-report" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title text-center">
+        <p class="text-center">{{reportName | translate}}</p>
+      </div>
+      <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close" tabindex="-1">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" *ngIf="reportURL" id="ReportViewer">
+      <iframe (load)="onLoad()" (loadstart)="onLoadStart()" [hidden]="hidden" id="ReportIFrame" [src]="reportURL"
+        width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
+    </div>
+
+    <div class="report modal-footer">
+
+      <div class="d-flex m-auto">
+        <div class="dropdown ">
+          <button class="btn btn-save-cancel mb-1 btn-brand dropdown-toggle" type="button" id="dropdownMenu2"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ 'App.Buttons.Extract' | translate}}
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu custom-drop " [innerHTML]="exportItems" id="Export">
+          </ul>
+        </div>
+        <button type="button" class="btn btn-save-cancel mb-1 btn-secondary mx-1" data-dismiss="modal">
+          {{ 'App.Buttons.Close' | translate}}
+        </button>
+      </div>
+      <div *ngIf="paging" class="card-header bg-white">
+        <div class="d-lg-flex  justify-content-between align-items-center text-center">
+          <ul class="card-title mb-2 pagination d-inline-flex" id="Pagination">
+            <li class="page-item">
+              <a class="page-link" (click)="paginate(pagingType.Next)" id="Next">
+                <i class="fa fa-forward"></i>
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" (click)="paginate(pagingType.Last)" id="Last">
+                <i class="fa fa-fast-forward"></i>
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link">
+                <span id="PageNo">{{paginationInfo?.pageNo }}/{{ paginationInfo?.totalPages }}</span>
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" id="First" (click)="paginate(pagingType.First)">
+                <i class="fa fa-fast-backward"></i>
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" id="Previous" (click)="paginate(pagingType.Previous)">
+                <i class="fa fa-backward"></i>
+              </a>
+            </li>
+            <li class="page-item">
+              <button type="button" class="full-screen-icon" title="Full Screen" id="fullScreen">
+                <i class="la 	la-arrows-alt"></i>
+              </button>
+            </li>
+          </ul>
+          <div class="d-flex justify-content-center   align-items-center mb-2 mr-lg-5">
+            <span class="fs-14 mx-3">Show </span>
+            <select [(ngModel)]="paginationInfo.pageSize" (change)="showReport()" id="pageSize" class="pageselect">
+              <option value="500">500</option>
+              <option value="1000">1000</option>
+              <option value="2000">5000</option>
+              <option value="3000">10000</option>
+              <option value="4000">20000</option>
+              <option value="5000">30000</option>
+              <option value="10000">50000</option>
+            </select>
+            <span class="fs-14 mx-3">Records</span>
+          </div>
+          <div class="dropdown mr-3 mb-lg-0 mb-2">
+            <button class="btn btn-white dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Export
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu custom-drop " [innerHTML]="exportItems" id="Export"></ul>
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+
+    <!--end::Form-->
+  </div>
+</div>
+<app-shared-progress-spinner *ngIf="progressSpinner"></app-shared-progress-spinner>

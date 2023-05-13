@@ -1,0 +1,14 @@
+<div *ngIf="!loading">
+  <i class="fa fa-paperclip ml-2" style='cursor: pointer;' *ngIf="!readOnly" (click)="fileInput.click()"></i>
+  <i class="fa fa-eye ml-2" (click)="loadFile(value,showFileCallBack.bind(this))" style='cursor: pointer;'
+    *ngIf="value != ''" aria-hidden="true"></i>
+  <i class="fa fa-download ml-2" (click)="loadFile(value,downloadFileClalBack.bind(this))" *ngIf="value != ''"
+    style='cursor: pointer;'></i>
+</div>
+
+<div *ngIf="loading" class="loader"></div>
+
+<input type='hidden' [value]="value" [disabled]='disabled' (change)="onChange($event.target.value)"
+  (onblur)="onChange($event.target.value)" (input)="onChange($event.target.value)">
+
+<input style="display: none" type="file" (change)="processFile(fileInput)" #fileInput />

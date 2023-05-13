@@ -1,0 +1,240 @@
+<div class="m-stack__item m-stack__item--fluid">
+  <div class="m-login__wrapper">
+    <div class="m-login__logo mb-0">
+      <img src="assets/images/authlogo.png" class="logo_img img-fluid" />
+    </div>
+
+    <!--Login-->
+    <div class="m-login__signin">
+      <!-- _\loginForm_bx  -->
+      <section class="loginForm_bx" *ngIf="!changePassword && !isVerificationCodeSent">
+        <div class="m-login__head mt-0">
+          <h3 class="m-login__title">
+            {{ "Auth.Titles.LoginPage" | translate }}
+          </h3>
+        </div>
+        <form
+          class="m-login__form m-form"
+          [formGroup]="form"
+          (ngSubmit)="login()"
+          autocomplete="off"
+        >
+          <div class="form-group m-form__group">
+            <input
+              autofocus="autofocus"
+              class="form-control m-input"
+              [ngClass]="{
+                'is-invalid': submitted && form.controls.userName.errors
+              }"
+              type="text"
+              formControlName="userName"
+              name="userName"
+            />
+            <label class="form-label"
+              >{{ "Auth.Fields.UserName" | translate }}
+            </label>
+            <div class="invalid-feedback">
+              <div *ngIf="form.controls.userName.errors?.required">
+                {{ "App.Fields.RequiredField" | translate }}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group m-form__group">
+            <input
+              class="form-control m-input"
+              [ngClass]="{
+                'is-invalid': submitted && form.controls.password.errors
+              }"
+              type="password"
+              formControlName="password"
+              name="password"
+            />
+            <label class="form-label">{{
+              "Auth.Fields.Password" | translate
+            }}</label>
+            <div class="invalid-feedback">
+              <div *ngIf="form.controls.password.errors?.required">
+                {{ "App.Fields.RequiredField" | translate }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row m-login__form-sub">
+            <div class="col m--align-left">
+              <label class="m-checkbox m-checkbox--focus">
+                <input
+                  type="checkbox"
+                  formControlName="rememberMe"
+                  name="rememberMe"
+                />
+                {{ "Auth.Fields.RememberMe" | translate }}
+                <span></span>
+              </label>
+            </div>
+            <div class="col m--align-right"></div>
+          </div>
+          <div class="m-login__form-action">
+            <button
+              id="m_login_signin_submit"
+              class="btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air"
+            >
+              {{ "Auth.Buttons.Login" | translate }}
+            </button>
+          </div>
+        </form>
+      </section>
+      <!-- _\loginForm_bx  -->
+
+      <!-- _\_changePass_frstLog_bx  -->
+      <section class="changePass_frstLog_bx" *ngIf="changePassword && !isVerificationCodeSent">
+        <div class="m-login__head">
+          <h3 class="m-login__title">
+            {{ "Auth.Titles.AddNewPassword" | translate }}
+          </h3>
+        </div>
+        <form
+          class="m-login__form m-form"
+          [formGroup]="changePasswordForm"
+          (ngSubmit)="changePasswordSubmit()"
+        >
+          <div class="form-group m-form__group">
+            <input
+              [ngClass]="{
+                'is-invalid':
+                  submitted && changePasswordForm.controls.newPassword.errors
+              }"
+              class="form-control m-input"
+              type="password"
+              formControlName="newPassword"
+            />
+            <label class="form-label text-right">{{
+              "Auth.Fields.NewPassword" | translate
+            }}</label>
+            <div class="invalid-feedback">
+              <div
+                class="invalidMesg"
+                *ngIf="changePasswordForm.controls.newPassword.errors?.required"
+              >
+                {{ "App.Fields.RequiredField" | translate }}
+              </div>
+              <div
+                class="invalidMesg"
+                *ngIf="changePasswordForm.controls.newPassword.errors?.pattern"
+              >
+                {{ "App.Fields.InvalidPassword" | translate }}
+              </div>
+            </div>
+          </div>
+          <!-- End Text Input -->
+          <div class="form-group m-form__group">
+            <input
+              class="form-control m-input"
+              [ngClass]="{
+                'is-invalid':
+                  submitted &&
+                  (changePasswordForm.controls.newPassword2.errors ||
+                    changePasswordForm.controls.newPassword2.value !=
+                      changePasswordForm.controls.newPassword.value)
+              }"
+              formControlName="newPassword2"
+              type="password"
+            />
+            <label class="form-label text-right">{{
+              "Auth.Fields.NewPasswordAgain" | translate
+            }}</label>
+            <div class="invalid-feedback">
+              <div
+                class="invalidMesg"
+                *ngIf="
+                  changePasswordForm.controls.newPassword2.errors?.required
+                "
+              >
+                {{ "App.Fields.RequiredField" | translate }}
+              </div>
+              <div
+                class="invalidMesg"
+                *ngIf="
+                  changePasswordForm.controls.newPassword2.value !=
+                  changePasswordForm.controls.newPassword.value
+                "
+              >
+                {{ "App.validation.PasswordNotMatched" | translate }}
+              </div>
+            </div>
+          </div>
+          <!-- End Text Input -->
+          <div class="m-login__form-action">
+            <button
+              class="btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air"
+            >
+              {{ "App.Buttons.Confirm" | translate }}
+            </button>
+          </div>
+          <!-- End butoon -->
+        </form>
+      </section>
+      <!-- _\_changePass_frstLog_bx -->
+
+        <!-- Send Verfication Code -->
+        <section class="changePass_frstLog_bx" *ngIf="isVerificationCodeSent">
+          <div class="m-login__head">
+            <h3 class="m-login__title">{{"Auth.Titles.EnterVerificationCode" | translate}}</h3>
+          </div>
+          <form class="m-login__form m-form" [formGroup]="verificationCodeForm" (ngSubmit)="onSubmitVerificationCode()">
+            <div class="form-group m-form__group">
+              <input [ngClass]="{
+                'is-invalid': submitted && verificationCodeForm.controls.code.errors
+              }" class="form-control m-input "type="text"  formControlName="code" />
+              <label class="form-label text-right">{{"Auth.Fields.verificationCode" | translate}}</label>
+              <div class="invalid-feedback">
+                <div class="invalidMesg" *ngIf="verificationCodeForm.controls.code.errors?.required">
+                  {{"App.Fields.RequiredField" | translate}}
+                </div>
+              </div>
+            </div><!-- End Text Input -->
+          
+            <div class="m-login__form-action">
+              <button  class="btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air">
+                {{"App.Buttons.Confirm" | translate}} 
+              </button>
+            </div><!-- End butoon -->
+          </form>
+        </section>
+        <!-- Send Verfication Code -->
+
+      <div class="m-login__form-lang">
+        <button
+          type="button"
+          *ngIf="lang === 'en'"
+          (click)="_globalService.languageChanging('ar')"
+          class="
+            btn btn-lang
+            m-btn m-btn--pill m-btn--custom m-btn--air
+            text-right
+          "
+        >
+          <i class="fas fa-globe"></i> {{ "Auth.Buttons.Arabic" | translate }}
+        </button>
+        <button
+          type="button"
+          *ngIf="lang === 'ar'"
+          class="
+            btn btn-lang
+            m-btn m-btn--pill m-btn--custom m-btn--air
+            text-right
+          "
+          (click)="_globalService.languageChanging('en')"
+        >
+          <i class="fas fa-globe"></i> {{ "Auth.Buttons.English" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <app-shared-progress-spinner
+    class="loginspin"
+    *ngIf="progressSpinner"
+  ></app-shared-progress-spinner>
+</div>

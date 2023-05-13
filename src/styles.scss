@@ -1,0 +1,309 @@
+/* You can add global styles to this file, and also import other style files */
+//@import "theme/sass/demo/default/style";
+@import 'assets/vendors/base/icons/flaticon/css/flaticon.css';
+@import 'assets/vendors/base/icons/line-awesome/css/line-awesome.min.css';
+
+@import '../node_modules/primeicons/primeicons.css';
+@import '../node_modules/primeng/resources/themes/saga-purple/theme.css';  /* nova */
+@import '../node_modules/primeng/resources/primeng.min.css';
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Refactor 2021 - MAHMOUD RABIE */
+
+/* RESET */
+.p-button {
+  background: #65245b !important;
+  border: 1px solid #65245b !important;
+}
+input, select, textarea, button{
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* slim scroll */
+::-webkit-scrollbar {/* width */
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {/* Track */
+  box-shadow: inset 0 0 5px #eee;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {/* Handle */
+  background: #999;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {/* Handle on hover */
+  background: #777;
+}
+
+/* TABLE */
+ .p-datatable-scrollable-wrapper{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row-reverse;
+}
+.p-datatable-scrollable-header-box{
+  padding: 0 !important;
+}
+.p-datatable .p-datatable-tbody > tr > td,
+.p-datatable .p-datatable-thead > tr > th{
+  width: 150px;
+  max-width: 150px;
+  text-align: center;
+  border: 0;
+    font-size: 0.9rem;
+    color: #333;
+    height: 40px !important;
+    vertical-align: middle;
+    padding: 0.3em 0.857em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.p-datatable .p-datatable-tbody > tr > td{
+  overflow: hidden;
+}
+.p-datatable .p-datatable-thead > tr > th{
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.p-datatable-scrollable-body,
+.p-datatable-scrollable-footer,
+.p-datatable-scrollable-header{
+  overflow: visible !important;
+}
+.p-datatable-scrollable-wrapper .p-datatable-scrollable-view{
+  overflow: hidden;
+    overflow-x: auto;
+}
+.p-datatable-scrollable-wrapper .p-datatable-scrollable-view:first-child{
+  overflow: initial;
+  overflow-x: initial;
+}
+.p-datatable-scrollable-wrapper .p-datatable-scrollable-view:first-child tr td{
+  overflow: visible;
+}
+.p-datatable-scrollable-wrapper .p-datatable-scrollable-view:first-child tr th,
+.p-datatable-scrollable-wrapper .p-datatable-scrollable-view:first-child tr td{
+  width: initial;
+  max-width: initial;
+}
+.p-datatable-frozen-view > tr > td,
+.p-datatable-frozen-view > tr > th{
+  width:  initial !important;
+  max-width: initial !important;
+}
+.p-datatable-scrollable-wrapper .p-datatable-scrollable-view tr:nth-child(even){
+  background-color: #f5f5f5;
+}
+.p-datatable {
+  font-family: 'CairoRegular', serif !important;
+}
+.p-datatable .emp-msg{
+  color: #d64a4a;
+  font-size: 1.1rem !important;
+  font-weight: 400;
+}
+.p-datatable-scrollable-wrapper .p-datatable-scrollable-view:first-child{
+  width: 7.5% !important;
+}
+.p-datatable-scrollable-wrapper .p-datatable-scrollable-view{
+  width: calc(100% - 6.5%) !important;
+}
+.p-datatable .p-sortable-column.p-highlight {
+    background: #efefef !important;
+    border: none !important;
+}
+/* DDL Searchable Table */
+select.form-control{
+  -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: relative;
+
+}
+.p-datatable select.form-control{
+  height: 28px;
+    background-size: 28px !important;
+    padding: 0 !important;
+    width: 28px;
+    border-radius: 0px !important;
+}
+table .grid-search{
+  background: #fff !important;
+}
+table select.form-control{
+  background-size: 27px;
+  margin: 0 !important;
+  padding: 0 8px !important;
+  color: #65245b;
+  text-indent: -9999px;
+  font-size: 1rem !important;
+  box-sizing: content-box;
+  border-radius: 5px;
+}
+table input.form-control{
+  padding: 0 5px;
+  width: 100%;
+  min-width: initial;
+}
+table .form-control{
+  border: 0;
+    box-shadow: 0 0 5px -3px #888 !important;
+}
+.ui-multiselect .ui-multiselect-trigger{
+  background: #521949 !important;
+  border:0 !important;
+  border-radius: 0;
+  border-bottom-left-radius: 3px;
+  border-top-left-radius: 3px;
+  color: #fff !important;
+  width: 35px !important;
+}
+.grid-search select{
+  left: -2px !important;
+  right: initial !important;
+}
+p-multiselect > div.p-multiselect{
+  width: 100%;
+  border: none !important;
+  height: 32px;
+}
+p-multiselect > div.p-multiselect .p-multiselect-trigger{
+  background: #65245b !important;
+}
+p-multiselect > div.p-multiselect .p-multiselect-trigger-icon{
+  color: #fff !important;
+}
+.p-calendar .p-datepicker{
+  width: 100% !important;
+  min-width: 280px !important;
+  max-width: 360px !important;
+}
+.p-inputtext{
+  background: transparent !important;
+}
+.form-control{
+  height: 34px !important;
+}
+/* .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month,
+ */.p-datepicker .p-datepicker-header .p-datepicker-title select{
+  padding: 5px;
+  border-radius: 5px;
+    border: 1px solid #b1b5ba;
+  margin: 0 3px;
+}
+
+.box-shadow{
+  box-shadow: 0 0 6px -3px #999 !important;
+  border: none !important;
+}
+
+/* paging  */
+.p-paginator .p-dropdown{
+text-align: center;
+}
+.p-paginator .p-dropdown .p-dropdown-label{
+  padding-right: 15px;
+}
+
+/* Calendar */
+p-calendar, p-multiselect{
+padding: 0 !important;
+}
+p-calendar > span{
+  border: none !important;
+  width: 100%;
+  height: 32px;
+}
+p-calendar > span input{
+  border: none !important;
+}
+.p-datepicker table th > span, .p-datepicker table th{
+  text-align: center !important;
+}
+.p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item{
+  border-bottom: 1px solid #d3d3d3;
+  padding: 0.7rem 0.5rem;
+}
+.p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item div{
+  padding: 0 !important;
+  margin: 0 !important;
+  font-size: 1em !important;
+}
+.p-autocomplete-panel .p-autocomplete-items:not(.p-autocomplete-virtualscroll){
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* SWITCH */
+.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider{
+  background: #913683 !important;
+}
+
+/* custom-details-card */
+.custom-details-card .details-label, .details-card .details-label{
+  border-bottom: 1px solid #eee;
+  font-weight: 600;
+  color: #ab2358;
+  font-size: 1em !important;
+  padding: 10px 15px !important;
+  width: 15% !important;
+}
+.custom-details-card .details-value, .details-card .details-value{
+  border-bottom: 1px solid #eee;
+  font-weight: normal !important;
+  color: #2e2e2e;
+  font-size: 1em !important;
+  text-align: left;
+  padding: 10px 15px !important;
+  width: 35% !important;
+}
+.details .tableHeader label{
+  font-weight: 600 !important;
+  color: #393939 !important;
+}
+
+/* modal */
+.modal .modal-content .modal-header .modal-title {
+  color: #b651a7 !important;
+}
+.p-component-overlay {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .p-datatable-scrollable-wrapper .p-datatable-scrollable-view:first-child{
+    width: 9.5% !important;
+  }
+  .p-datatable-scrollable-wrapper .p-datatable-scrollable-view{
+    width: calc(100% - 9.5%) !important;
+  }
+}
+
+@media (max-width: 660px){
+  .p-datatable.p-datatable-responsive .p-datatable-tfoot>tr>td, .p-datatable.p-datatable-responsive .p-datatable-thead>tr>th.p-sortable-column,
+  .p-datatable.p-datatable-responsive .p-datatable-thead>tr>th.ng-star-inserted, .p-datatable.p-datatable-responsive .p-datatable-thead>tr.frozeheader th{
+    display: revert !important;
+  }
+  .p-datatable.p-datatable-responsive .p-datatable-tbody>tr>td {
+    text-align: center !important;
+    display: revert !important;
+    float: none !important;
+    clear: initial !important;
+    border: initial !important;
+    width: 150px !important;
+    max-width: 150px !important;
+}
+.p-datatable-scrollable-view.p-datatable-frozen-view .p-datatable-tbody>tr>td,
+.p-datatable-scrollable-view.p-datatable-frozen-view .p-datatable-tbody>tr>th{
+  width:  initial !important;
+  max-width: initial !important;
+}
+}

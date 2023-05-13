@@ -1,0 +1,400 @@
+<div
+  class="details py-0"
+  *authorization="{
+    actionName: 'receipts-customers-accounts-details',
+    pageLevel: true
+  }"
+>
+  <div class="m-portlet m-0">
+    <!-- BEGIN: header -->
+    <div class="m-portlet__head">
+      <div class="m-portlet__head-caption">
+        <div class="m-portlet__head-title">
+          <h6 class="m-portlet__head-text">
+            <a
+              routerLink="/individual/receipts/customers-accounts"
+              class="back-icon"
+            >
+              <i class="fa fa-arrow-alt-circle-right"></i>
+            </a>
+            {{ "Receipts.Titles.CustomerAccountDetails" | translate }}
+          </h6>
+        </div>
+      </div>
+    </div>
+
+    <div class="m-portlet__body">
+      <div class="row mx-0 px-0">
+        <!---------------------------- بيانات العميل --------------------->
+        <div class="col-8 tableHeader">
+          <label class="form-control-label py-3"
+            >{{ "Receipts.Titles.CreditInvoicesCustomerData" | translate }}
+          </label>
+        </div>
+
+        <div class="col-4 tableHeader">
+          <div
+            class="btn-group btn-floating"
+            role="group"
+            aria-label="Basic example"
+          >
+            <ng-container *authorization="'show-customer-message'">
+              <button
+                type="button"
+                class="btn btn-secondary m-1"
+                data-toggle="modal"
+                data-target="#detailsModal"
+                (click)="openModal()"
+              >
+                {{ "App.Buttons.Logger" | translate }}
+              </button>
+            </ng-container>
+            <ng-container *authorization="'send-first-notification'">
+              <button
+                type="button"
+                *ngIf="showNotification"
+                class="btn btn-success m-1"
+                (click)="sendSMSMessage('noify1')"
+              >
+                {{ "App.Buttons.Ntification1" | translate }}
+              </button>
+            </ng-container>
+            <ng-container *authorization="'send-second-notification'">
+              <button
+                type="button"
+                *ngIf="showNotification"
+                class="btn btn-warning m-1"
+                (click)="sendSMSMessage('noify2')"
+              >
+                {{ "App.Buttons.Ntification2" | translate }}
+              </button>
+            </ng-container>
+            <ng-container *authorization="'send-third-notification'">
+              <button
+                type="button"
+                *ngIf="showNotification"
+                class="btn btn-danger m-1"
+                (click)="sendSMSMessage('noify3')"
+              >
+                {{ "App.Buttons.Ntification3" | translate }}
+              </button>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="tableBody col-12 py-2">
+          <div class="row mx-0 details-card">
+            <!-- رقم العميل -->
+            <div class="details-label">
+              <span>{{ "Receipts.Fields.SegmentsCustomerId" | translate }}</span>
+            </div>
+            <div class="details-value">
+              <span>{{ customerData?.SegmentsCustomerId }}</span>
+            </div>
+
+            <!-- اسم العميل -->
+            <div class="details-label">
+              <span>{{ "Receipts.Fields.CustomerName" | translate }}</span>
+            </div>
+            <div class="details-value">
+              <span>{{ customerData?.Name }}</span>
+            </div>
+
+            <div class="details-label">
+              <span>{{ "Receipts.Fields.DebitBalance" | translate }}</span>
+            </div>
+            <div class="details-value">
+              <span>{{ viewModel?.CustomerAccount?.DebitBalance }}</span>
+            </div>
+
+            <div class="details-label">
+              <span>{{ "Receipts.Fields.CreditBalance" | translate }}</span>
+            </div>
+            <div class="details-value">
+              <span>{{ viewModel?.CustomerAccount?.CreditBalance }}</span>
+            </div>
+
+            <div class="details-label">
+              <span>{{ "Receipts.Fields.CurrentBalance" | translate }}</span>
+            </div>
+            <div class="details-value">
+              <span *ngIf="viewModel?.CustomerAccount?.CurrentBalance > 0"
+                >{{ viewModel?.CustomerAccount?.CurrentBalance }} (
+                {{ "Receipts.Fields.DebitBalance" | translate }} )</span
+              >
+              <span *ngIf="viewModel?.CustomerAccount?.CurrentBalance < 0"
+                >({{ viewModel?.CustomerAccount?.CurrentBalance * -1 }}) (
+                {{ "Receipts.Fields.CreditBalance" | translate }} )</span
+              >
+              <span *ngIf="viewModel?.CustomerAccount?.CurrentBalance == 0">
+                0
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- <form class="m-form m-form--fit m-form--label-align-right"> -->
+
+        <div class="row tableBody col-12 py-2">
+          <!-- Contract -->
+          <div class="col-lg-3">
+            <div class="form-group m-form__group row mx-0 px-0">
+              <div class="col-12 px-0">
+                <label class="form-control-label" for="Contract">
+                  {{ "Receipts.Fields.ContractName" | translate }}</label
+                >
+              </div>
+              <div class="col-12 px-0">
+                <p-autoComplete
+                  id="Contract"
+                  [(ngModel)]="selectedContract"
+                  field="SegmentId"
+                  [suggestions]="filteredArray"
+                  (completeMethod)="filterArray($event, contracts, 'SegmentId')"
+                  (onSelect)="onSelectContract($event)"
+                  (onClear)="onClear($event)"
+                  [forceSelection]="true"
+                  [size]="30"
+                  [minLength]="1"
+                  [dropdown]="true"
+                >
+                  <ng-template let-Contract pTemplate="item">
+                    <div class="ui-helper-clearfix">
+                      <div *ngIf="Contract.Id == 'All'">الكل</div>
+
+                      <div *ngIf="Contract.Id != 'All'">
+                        {{ Contract.SegmentId }}
+                      </div>
+                    </div>
+                  </ng-template>
+                </p-autoComplete>
+              </div>
+              <div class="details-value" *ngIf="showExtentionMessage">
+                <span>{{
+                  "Receipts.Fields.extentionContract" | translate
+                }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2">
+            <div *ngIf="selectedContract?.SegmentId && !selectedContract?.SegmentId.includes('--') && customerData?.SegmentsCustomerId && !customerData?.SegmentsCustomerId.includes('--')" class="form-group m-form__group row mx-0 px-0">
+              <div class="col-12 px-0">
+                <label class="form-control-label"> </label>
+              </div>
+              <button
+                class="btn btn-secondary m-1"
+                type="button"
+                data-toggle="modal"
+                data-target="#reportModal"
+                (click)="showClientAccountStatementReport(selectedContract?.SegmentId)"
+              >
+                {{ "Sales.Buttons.PrintClientAccountStatement" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- </form> -->
+
+        <!---------------------------- المدين --------------------->
+        <div class="col-12 tableHeader">
+          <label class="form-control-label py-3">
+            {{ "Receipts.Titles.Debits" | translate }}
+          </label>
+        </div>
+        <div class="tableBody py-2 col-12">
+          <div class="row mx-0 px-0 box-shadow">
+            <p-table
+              [columns]="debitCols"
+              [value]="viewModel?.Debits"
+              [paginator]="true"
+              [loading]="progressSpinner"
+              [rows]="10"
+              [totalRecords]="viewModel?.Debits?.length"
+              [autoLayout]="true"
+              [responsive]="true"
+              class="full-width"
+            >
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th
+                    *ngFor="let col of columns"
+                    [pSortableColumn]="col.field"
+                    [hidden]="col.Hidden"
+                  >
+                    {{ col.header | translate }}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr [pSelectableRow]="rowData">
+                  <td *ngFor="let col of columns" [hidden]="col.Hidden">
+                    <ng-container
+                      *ngIf="
+                        col.field === ' ActionButtons';
+                        then render_action_buttons;
+                        else render_data_field
+                      "
+                    >
+                    </ng-container>
+                    <ng-template #render_action_buttons>
+                      <a
+                        class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill"
+                        title="{{ 'App.Fields.Delete' | translate }}"
+                      >
+                        <i class="flaticon-delete"></i>
+                      </a>
+                    </ng-template>
+                    <ng-template #render_data_field>
+                      {{
+                        !col.pipe
+                          ? rowData[col.field] || '---'
+                          : col.pipe === "date"
+                          ? (rowData[col.field] | date : col.pipeFormat)
+                          : rowData[col.field]
+                      }}
+                    </ng-template>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage" let-columns>
+                <tr>
+                  <td [attr.colspan]="columns?.length" class="empty-grid-table">
+                    <span class="emp-msg">
+                      {{ "App.Fields.NoData" | translate }}
+                    </span>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+
+            <!-- اجمالي البنود -->
+            <!-- <div class="details-label">
+          <span>{{ 'Receipts.Fields.AllItems' | translate}}</span>
+        </div>
+        <div class="details-value">
+          <span>{{ viewModel?.NetValue }}</span>
+        </div> -->
+          </div>
+        </div>
+
+        <!---------------------------- الدائن --------------------->
+        <div class="col-12 tableHeader">
+          <label class="form-control-label py-3">
+            {{ "Receipts.Titles.Credits" | translate }}
+          </label>
+        </div>
+        <div class="tableBody py-2 col-12">
+          <div class="row mx-0 box-shadow px-0">
+            <p-table
+              [columns]="creditCols"
+              [value]="viewModel?.Credits"
+              [paginator]="true"
+              [rows]="10"
+              [totalRecords]="viewModel?.Credits?.length"
+              [autoLayout]="true"
+              [responsive]="true"
+              class="full-width"
+            >
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th
+                    *ngFor="let col of columns"
+                    [pSortableColumn]="col.field"
+                    [hidden]="col.Hidden"
+                  >
+                    {{ col.header | translate }}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr [pSelectableRow]="rowData">
+                  <td *ngFor="let col of columns" [hidden]="col.Hidden">
+                    <ng-container
+                      *ngIf="
+                        col.field === ' ActionButtons';
+                        then render_action_buttons;
+                        else render_data_field
+                      "
+                    >
+                    </ng-container>
+                    <ng-template #render_action_buttons>
+                      <a
+                        class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill"
+                        title="{{ 'App.Fields.Delete' | translate }}"
+                      >
+                        <i class="flaticon-delete"></i>
+                      </a>
+                    </ng-template>
+                    <ng-template #render_data_field>
+                      {{
+                        !col.pipe
+                          ? rowData[col.field]
+                          : col.pipe === "date"
+                          ? (rowData[col.field] | date : col.pipeFormat)
+                          : rowData[col.field]
+                      }}
+                    </ng-template>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage" let-columns>
+                <tr>
+                  <td [attr.colspan]="columns?.length" class="empty-grid-table">
+                    <span class="emp-msg">
+                      {{ "App.Fields.NoData" | translate }}
+                    </span>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+
+            <!-- اجمالي البنود -->
+            <!-- <div class="details-label">
+          <span>{{ 'Receipts.Fields.AllItems' | translate}}</span>
+        </div>
+        <div class="details-value">
+          <span>{{ viewModel?.NetValue }}</span>
+        </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div
+  *ngIf="customerId && showModal"
+  class="custom-bottom-aside-modal modal fade"
+  id="detailsModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <app-customer-account-log
+    [contractId]="contractId"
+    [customerId]="customerId"
+    (cancel)="onCancel($event)"
+  ></app-customer-account-log>
+</div>
+
+<div
+  class="custom-bottom-aside-modal modal fade"
+  id="reportModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <app-custom-report></app-custom-report>
+</div>
+
+<app-shared-progress-spinner
+  *ngIf="progressSpinner || isLoading"
+></app-shared-progress-spinner>
+
+

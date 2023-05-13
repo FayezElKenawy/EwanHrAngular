@@ -1,0 +1,136 @@
+// .home-link:focus,
+// .home-link:active {
+//   border: 0;
+//   outline: 0;
+//   box-shadow: none;
+// }
+
+// .m-nav--inline {
+//   margin: 0 !important;
+// }
+
+// .m-nav__link-text, .m-nav__link {
+//   font-size: 1.5rem !important;
+// }
+
+// @media (max-width: 768px) {
+//   .m-nav--inline {
+//     margin: 0 !important;
+//   }
+
+//   .m-topbar .m-topbar__nav.m-nav {
+//     float: right;
+//     padding-right: 20px;
+//     padding-left: 20px;
+//   }
+
+//   .m-nav__link-text, .m-nav__link {
+//     font-size: 1rem !important;
+//   }
+// }
+
+// .m-topbar .m-topbar__nav.m-nav > .m-nav__item {
+//   padding: 0 4px;
+// }
+.loader_ajax_small {
+  border: 2px solid #f3f3f3 !important;
+  border-radius: 50%;
+  border-top: 2px solid #2d2d2d !important;
+  width: 20px;
+  top: 40%;
+  left: 45%;
+  height: 20px;
+  position: fixed;
+  margin: 0 auto;
+  z-index: 1000;
+  -webkit-animation: spin_loader_ajax_small 2s linear infinite;
+  animation: spin_loader_ajax_small 2s linear infinite;
+}
+
+@-webkit-keyframes spin_loader_ajax_small {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin_loader_ajax_small {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+/*start app launcher dropdown */
+
+.app-launcher.dropdown-menu {
+  width: 280px;
+  height: 100vh;
+  top: 41px !important;
+  left: -50px !important;
+  direction: ltr;
+  text-align: left;
+  position: absolute;
+  will-change: transform;
+  background: linear-gradient(to right, #faf7f4, #ffffff);
+
+  @media (max-width: 767px) {
+    left: -10px !important;
+    top: 117px !important;
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+    left: -43px !important;
+    top: 117px !important;
+  }
+
+  a {
+    font-size: 13px;
+    text-emphasis: none;
+    display: block;
+    color: rgb(31, 10, 24);
+    background: transparent;
+    transition-property: transform;
+
+    @media (max-width: 767px) {
+      margin: -9px 0px !important;
+    }
+
+    @media (min-width: 768px) and (max-width: 1024px) {
+      margin: -9px 0px !important;
+    }
+
+    &:hover {
+      width: 260px;
+      transition-duration: 1s;
+      transform: scale(1.1);
+      background-color: #ffffff;
+    }
+
+    .img-btn0 {
+      padding: 0px 3px;
+      margin: 7px 0px;
+      width: 45px;
+      height: 35px;
+    }
+  }
+}
+
+.nav-link.dropdown-toggle:after,
+.btn.dropdown-toggle:after {
+  background-color: #f3f3f3 !important;
+  display: none;
+}
+
+.btn.btn-default,
+.btn.btn-secondary {
+  background: transparent !important;
+  border: none;
+}
+
+/*End app launcher dropdown*/

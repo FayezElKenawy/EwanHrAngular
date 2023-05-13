@@ -1,0 +1,505 @@
+<div class="details" *authorization="{actionName:'sales-service-request-create-contract',pageLevel:true}">
+
+  <!-- Start Tab One Content -->
+  <!--begin::Portlet-->
+  <div class="m-portlet m-0">
+    <div class="m-portlet__head" style="height:6rem;">
+      <div class="m-portlet__head-caption">
+        <div class="m-portlet__head-title">
+          <div class="row">
+            <div class="col-12">
+              <h6 class="m-portlet__head-text">
+                <a routerLink="/sales/list-contracts" class="back-icon">
+                  <i class="fa fa-arrow-alt-circle-right "></i>
+                </a> {{'Sales.Titles.AddContract' | translate}} </h6>
+            </div>
+            <div class="col-12">
+              <ul class="nav nav-tabs border-bottom-0 mb-0 " id="myTab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="contract_details-tab" data-toggle="tab" href="#contract_details"
+                    role="tab" aria-controls="contract_details" aria-selected="true">
+                    <label style="color:unset;"
+                      class="form-control-label">{{'Sales.Titles.ContractData' | translate}}</label>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="contract_penalities-tab" data-toggle="tab" href="#contract_penalities"
+                    role="tab" aria-controls="contract_penalities" aria-selected="false">
+                    <label style="color:unset;"
+                      class="form-control-label cursor-pointer">{{'Sales.Titles.ContractPenalites' | translate}}</label>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--   begin::Form-->
+    <div class="m-portlet__body">
+      <div *ngIf="DateValidation" class="row mx-0 px-0">
+        <!-- Warning Msg -->
+        <div class="col-12">
+          <div class="alert alert-warning alert-dismissible fade show py-3" role="alert">
+            <button type="button" class="close" style="color: #000" data-dismiss="alert" aria-label="Close"></button>
+
+            <span class="d-block">{{'Sales.Fields.DateValidation' | translate}}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="tab-content w-100" id="myTabContent">
+        <!--  Tab One Content -->
+        <div class="tab-pane fade show active" id="contract_details" role="tabpanel"
+          aria-labelledby="contract_details-tab">
+          <form class="m-form m-form--fit m-form--label-align-right" [formGroup]="form">
+
+            <div class="col-12 tableHeader">
+              <label class="form-control-label py-3 mb-0">{{'Sales.Titles.ContractData' | translate}}</label>
+            </div>
+            <div class="row mx-0 px-0 py-2 tableBody">
+              <!-- Ref Number -->
+              <div class="col-lg-2 col-md-4 col-12">
+                <div class="form-group m-form__group row mx-0 px-0">
+                  <div class="col-12 px-0">
+                    <label class="form-control-label"
+                      for="contractNumberRef">{{'Sales.Fields.RefNumber' | translate}}</label>
+                    <!-- <span class="required">*</span> -->
+                  </div>
+                  <div class="col-12 px-0">
+                    <input class="form-control" id="contractNumberRef"
+                      placeholder="{{'Sales.Fields.RefNumber' | translate}}" type="text" formControlName="RefNumber"
+                      [ngClass]="{
+                    'is-invalid': submitted && form.get('RefNumber').errors
+                  }" />
+                    <div class="invalid-feedback" *ngIf="form.get('RefNumber').errors?.required">
+                      {{'App.Fields.RequiredField' | translate}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Contract Date -->
+              <div class="col-lg-2 col-md-4 col-12">
+                <div class="form-group m-form__group row mx-0 px-0">
+                  <div class="col-12 px-0">
+                    <label class="form-control-label"
+                      for="contractDate">{{'Sales.Fields.ContractDate' | translate}}</label>
+                    <span class="required">*</span>
+                  </div>
+                  <div class="col-12 px-0">
+                    <p-calendar id="contractDate" [monthNavigator]="true" [yearNavigator]="true"
+                      yearRange="{{ '1900:' + currentYear }}" placeholder="{{'Sales.Fields.ContractDate' | translate}}"
+                      formControlName="ContractDate" dateFormat="yy-mm-dd"
+                      class="form-control calendar-form-control  p-0 " [ngClass]="{
+                    'is-invalid': submitted && form.get('ContractDate').errors
+                  }" [minDate] = "minSelectableDate">
+                    </p-calendar>
+                    <div class="invalid-feedback" *ngIf="form.get('ContractDate').errors?.required">
+                      {{'App.Fields.RequiredField' | translate}} </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Laborer Reception Date -->
+              <div class="col-lg-2 col-md-4 col-12">
+                <div class="form-group m-form__group row mx-0 px-0">
+                  <div class="col-12 px-0">
+                    <label class="form-control-label"
+                      for="useDate">{{'Sales.Fields.LaborerReceptionDate' | translate}}</label>
+                    <span class="required">*</span>
+                  </div>
+                  <div class="col-12 px-0">
+                    <p-calendar id="useDate" [monthNavigator]="true" [yearNavigator]="true"
+                      yearRange="{{ '1900:' + currentYear }}"
+                      placeholder="{{'Sales.Fields.LaborerReceptionDate' | translate}}"
+                      formControlName="LaborerReceptionDate" dateFormat="yy-mm-dd"
+                      class="form-control calendar-form-control  p-0 " (onSelect)="onLaborerReceptionDateSelect($event)"
+                      [ngClass]="{
+                    'is-invalid':
+                      submitted && form.get('LaborerReceptionDate').errors
+                  }">
+                    </p-calendar>
+                    <div class="invalid-feedback" *ngIf="form.get('LaborerReceptionDate').errors?.required">
+                      {{'App.Fields.RequiredField' | translate}} </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Period -->
+              <div class="col-lg-2 col-md-4 col-12">
+                <div class="form-group m-form__group row mx-0 px-0">
+                  <div class="col-12 px-0">
+                    <label class="form-control-label"
+                      for="contractPeriod">{{'Sales.Fields.ContractPeriod' | translate}}</label>
+                    <!-- <span class="required">*</span> -->
+                  </div>
+                  <div class="col-12 px-0">
+                    <input class="form-control" id="contractPeriod"
+                      placeholder="{{'Sales.Fields.ContractPeriod' | translate}}" type="number" formControlName="Period"
+                      [ngClass]="{
+                    'is-invalid': submitted && form.get('Period').errors
+                  }" />
+                    <div class="invalid-feedback" *ngIf="form.get('Period').errors?.required">
+                      {{'App.Fields.RequiredField' | translate}} </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Expected Termination Date -->
+              <div class="col-lg-2 col-md-4 col-12">
+                <div class="form-group m-form__group row mx-0 px-0">
+                  <div class="col-12 px-0">
+                    <label class="form-control-label"
+                      for="contractEndDate">{{'Sales.Fields.ExpectedTerminationDate' | translate}}</label>
+                    <!-- <span class="required">*</span> -->
+                  </div>
+                  <div class="col-12 px-0">
+                    <p-calendar id="contractEndDate"
+                      placeholder="{{'Sales.Fields.ExpectedTerminationDate' | translate}}"
+                      formControlName="ExpectedTerminationDate" dateFormat="yy-mm-dd"
+                      class="form-control calendar-form-control  p-0 " [ngClass]="{
+                    'is-invalid':
+                      submitted && form.get('ExpectedTerminationDate').errors
+                  }">
+                    </p-calendar>
+                    <div class="invalid-feedback" *ngIf="form.get('ExpectedTerminationDate').errors?.required">
+                      {{'App.Fields.RequiredField' | translate}} </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Branch -->
+              <div class="col-lg-2 col-md-4 col-12">
+                <div class="form-group m-form__group row mx-0 px-0">
+                  <div class="col-12 px-0">
+                    <label class="form-control-label" for="branch">{{'App.Fields.Branch' | translate}}</label>
+                    <span class="required">*</span>
+                  </div>
+                  <div class="col-12 px-0">
+                    <input class="form-control" id="Branch" placeholder="{{'App.Fields.Branch' | translate}}"
+                      type="text" formControlName="Branch"
+                      [ngClass]="{'is-invalid': submitted && form.get('Branch').errors}" />
+                    <div class="invalid-feedback " *ngIf="form.get('Branch').errors?.required">
+                      {{'App.Fields.RequiredField' | translate}} </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sales Representative -->
+              <div class="col-lg-3 col-md-6 col-12">
+                <div class="form-group m-form__group row mx-0 px-0">
+                  <div class="col-12 px-0">
+                    <label class="form-control-label"
+                      for="salesRep">{{'Sales.Fields.SalesRepresentativeName' | translate}}</label>
+                    <span class="required">*</span>
+                  </div>
+                  <div class="col-12 px-0">
+                    <p-autoComplete id="salesRep" class="p-0 form-control" field="FullName"
+                      formControlName="SalesRepresentative" [suggestions]="filteredArray" (completeMethod)="
+                    filterArray($event, viewModel?.SalesRepresentativesShortVM)
+                  " [forceSelection]="true" [size]="30" [minLength]="1"
+                      placeholder="{{'Sales.Fields.SalesRepresentiveSelect' | translate}}" [dropdown]="true"
+                      (onClear)="onClear('SalesRepresentative')" [ngClass]="{
+                    'is-invalid':
+                      submitted && form.controls.SalesRepresentative.errors
+                  }">
+                      <ng-template let-SalesRepresentative pTemplate="item">
+                        <div class="ui-helper-clearfix">
+                          <div>
+                            {{ SalesRepresentative.FullName }}
+                          </div>
+                        </div>
+                      </ng-template>
+                    </p-autoComplete>
+                    <div class="invalid-feedback " *ngIf="form.get('SalesRepresentative').errors?.required">
+                      {{'App.Fields.RequiredField' | translate}} </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-------------------------------------- Financial Data -------------------------------------->
+            <div class="col-12 tableHeader">
+              <label class="form-control-label py-3 mb-0">{{'Sales.Titles.FinancialData' | translate}}</label>
+            </div>
+            <div class="row mx-0 px-0 py-2 tableBody">
+              <!-- Net Value -->
+              <div class="col-lg-2 col-md-4 col-12">
+                <div class="form-group m-form__group row mx-0 px-0">
+                  <div class="col-12 px-0">
+                    <label class="form-control-label"
+                      for="NetValue">{{'Sales.Fields.ContractNetValue' | translate}}</label>
+                    <!-- <span class="required">*</span> -->
+                  </div>
+                  <div class="col-12 px-0">
+                    <input class="form-control" id="NetValue"
+                      placeholder="{{'Sales.Fields.ContractNetValue' | translate}}" type="number"
+                      formControlName="NetValue" [ngClass]="{
+                    'is-invalid': submitted && form.get('NetValue').errors
+                  }" />
+                    <div class="invalid-feedback" *ngIf="form.get('NetValue').errors?.required">
+                      {{'App.Fields.RequiredField' | translate}} </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Discount Ratio -->
+              <div class="col-lg-2 col-md-4 col-12">
+                <div class="form-group m-form__group row mx-0 px-0">
+                  <div class="col-12 px-0">
+                    <label class="form-control-label"
+                      for="DiscountRatio">{{'Sales.Fields.DiscountRatio' | translate}}</label>
+                    <!-- <span class="required">*</span> -->
+                  </div>
+                  <div class="col-12 px-0">
+                    <input class="form-control" id="DiscountRatio"
+                      placeholder="{{'Sales.Fields.DiscountRatio' | translate}}" type="number"
+                      formControlName="DiscountRatio" [ngClass]="{
+                    'is-invalid': submitted && form.get('DiscountRatio').errors
+                  }" />
+                    <div class="invalid-feedback" *ngIf="form.get('DiscountRatio').errors?.required">
+                      {{'App.Fields.RequiredField' | translate}} </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Discount Amount -->
+              <div class="col-lg-2 col-md-4 col-12">
+                <div class="form-group m-form__group row mx-0 px-0 ">
+                  <div class="col-12 px-0">
+                    <label class="form-control-label"
+                      for="DiscountAmount">{{'Sales.Fields.DiscountAmount' | translate}}</label>
+                    <!-- <span class="required">*</span> -->
+                  </div>
+                  <div class="col-12 px-0">
+                    <input class="form-control" id="DiscountAmount"
+                      placeholder="{{'Sales.Fields.DiscountAmount' | translate}}" type="number"
+                      formControlName="DiscountAmount" [ngClass]="{
+                    'is-invalid': submitted && form.get('DiscountAmount').errors
+                  }" />
+                    <div class="invalid-feedback" *ngIf="form.get('DiscountAmount').errors?.required">
+                      {{'App.Fields.RequiredField' | translate}} </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Net Value After Discount -->
+              <div class="col-lg-2 col-md-4 col-12">
+                <div class="form-group m-form__group row mx-0 px-0">
+                  <div class="col-12 px-0">
+                    <label class="form-control-label"
+                      for="NetValueAfterDiscount">{{'Sales.Fields.NetValueAfterDiscount' | translate}}
+                    </label>
+                    <!-- <span class="required">*</span> -->
+                  </div>
+                  <div class="col-12 px-0">
+                    <input class="form-control" id="NetValueAfterDiscount"
+                      placeholder="{{'Sales.Fields.NetValueAfterDiscount' | translate}}" type="number"
+                      formControlName="NetValueAfterDiscount" [ngClass]="{
+                    'is-invalid':
+                      submitted && form.get('NetValueAfterDiscount').errors
+                  }" />
+                    <div class="invalid-feedback" *ngIf="form.get('NetValueAfterDiscount').errors?.required">
+                      {{'App.Fields.RequiredField' | translate}} </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tax Amount -->
+              <div class="col-lg-2 col-md-4 col-12">
+                <div class="form-group m-form__group row mx-0 px-0">
+                  <div class="col-12 px-0">
+                    <label class="form-control-label" for="TaxAmount">{{'Sales.Fields.TaxAmount' | translate}}</label>
+                    <!-- <span class="required">*</span> -->
+                  </div>
+                  <div class="col-12 px-0">
+                    <input class="form-control" id="TaxAmount" placeholder="{{'Sales.Fields.TaxAmount' | translate}}"
+                      type="number" formControlName="TaxAmount" [ngClass]="{
+                    'is-invalid': submitted && form.get('TaxAmount').errors
+                  }" />
+                    <div class="invalid-feedback" *ngIf="form.get('TaxAmount').errors?.required">
+                      {{'App.Fields.RequiredField' | translate}} </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Net Value After Tax -->
+              <div class="col-lg-2 col-md-4 col-12">
+                <div class="form-group m-form__group row mx-0 px-0">
+                  <div class="col-12 px-0">
+                    <label class="form-control-label"
+                      for="NetValueAfterTax">{{'Sales.Fields.ContractNetValueAfterTax' | translate}}</label>
+                    <!-- <span class="required">*</span> -->
+                  </div>
+                  <div class="col-12 px-0">
+                    <input class="form-control" id="NetValueAfterTax"
+                      placeholder="{{'Sales.Fields.ContractNetValueAfterTax' | translate}}" type="number"
+                      formControlName="NetValueAfterTax" [ngClass]="{
+                    'is-invalid':
+                      submitted && form.get('NetValueAfterTax').errors
+                  }" />
+                    <div class="invalid-feedback" *ngIf="form.get('NetValueAfterTax').errors?.required">
+                      {{'App.Fields.RequiredField' | translate}} </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
+            <!------------------------------------ Laborer Data -------------------------------------->
+            <div class="col-12 tableHeader">
+              <label class="form-control-label py-3 mb-0">{{'LaborersAffairs.Titles.LaborerData' | translate}}</label>
+            </div>
+
+
+            <!-- Laborer Details -->
+            <div class="col-12 tableBody py-2" *ngIf="viewModel?.ServiceRequestVM?.LaborerFile">
+              <div class="row p-0 m-0 custom-details-card">
+                <div class="details-label">
+                  <span>{{'App.Fields.LaborerFileId' | translate}}</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel.ServiceRequestVM.LaborerFile.Id }}</span>
+                </div>
+                <div class="details-label">
+                  <span>{{'App.Fields.LaborerFileName' | translate}}</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel.ServiceRequestVM.LaborerFile.FullName }}</span>
+                </div>
+                <div class="details-label">
+                  <span>{{'App.Fields.Nationality' | translate}}</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel.ServiceRequestVM.LaborerFile.NationalityArabicName }}</span>
+                </div>
+                <div class="details-label">
+                  <span>{{'App.Fields.Religion' | translate}}</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel.ServiceRequestVM.LaborerFile.ReligionArabicName }}</span>
+                </div>
+                <div class="details-label">
+                  <span>{{'App.Fields.HouseAddress' | translate}}</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel.ServiceRequestVM.LaborerFile.HouseArabicName }}</span>
+                </div>
+                <div class="details-label">
+                  <span>{{'App.Fields.Branch' | translate}}</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel.ServiceRequestVM.LaborerFile.BranchArabicName }}</span>
+                </div>
+                <div class="details-label">
+                  <span>{{'App.Fields.OfficeNumber' | translate}}</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel.ServiceRequestVM.LaborerFile.LaborerOfficeNumber }}</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-------------------------------------- Bundle Data -------------------------------------->
+            <div class="col-12 tableHeader">
+              <label class="form-control-label py-3 mb-0">{{'Sales.Titles.BundleData' | translate}}</label>
+            </div>
+
+            <!-- Bundle Details -->
+            <div class="col-12 tableBody py-2" *ngIf="viewModel?.ServiceRequestVM?.Bundle">
+              <div class="row p-0 m-0 custom-details-card">
+                <div class="details-label">
+                  <span>{{'Sales.Fields.BundleId' | translate}}</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel.ServiceRequestVM.Bundle.Id }}</span>
+                </div>
+                <div class="details-label">
+                  <span>{{'Sales.Fields.BundleName' | translate}}</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel.ServiceRequestVM.Bundle.ArabicName }}</span>
+                </div>
+                <div class="details-label">
+                  <span>{{'App.Fields.Nationality' | translate}}</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel.ServiceRequestVM.Bundle.Nationality.ArabicName }}</span>
+                </div>
+                <div class="details-label">
+                  <span>{{'App.Fields.Profession' | translate}}</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel.ServiceRequestVM.Bundle.Profession.ArabicName }}</span>
+                </div>
+                <div class="details-label">
+                  <span>{{'Sales.Fields.BundlePeriod' | translate}}</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel.ServiceRequestVM.Bundle.Period }}</span>
+                </div>
+                <div class="details-label">
+                  <span>{{'Sales.Fields.BundleNetVal' | translate}}</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel.ServiceRequestVM.Bundle.NetVal }}</span>
+                </div>
+                <div class="details-label">
+                  <span>{{'Sales.Fields.NoInstallment' | translate}}</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel.ServiceRequestVM.Bundle.NoInstallment }}</span>
+                </div>
+                <div class="details-label">
+                  <span>{{'Sales.Fields.DownPayment' | translate}}</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel.ServiceRequestVM.Bundle.Downpayment }}</span>
+                </div>
+                <div class="details-label">
+                  <span>{{'Sales.Fields.TotalTaxAmount' | translate}}</span>
+                </div>
+                <div class="details-value">
+                  <span>{{ viewModel.ServiceRequestVM.Bundle.TaxAmount }}</span>
+                </div>
+
+              </div>
+
+            </div>
+
+          </form>
+        </div>
+        <!-- End Tab One Content -->
+
+        <!-- Star Tab Two Content -->
+        <div class="tab-pane fade" id="contract_penalities" role="tabpanel" aria-labelledby="contract_penalities-tab">
+          <app-contract-penalities [contractValue]="form.get('NetValueAfterTax').value"></app-contract-penalities>
+        </div>
+        <!-- End Tab Two Content -->
+
+        <!--end::tabs content-->
+        <!-- footer -->
+
+        <div class="col-12 m-form__actions m-form__actions p-3 ml-lg-auto text-center tableBody border-top">
+          <button class="btn btn-save-cancel mb-1 btn-brand" type="button" [disabled]="disableControl"
+            (click)="createContract()">
+            {{'App.Buttons.Save' | translate}}</button>&nbsp;&nbsp;
+          <button [routerLink]="['/sales/list-contracts']" class="btn btn-save-cancel mb-1 btn-secondary" type="button">
+            {{'App.Buttons.Cancel' | translate}}
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+</div>
+
+<app-shared-progress-spinner *ngIf="progressSpinner"></app-shared-progress-spinner>

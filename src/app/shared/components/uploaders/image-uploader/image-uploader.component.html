@@ -1,0 +1,25 @@
+<div class=" mt-1">
+
+  <div class="d-flex flex-wrap justify-content-center align-items-center justify-content-sm-start  ">
+
+    <app-imageviewer [src]="imageUrl" (error)="errorImage()"
+      [imgStyle]="'smile-face__wrapper d-flex justify-content-center align-items-center img-thumbnail'"
+      (afterLoad)="afterImageload()" [defaultImage]="defaultImage"></app-imageviewer>
+    <!-- <img (error)="errorImage()" (load)="afterImageload()"
+      class="smile-face__wrapper d-flex justify-content-center align-items-center img-thumbnail" /> -->
+    <div class="ml-4">
+      <input style="display: none" type="file" accept="image/x-png,image/jpeg" (change)="processFile(fileInput)"
+        #fileInput />
+      <button *ngIf="!loading" class="btn btn-muted" type="button" [disabled]='disabled' (click)="fileInput.click()"
+        [title]="title | translate">
+        {{ title | translate}}
+      </button>
+      <button *ngIf="loading" class="btn btn-muted" type="button" [disabled]='disabled' [title]="title | translate">
+        <p-progressSpinner class="spinner-icon" [style]="{ width: '40px', height: '10px' }"></p-progressSpinner>
+        {{ title | translate}}
+      </button>
+    </div>
+  </div>
+</div>
+
+<input type='hidden' [value]="value" [disabled]='disabled' (input)=" onChange($event.target.value)">

@@ -1,0 +1,304 @@
+<!--begin::Portlet-->
+<div class="details" *authorization="{actionName:'sales-contract-document-reciept',pageLevel:true}">
+  <div class="m-portlet m-0">
+    <div class="m-portlet__head">
+      <div class="m-portlet__head-caption">
+        <div class="m-portlet__head-title">
+          <h6 class="m-portlet__head-text">
+            <a routerLink="/sales/list-contracts" class="back-icon">
+              <i class="fa fa-arrow-alt-circle-right "></i>
+            </a>
+            {{'Sales.Titles.ContractRecieve' | translate}}
+          </h6>
+        </div>
+      </div>
+    </div>
+    <div class="m-portlet__body" *ngIf="pageMode !== pageModes.NoAction">
+      <!--begin::Form-->
+      <form class="m-form m-form--fit m-form--label-align-right" [formGroup]="form" (ngSubmit)="save()">
+
+
+        <div class="row mx-0 px-0 tableBody py-2" formGroupName="TrustReceipt">
+          <!-- <div class="col-12">
+          <h6 class="m-form__heading-title mb-0">{{ 'Sales.Fields.ReceiptForOrder' | translate }}</h6>
+          <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x my-3"></div>
+        </div> -->
+
+          <!-- Contract Date -->
+          <div class="col-lg-3 col-md-6 col-12">
+            <div class="form-group m-form__group row mx-0 px-0">
+              <div class="col-12 px-0">
+                <label class="form-control-label" for="Date">{{'Sales.Fields.ContractDate' | translate}}</label>
+              </div>
+              <div class="col-12 px-0">
+                <p-calendar id="Date" [monthNavigator]="true" [yearNavigator]="true" yearRange="{{ '1900:' + toYear }}"
+                  placeholder="{{'Sales.Fields.ContractDate' | translate}}" formControlName="ContractDate"
+                  dateFormat="yy-mm-dd" class="form-control calendar-form-control  p-0 " [ngClass]="{
+                    'is-invalid':
+                      submitted && form.get('TrustReceipt').get('ContractDate').errors
+                  }">
+                </p-calendar>
+                <div class="invalid-feedback" *ngIf="form.get('TrustReceipt').get('ContractDate').errors?.required">
+                  {{'App.Fields.RequiredField' | translate}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Date -->
+          <div class="col-lg-3 col-md-6 col-12">
+            <div class="form-group m-form__group row mx-0 px-0">
+              <div class="col-12 px-0">
+                <label class="form-control-label" for="Date">{{'App.Fields.Date' | translate}}</label>
+                <span class="required">*</span>
+              </div>
+              <div class="col-12 px-0">
+                <p-calendar id="Date" [monthNavigator]="true" [yearNavigator]="true" yearRange="{{ '1900:' + toYear }}"
+                  placeholder="{{'App.Fields.Date' | translate}}" formControlName="Date" dateFormat="yy-mm-dd"
+                  class="form-control calendar-form-control  p-0 " [ngClass]="{
+                  'is-invalid':
+                    submitted && form.get('TrustReceipt').get('Date').errors
+                }">
+                </p-calendar>
+                <div class="invalid-feedback" *ngIf="form.get('TrustReceipt').get('Date').errors?.required">
+                  {{'App.Fields.RequiredField' | translate}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Amount -->
+          <div class="col-lg-3 col-md-6 col-12">
+            <div class="form-group m-form__group row mx-0 px-0">
+              <div class="col-12 px-0">
+                <label class="form-control-label" for="Amount"> {{'App.Fields.Amount' | translate}}</label>
+                <span class="required">*</span>
+              </div>
+              <div class="col-12 px-0">
+                <input class="form-control" id="Amount" placeholder="{{'App.Fields.Amount' | translate}}" type="number"
+                  formControlName="Amount" [ngClass]="{
+                  'is-invalid':
+                    (form.get('TrustReceipt').get('Amount').dirty ||
+                      submitted) &&
+                    form.get('TrustReceipt').get('Amount').errors
+                }" />
+                <div class="invalid-feedback" *ngIf="form.get('TrustReceipt').get('Amount').errors?.required">
+                  {{'App.Fields.RequiredField' | translate}}
+                </div>
+                <div class="invalid-feedback" *ngIf="form.get('TrustReceipt').get('Amount').errors?.pattern">
+                  {{'App.Fields.GreaterThanZero' | translate}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Due Date -->
+          <div class="col-lg-3 col-md-6 col-12">
+            <div class="form-group m-form__group row mx-0 px-0">
+              <div class="col-12 px-0">
+                <label class="form-control-label" for="DueDate">{{'Sales.Fields.DueDate' | translate}}</label>
+                <span class="required">*</span>
+              </div>
+              <div class="col-12 px-0">
+                <p-calendar id="DueDate" [monthNavigator]="true" [yearNavigator]="true"
+                  yearRange="{{ '1900:' + toYear }}" placeholder="{{'Sales.Fields.DueDate' | translate}}"
+                  formControlName="DueDate" dateFormat="yy-mm-dd" class="form-control calendar-form-control  p-0 "
+                  [ngClass]="{
+                  'is-invalid':
+                    submitted && form.get('TrustReceipt').get('DueDate').errors
+                }">
+                </p-calendar>
+                <div class="invalid-feedback" *ngIf="form.get('TrustReceipt').get('DueDate').errors?.required">
+                  {{'App.Fields.RequiredField' | translate}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-4" *ngIf="viewModel?.TrustReceiptVM">
+            <a data-toggle="modal" data-target="#reportModal"
+              class="add-icon mt-2 py-2 px-3 cursor-pointer d-inline-flex"
+              title="{{'Sales.Titles.trustReceive' | translate}}" (click)="showReport()" style="font-size: 11px;">
+              {{'Sales.Titles.trustReceive' | translate}} &nbsp;&nbsp;
+              <i class="la la-print"></i>
+            </a>
+          </div>
+        </div>
+      </form>
+
+      <!-------------------------------------- Documents -------------------------------------->
+      <div class="row mx-0 px-0">
+        <div class="col-12 tableHeader">
+          <label class="form-control-label py-3 mb-0">{{'Sales.Fields.Documents' | translate}}</label>
+
+        </div>
+
+        <div class="col-12 tableBody py-2" *ngIf="dataItems">
+          <div class="m-portlet__body box-shadow py-0 px-0">
+            <p-table [value]="dataItems" [paginator]="true" [rows]="10" [autoLayout]="true" [responsive]="true"
+              [columns]="cols" [(contextMenuSelection)]="selectedItem" [(selection)]="selectedItems"
+              (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnSelect($event)"
+              (onHeaderCheckboxToggle)="onHeaderCheckboxToggle($event)" dataKey="DocumentId" class="full-width">
+              <!--[loading]="progressSpinner"-->
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th *ngFor="let col of cols" [pSortableColumn]="col.field" [hidden]="col.hidden">
+                    {{ col.header | translate }}
+                    <p-sortIcon [field]="col.field" *ngIf="col.field !== 'ActionButtons'"></p-sortIcon>
+                  </th>
+                  <!-- <th>
+                    {{'Sales.Fields.ReceivingDone' | translate}}
+                    <p-tableHeaderCheckbox [disabled]="pageMode !== pageModes.Edit"> </p-tableHeaderCheckbox>
+                  </th> -->
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-dataItem let-columns="columns" let-index="rowIndex">
+                <!--let-rowIndex="rowIndex"-->
+                <tr [pContextMenuRow]="dataItem">
+                  <!--[pSelectableRow]="dataItem"  [pSelectableRowIndex]="rowIndex"-->
+                  <td *ngFor="let col of columns" [hidden]="col.hidden">
+                    <!--begin::Handle ActionButtons & Data Fields-->
+                    <ng-container *ngIf="
+                        col.field === 'ActionButtons';
+                        then render_action_buttons;
+                        else render_data_field
+                      "></ng-container>
+                    <ng-template #render_action_buttons>
+                      <span class="d-flex"> </span>
+                    </ng-template>
+                    <ng-template #render_data_field>
+                      <!--begin::Handle IsMandatory-->
+                      <ng-container *ngIf="
+                          col.field === 'IsMandatory';
+                          then handle_inactive_field;
+                          else handle_other_field
+                        ">
+                      </ng-container>
+                      <ng-template #handle_inactive_field>
+                        <span>
+                          {{ dataItem[col.field] ? ('App.Fields.IsMandatory' | translate) : ('App.Fields.NotMandatory' |
+                          translate) }}
+                        </span>
+                      </ng-template>
+                      <ng-template #handle_other_field>
+                        <ng-container *ngIf="col.field === 'Attachment' then attachment  else handle_other_datafield ">
+                        </ng-container>
+                        <ng-template #attachment>
+
+
+                          <app-attachment-uploader [readOnly]="pageMode==pageModes.ViewOnly
+                            ||(pageMode==pageModes.EditLimted&&dataItems[index]['IsMandatory'])"
+                            [downloadName]="'('+dataItem['DocumentName'] + ')'"
+                            [(ngModel)]='dataItems[index]["Attachment"]' [fileId]='dataItems[index]["AttachmentId"]'>
+                          </app-attachment-uploader>
+
+                        </ng-template>
+                        <ng-template #handle_other_datafield>
+                          {{ !col.pipe ? dataItem[col.field] : col.pipe === 'date' ? (dataItem[col.field] | date:
+                          col.pipeFormat) : dataItem[col.field]
+                          }}
+                        </ng-template>
+
+                      </ng-template>
+                      <!--end::Handle IsMandatory-->
+                    </ng-template>
+                    <!--end::Handle ActionButtons & Data Fields-->
+                  </td>
+                 
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage" let-columns>
+                <tr *ngIf="!progressSpinner">
+                  <td [attr.colspan]="columns?.length" class="empty-grid-table">
+                    <span class="emp-msg">
+                      {{ 'App.Fields.NoData' | translate }}
+                    </span>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+            <!-- <p-contextMenu #cm [model]="menuItems"></p-contextMenu> -->
+          </div>
+        </div>
+      </div>
+
+      <!-------------------------------------- Mandatory Documents -------------------------------------->
+      <div class="row mx-0 px-0" *ngIf="!viewModel?.EditMandatoryFields && !progressSpinner">
+        <div class="col-12 tableHeader">
+          <label class="form-control-label py-3 mb-0">{{'Sales.Titles.MandatoryDocument' | translate}}</label>
+
+        </div>
+
+        <div class="col-12 tableBody py-2" *ngIf="mandatoryDataItems">
+          <div class="box-shadow py-0 px-0">
+            <p-table [value]="mandatoryDataItems" [paginator]="true" [rows]="10" [autoLayout]="true" [responsive]="true"
+              [columns]="mandatoryCols" class="full-width">
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th *ngFor="let col of mandatoryCols" [pSortableColumn]="col.field" [hidden]="col.hidden">
+                    {{ col.header | translate }}
+                    <p-sortIcon [field]="col.field" *ngIf="col.field !== 'ActionButtons'"></p-sortIcon>
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-dataItem let-columns="columns">
+                <tr>
+                  <td *ngFor="let col of columns" [hidden]="col.hidden">
+                    <ng-container *ngIf="
+                        col.field === 'IsReceived';
+                        then handle_boolean_field;
+                        else handle_other_field
+                      ">
+                    </ng-container>
+                    <ng-template #handle_boolean_field>
+                      <span>
+                        {{ dataItem[col.field] ? ('Sales.Fields.ReceivingDone' | translate) :
+                        ('Sales.Fields.NotReceived' | translate) }}
+                      </span>
+                    </ng-template>
+                    <ng-template #handle_other_field>
+                      {{ dataItem[col.field] }}
+                    </ng-template>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage" let-columns>
+                <tr *ngIf="!progressSpinner">
+                  <td [attr.colspan]="columns?.length" class="empty-grid-table">
+                    <span class="emp-msg">
+                      {{ 'App.Fields.NoData' | translate }}
+                    </span>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+
+      </div>
+      <!-- footer  -->
+      <div *ngIf="pageMode===pageModes.Edit ||  pageMode===pageModes.EditLimted"
+        class="col-12 m-form__actions m-form__actions ml-lg-auto text-center p-3 bg-white">
+        <button class="btn btn-save-cancel mb-1 btn-brand" (click)="save()" [disabled]="disableControl">
+          {{'App.Buttons.Save' | translate}}</button>&nbsp;&nbsp;
+        <button [routerLink]="['/sales/list-contracts']" class="btn btn-save-cancel mb-1 btn-secondary" type="button">
+          {{'App.Buttons.Cancel' | translate}}
+        </button>
+
+      </div>
+      <div *ngIf="pageMode===pageModes.ViewOnly"
+        class="col-12 m-form__actions m-form__actions ml-lg-auto text-center p-3 bg-white">
+
+        <button [routerLink]="['/sales/list-contracts']" class="btn btn-save-cancel mb-1 btn-secondary" type="button">
+          {{'App.Buttons.Close' | translate}}
+        </button>
+
+      </div>
+      <!--end::Form-->
+    </div>
+  </div>
+</div>
+<!-- Progress Spinner -->
+<app-shared-progress-spinner *ngIf="progressSpinner"></app-shared-progress-spinner>
+<div class="custom-bottom-aside-modal modal fade" id="reportModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <app-report-model-viewer></app-report-model-viewer>
+</div>

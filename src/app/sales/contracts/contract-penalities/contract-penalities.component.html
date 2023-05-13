@@ -1,0 +1,67 @@
+<div class="col-12 tableHeader ">
+  <label class="form-control-label py-3 mb-0">{{'Sales.Titles.Penalites' | translate}}</label>
+</div>
+<!--begin::Form-->
+<form [formGroup]="form" autocomplete="off">
+  <div class="tableBody mx-0 px-0 py-2" formArrayName="penalities">
+
+    <ng-container *ngFor="let penality of penalities let i = index">
+      <!-- Checkbox -->
+      <div class="col-12 m--align-left">
+        <label class="m-checkbox m-checkbox--focus">
+          <input type="checkbox" name="agree" [checked]="penality.Checked"
+            (change)="selectPenality(penality.PenalityFields, !penality.Checked)">{{penality?.Name}}
+          <span></span>
+        </label>
+        <span class="m-form__help"></span>
+      </div>
+      <div class="row mx-0">
+        <ng-container *ngFor="let penalityField of penality?.PenalityFields let j = index">
+          <div class="col-lg-4 col-md-6 col-12" [formGroupName]="penalityField.Index">
+            <input type="text" formControlName="PenalityFieldId" [(ngModel)]="penalityField.Id" hidden>
+            <div class="form-group m-form__group row mx-0 pt-1 px-0">
+              <div class="col-12 px-0">
+                <label class="form-control-label" for="contractNumberRef">{{penalityField?.Name}}</label>
+                <!-- <span class="required" *ngIf="penalityField.Id !== '0013' || penalityField.Id !== '0016'">*</span> -->
+              </div>
+              <div class="col-12 px-0">
+                <input class="form-control" id="contractNumberRef" [placeholder]="penalityField?.Name" type="text"
+                  formControlName="Value" [readOnly]="penalityField.IsCalculated" (input)="calculate(penalityField)"
+                  [ngClass]="{
+                              'is-invalid': (form.get('penalities').get(penalityField.Index.toString()).get('Value').touched
+                                         || form.get('penalities').get(penalityField.Index.toString()).get('Value').dirty)
+                                         && form.get('penalities').get(penalityField.Index.toString()).get('Value').errors
+                            }" style="height: 32px;" />
+                <div class="invalid-feedback"
+                  *ngIf="form.get('penalities').get(penalityField.Index.toString()).get('Value').errors?.required">
+                  {{'App.Fields.RequiredField' | translate}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+    <div class="m-form__seperator m-form__seperator&#45;&#45;dashed m-form__seperator&#45;&#45;space-2x"></div>
+  </div>
+
+  <!-- <div class="m-portlet__foot m-portlet__foot--fit">
+      <div class="m-form__actions m-form__actions p-3">
+        <div class="row">
+          <div class="col-lg-12 ml-lg-auto text-center">
+            <button class="btn   btn-save-cancel mb-1 btn-brand" type="submit">
+              {{'App.Buttons.Save' | translate}}</button>&nbsp;&nbsp;
+            <button [routerLink]="['/sales/list-contracts']" class="btn   btn-save-cancel mb-1 btn-secondary"
+              type="button">
+              {{'App.Buttons.Cancel' | translate}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+</form>
+
+<!--end::Form-->
+<!-- </div> -->
+<!-- Progress Spinner -->

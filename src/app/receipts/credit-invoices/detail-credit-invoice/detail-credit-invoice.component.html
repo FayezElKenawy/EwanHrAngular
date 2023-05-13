@@ -1,0 +1,236 @@
+<div class="details py-0" *authorization="{actionName:'receipts-credit-invoices-details',pageLevel:true}">
+  <div class="m-portlet m-0">
+    <!-- BEGIN: Subheader -->
+
+    <div class="m-portlet__head">
+      <div class="m-portlet__head-caption">
+        <div class="m-portlet__head-title">
+          <h6 class="m-portlet__head-text">
+            <a routerLink="/individual/receipts/credit-invoices" class="back-icon">
+              <i class="fa fa-arrow-alt-circle-right"></i>
+            </a> {{ 'Receipts.Titles.CreditInvoicesListPage' | translate}}
+          </h6>
+        </div>
+      </div>
+    </div>
+    <div class="m-portlet__body">
+      <div class="row mx-0 px-0">
+        <!---------------------------- تفاصيل الفاتوره --------------------->
+        <div class="col-12 tableHeader">
+          <label class="form-control-label py-3">{{ 'Receipts.Titles.CreditInvoicesDetailsPage' | translate}}</label>
+        </div>
+        <div class="tableBody col-12 py-2">
+          <div class="row mx-0 details-card">
+
+            <!-- رقم الفاتورة -->
+            <div class="details-label">
+              <span>{{ 'Receipts.Fields.InvoiceId' | translate}}</span>
+            </div>
+            <div class="details-value">
+              <span>{{ viewModel?.Id }}</span>
+            </div>
+
+            <div class="details-label">
+              <span>{{ 'Receipts.Fields.SegmentsInvoiceId' | translate}}</span>
+            </div>
+            <div class="details-value">
+              <span>{{ viewModel?.DebitReceivableId }}</span>
+            </div>
+
+            <!-- تاريخ الفاتورة -->
+            <div class="details-label">
+              <span>{{ 'Receipts.Fields.InvoiceDate' | translate}}</span>
+            </div>
+            <div dir="ltr" class="details-value">
+              <span>{{ viewModel?.DocumentDate | date:'yyyy-MM-dd HH:mm:ss' }}</span>
+            </div>
+
+            <!-- عدد ايام الفاتورة -->
+            <div class="details-label">
+              <span>{{ 'Receipts.Fields.InvoiceDays' | translate}}</span>
+            </div>
+            <div class="details-value">
+              <span>{{ viewModel?.NoDays }}</span>
+            </div>
+            <!-- الرقم المرجعي -->
+            <div class="details-label">
+              <span>{{ 'Receipts.Fields.InvoiceRefNumber' | translate}}</span>
+            </div>
+            <div class="details-value">
+              <span>{{ viewModel?.RefNumber }}</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!---------------------------- بيانات العميل --------------------->
+        <div class="col-12 tableHeader">
+          <label class="form-control-label py-3">{{ 'Receipts.Titles.CreditInvoicesCustomerData' | translate}} </label>
+        </div>
+
+        <div class="tableBody col-12 py-2">
+          <div class="row mx-0 details-card">
+
+            <!-- رقم العميل -->
+            <div class="details-label">
+              <span>{{ 'Receipts.Fields.CustomerId' | translate}}</span>
+            </div>
+            <div class="details-value">
+              <span>{{ viewModel?.SegmentsCustomerId }}</span>
+            </div>
+
+            <!-- اسم العميل -->
+            <div class="details-label">
+              <span>{{ 'Receipts.Fields.CustomerName' | translate}}</span>
+            </div>
+            <div class="details-value">
+              <span>{{ viewModel?.CustomerName }}</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!---------------------------- بيانات العقد --------------------->
+        <div class="col-12 tableHeader">
+          <label class="form-control-label py-3">{{ 'Receipts.Titles.CreditInvoicesContractData' | translate}} </label>
+        </div>
+        <div class="tableBody col-12 py-2">
+          <div class="row mx-0 details-card">
+            <!-- رقم العقد -->
+            <div class="details-label">
+              <span>{{ 'Receipts.Fields.ContractId' | translate}}</span>
+            </div>
+            <div class="details-value">
+              <span>{{ viewModel?.ContractId }}</span>
+            </div>
+
+            <div class="details-label">
+              <span>{{ 'Sales.Fields.SegmentsContractId' | translate}}</span>
+            </div>
+            <div class="details-value">
+              <span>{{ viewModel?.SegmentContractId }}</span>
+            </div>
+
+            <!-- المنطقة -->
+            <div class="details-label">
+              <span>{{ 'App.Fields.Area' | translate}}</span>
+            </div>
+            <div class="details-value">
+              <span>{{ viewModel?.ContractAreaName }}</span>
+            </div>
+
+            <!-- الفرع -->
+            <div class="details-label">
+              <span>{{ 'App.Fields.Branch' | translate}}</span>
+            </div>
+            <div class="details-value">
+              <span>{{ viewModel?.ContractBranchName }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!---------------------------- البنود --------------------->
+        <div class="col-12 tableHeader">
+          <label class="form-control-label py-3"> {{ 'Receipts.Titles.CreditInvoicesItemsData' | translate}} </label>
+        </div>
+        <div class="tableBody col-12 py-2">
+          <div class="row mx-0 mb-1 box-shadow custom-details-card">
+            <p-table [columns]="Cols" [value]="viewModel?.DebitReceivableElement" [paginator]="true" [rows]="5"
+              [totalRecords]="viewModel?.DebitReceivableElement?.length" [autoLayout]="true" [responsive]="true"
+              class="full-width  ">
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th *ngFor="let col of columns" [pSortableColumn]="col.field" [hidden]="col.Hidden">
+                    {{ col.header | translate }}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr [pSelectableRow]="rowData">
+                  <td *ngFor="let col of columns" [hidden]="col.Hidden">
+                    <ng-container *ngIf="
+                        col.field === ' ActionButtons'; then render_action_buttons; else render_data_field ">
+                    </ng-container>
+                    <ng-template #render_action_buttons>
+                      <a class=" m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only
+                        m-btn--pill" title="{{ 'App.Fields.Delete' | translate }}">
+                        <i class="flaticon-delete"></i>
+                      </a>
+                    </ng-template>
+                    <ng-template #render_data_field>
+                      {{ (col.pipe === 'percentage')?(rowData[col.field]/100 | percent: '1.0-3') : rowData[col.field] }}
+                    </ng-template>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage" let-columns>
+                <tr>
+                  <td [attr.colspan]="columns?.length" class="empty-grid-table">
+                    <span class="emp-msg">
+                      {{ 'App.Fields.NoData' | translate }}
+                    </span>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+
+          </div>
+          <div class="row details-card py-2 mx-0 px-0">
+
+            <!-- اجمالي البنود -->
+            <div class="details-label">
+              <span>{{ 'Receipts.Fields.AllItems' | translate}}</span>
+            </div>
+            <div class="details-value">
+              <span>{{ viewModel?.NetValue | currency:' ' }}</span>
+            </div>
+
+            <!-- قيمة الخصم -->
+            <div class="details-label">
+              <span>{{ 'Receipts.Fields.DiscountValue' | translate}}</span>
+            </div>
+            <div class="details-value">
+              <span>{{ viewModel?.DiscountAmount | currency:' ' }}</span>
+            </div>
+
+            <!-- قيمة الخصم -->
+            <div class="details-label">
+              <span>{{ 'Receipts.Fields.InvoiceAfterDiscount' | translate}}</span>
+            </div>
+            <div class="details-value">
+              <span>{{ viewModel?.NetValueAfterDiscount | currency:' ' }}</span>
+            </div>
+
+            <!-- قيمة الضرائب -->
+            <div class="details-label">
+              <span>{{ 'Receipts.Fields.TaxesValue' | translate}}</span>
+            </div>
+            <div class="details-value">
+              <span>{{ viewModel?.TaxAmount | currency:' ' }}</span>
+            </div>
+
+            <!-- قيمة الفاتورة بعد الضريبة -->
+            <div class="details-label">
+              <span>{{ 'Receipts.Fields.InvoiceAfterTax' | translate}}</span>
+            </div>
+            <div class="details-value">
+              <span>{{ viewModel?.NetValueAfterTax | currency:' ' }}</span>
+            </div>
+
+            <!-- قيمة المسدد -->
+            <div class="details-label">
+              <span>{{ 'Receipts.Fields.InvoiceGetPaid' | translate}}</span>
+            </div>
+            <div class="details-value">
+              <span>{{ viewModel?.TotalPaid | currency:' ' }}</span>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-shared-progress-spinner *ngIf="progressSpinner"></app-shared-progress-spinner>

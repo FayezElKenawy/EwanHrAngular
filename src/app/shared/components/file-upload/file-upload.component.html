@@ -1,0 +1,94 @@
+<div class="col-12 card">
+  <div class="row">
+    <div class="col-lg-2 col-12 py-2">
+      <label for="uploader-input" ng2FileDrop [ngClass]="{ 'nv-file-over': hasBaseDropZoneOver }"
+        (fileOver)="fileOverBase($event)" [uploader]="uploader" class="mb-0 bg-faded my-drop-zone">
+        <i class="fa fa-upload fa-2x cursor-pointer"></i>
+      </label>
+      <input type="file" ng2FileSelect [uploader]="uploader" id="uploader-input" style="display:none" multiple />
+    </div>
+    <div class="col-lg-10 col-12 mb-3" *ngIf="uploader?.queue?.length">
+      <div class="row my-2" *ngFor="let item of uploader.queue">
+        <div class="col-lg-1 col-12">الاسم :</div>
+        <div class="col-lg-4 col-12">{{ item?.file?.name }}</div>
+        <div class="col-lg-1 col-12">الحجم :</div>
+        <div class="col-lg-2 col-12" *ngIf="uploader.options.isHTML5" nowrap>
+          {{ item?.file?.size / 1024 / 1024 | number: '.2' }} MB</div>
+        <div class="col-lg-1 col-12">الحالة :</div>
+        <div class="col-lg-2 col-12">
+          <i *ngIf="item.isSuccess" class="fas fa-check"></i>
+          <i *ngIf="item.isCancel" class="fas fa-ban"></i>
+          <i *ngIf="item.isError" class="fas fa-trash-alt"></i>
+        </div>
+      </div>
+      <!-- <table class="table">
+        <thead>
+          <tr>
+            <th width="50%">Name</th>
+            <th>Size</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of uploader.queue">
+            <td>
+              <strong>{{ item?.file?.name }}</strong>
+            </td>
+            <td *ngIf="uploader.options.isHTML5" nowrap>
+              {{ item?.file?.size / 1024 / 1024 | number: '.2' }} MB
+            </td>
+            <td class="text-center">
+              <i *ngIf="item.isSuccess" class="fas fa-check"></i>
+              <i *ngIf="item.isCancel" class="fas fa-ban"></i>
+              <i *ngIf="item.isError" class="fas fa-trash-alt"></i>
+            </td>
+            <td nowrap>
+                <button
+                  type="button"
+                  class="btn btn-success btn-xs"
+                  (click)="item.upload()"
+                  [disabled]="item.isReady || item.isUploading || item.isSuccess"
+                >
+                  <span class="glyphicon glyphicon-upload"></span> Upload
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-warning btn-xs"
+                  (click)="item.cancel()"
+                  [disabled]="!item.isUploading"
+                >
+                  <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger btn-xs"
+                  (click)="item.remove()"
+                >
+                  <span class="glyphicon glyphicon-trash"></span> Remove
+                </button>
+              </td>
+          </tr>
+        </tbody>
+      </table> -->
+      <div>
+        <div>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" [ngStyle]="{ width: uploader.progress + '%' }"></div>
+          </div>
+        </div>
+        <button type="button" class="btn add-icon mt-2 mr-2" style="font-size: 1rem;" (click)="uploader.uploadAll()"
+          [disabled]="!uploader.getNotUploadedItems().length">
+          <span class="la la-upload" title="Upload"></span>
+        </button>
+        <button type="button" class="btn add-icon mt-2 mr-2" style="font-size: 1rem;" (click)="uploader.cancelAll()"
+          [disabled]="!uploader.isUploading">
+          <span class="la la-close" title="Cancel"></span>
+        </button>
+        <button type="button" class="btn add-icon mt-2 mr-2" style="font-size: 1rem;" (click)="uploader.clearQueue()"
+          [disabled]="!uploader.queue.length">
+          <span class="la la-trash-o" title="Delete"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

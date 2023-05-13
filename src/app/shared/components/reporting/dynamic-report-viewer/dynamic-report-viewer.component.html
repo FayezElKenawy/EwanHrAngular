@@ -1,0 +1,82 @@
+<form [formGroup]="form" autocomplete="off" (ngSubmit)="OnSubmitForm()">
+  <!-- <div class="m-portlet__body"> -->
+  <div class="mx-0 px-0 pt-2" formArrayName="filters">
+
+    <div class="card border-0 mb-3 box-shadow">
+      <div class="card-body py-0">
+        <div class="row">
+          <ng-container *ngFor="let field of filterFields let i = index">
+            <div class="col-lg-3 col-md-6 col-12" [formGroupName]="i" *ngIf="!field.hidden">
+              <div class="form-group m-form__group row mx-0 pt-1 px-0">
+                <div class="col-12 px-0">
+                  <label class="form-control-label">{{field?.title | translate}}</label>
+                  <!-- <span class="required" *ngIf="field.Id !== '0013' || field.Id !== '0016'">*</span> -->
+                </div>
+                <div class="col-12 px-0">
+                  <!-- text -->
+                  <input *ngIf="field.type === fieldTypesEnum.Text" class="form-control" type="text"
+                    formControlName="value" style="height: 32px;" />
+                  <!-- number -->
+                  <input *ngIf="field.type === fieldTypesEnum.Number" class="form-control" type="number"
+                    formControlName="value" style="height: 32px;" />
+
+                  <!-- calender -->
+                  <p-calendar *ngIf="field.type === fieldTypesEnum.Date"
+                    class="form-control calendar-form-control  p-0  p-0" inputId="dateField#{{i}}"
+                    [monthNavigator]="true" [yearNavigator]="true" yearRange="1990:2030" formControlName="value"
+                    dateFormat="dd/mm/yy">
+                  </p-calendar>
+
+                  <!-- select List -->
+                  <select
+                    *ngIf="field.type === fieldTypesEnum.DropDown && filterFields[i].selectFieldProps && filterFields[i].selectFieldProps.selectList"
+                    id="ddlField#{{i}}" class="form-control" formControlName="value">
+                    <option selected value="">{{'App.Fields.All' | translate}}
+                    </option>
+                    <option *ngFor="let item of filterFields[i].selectFieldProps.selectList"
+                      [value]="item[filterFields[i].selectFieldProps.key]">
+                      {{item[filterFields[i].selectFieldProps.value]}}
+                    </option>
+                  </select>
+                  <!-- autoComplete -->
+                  <p-autoComplete *ngIf="field.type === fieldTypesEnum.AutoComplete" class="p-0 form-control"
+                    field="{{filterFields[i].selectFieldProps.value}}"
+                    [delay]="filterFields[i].selectFieldProps.apiSingleCalling===true?0:1500"
+                    [suggestions]="filterFields[i].selectFieldProps.selectList" formControlName="value"
+                    (completeMethod)="completeMethod($event,filterFields[i])" [size]="30" [minLength]="1"
+                    [dropdown]="true">
+                    <ng-template let-item pTemplate="item">
+                      <div class="ui-helper-clearfix">
+                        <div>
+                          {{item[filterFields[i].selectFieldProps.value]}}
+                        </div>
+                      </div>
+                    </ng-template>
+                  </p-autoComplete>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <div class="card-footer d-flex  bg-white">
+        <div class="p-1 m-auto text-center">
+          <button type="submit" class="btn btn-save-cancel btn-brand  mx-1">
+
+            {{ 'App.Buttons.ShowReport' | translate }}
+          </button>
+          <button (click)="resetForm()" type="button" class="btn btn-save-cancel btn-secondary mx-1">
+            {{ 'App.Buttons.Reset' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+</form>
+
+<app-report-viewer [hidden]="!showReport" [sorting]="sorting" [reportId]="reportId" [params]="params" [paging]="paging">
+</app-report-viewer>
+<app-shared-progress-spinner *ngIf="progressSpinner"></app-shared-progress-spinner>

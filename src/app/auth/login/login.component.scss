@@ -1,0 +1,13 @@
+.invalid-feedback {
+  font-size: 100% !important;
+  line-height: 0px;
+  margin-right: 5px;
+}
+
+.is-invalid {
+  border-color: white !important;
+}
+
+::ng-deep .ui-progress-spinner {
+  margin-left: 50%;
+}

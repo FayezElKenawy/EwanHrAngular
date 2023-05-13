@@ -1,0 +1,432 @@
+<div class="m-portlet m-portlet--mobile" *authorization="{actionName:'sales-contract-list',pageLevel:true}">
+  <!-- BEGIN: Subheader -->
+  <div class="m-portlet__head m-subheader d-flex align-items-center">
+    <div class="mr-auto">
+      <h3 class="m-subheader__title p-0">{{'Sales.Titles.Contracts' | translate}}</h3>
+    </div>
+    <div>
+      <!-- <button
+        [routerLink]="['/sales/create-contract']"
+        type="button"
+        class="btn btn-brand btn-cons"
+      >
+        أضف عقد جديد
+      </button> -->
+    </div>
+  </div>
+  <!-- END: Subheader -->
+  <form [formGroup]="searchForm" (ngSubmit)="_dynamicSearchService.search(searchForm,searchModel, getData.bind(this))">
+
+    <div class="m-portlet__body">
+      <div class="row mx-0 box-shadow">
+        <div class="m_datatable list w-100 ">
+          <p-table [value]="dataItems" [scrollable]="true" frozenWidth="6.5%" class="w-100" [paginator]="true"
+            [totalRecords]="pagingMetaData?.TotalItemCount" [first]="pagingMetaData?.FirstItemOnPage"
+            [rows]="pagingMetaData?.PageSize" [autoLayout]="true" [responsive]="true" [loading]="progressSpinner"
+            [columns]="cols" [(contextMenuSelection)]="selectedItem" [lazy]="true"
+            (onLazyLoad)="_dynamicSearchService.lazy($event, searchModel, getData.bind(this))"
+            [rowsPerPageOptions]="[10, 20, 30]">
+            <!-- <ng-template pTemplate="colgroup" let-columns>
+              <colgroup>
+                <col *ngFor="let col of columns" style="width:150px">
+              </colgroup>
+            </ng-template> -->
+            <ng-template pTemplate="frozenbody" let-dataItem>
+              <tr>
+                <td>
+                  <span class="d-flex justify-content-center">
+                    <span class="d-flex">
+                      <div class="dropdown">
+                        <a href="#" class="btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill"
+                          data-toggle="dropdown" aria-expanded="true">
+                          <i class="la la-ellipsis-v"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                          <a *authorization="'sales-contract-details'" class="dropdown-item"
+                            title="{{'App.Buttons.Details' | translate}}"
+                            (click)="showContractDetails(dataItem['Id'])">
+                            <!-- <i class="flaticon-list-2"></i> -->
+                            {{'App.Buttons.Details' | translate}}
+                          </a>
+                          <ng-container *authorization="'sales-contract-document-reciept'">
+                            <a class="dropdown-item" [routerLink]="['/sales/contract-attachments/',dataItem['Id']]"
+                              *ngIf="toggleActionButtonVisibility(dataItem['Actions'],',can-view-attachment,')">
+                              <!-- <i class="la la-file"></i> -->
+                              {{'Sales.Buttons.DocumentView' | translate}}
+                            </a>
+                          </ng-container>
+
+                          <ng-container *authorization="'sales-contract-holded-reactivate'">
+                            <a *ngIf="dataItem['ContractStatusId'] == 7 &&
+                             toggleActionButtonVisibility(dataItem['Actions'],',reactivate-holded-contract,')" class="dropdown-item"
+                             (click)="reactivateContractDialog(dataItem['Id'],'Sales.Messages.DoYouWantRevertHoldingContract')">
+                              {{'Sales.Buttons.ReactivateHoldedContract' | translate}}
+                            </a>
+                          </ng-container>
+
+                          <ng-container *authorization="'sales-contract-stopped-reactivate'">
+                            <a *ngIf="dataItem['ContractStatusId'] == 5 &&
+                             toggleActionButtonVisibility(dataItem['Actions'],',reactivate-stopped-contract,')" class="dropdown-item"
+                             (click)="reactivateContractDialog(dataItem['Id'],'Sales.Messages.DoYouWantRevertStoppingContract')">
+                              {{'Sales.Buttons.ReactivateStoppedContract' | translate}}
+                            </a>
+                          </ng-container>
+
+                          <ng-container *authorization="'sales-contract-under-replacement-reactivate'">
+                            <a *ngIf="dataItem['ContractStatusId'] == 10 &&
+                             toggleActionButtonVisibility(dataItem['Actions'],',reactivate-under-replacement-contract,')" class="dropdown-item"
+                             (click)="reactivateContractDialog(dataItem['Id'],'Sales.Messages.DoYouWantRevertReplacingContract')">
+                              {{'Sales.Buttons.ReactivateUnderReplacementContract' | translate}}
+                            </a>
+                          </ng-container>
+                          <ng-container *authorization="'sales-contract-cancel-continuing-from-holding'">
+                            <a *ngIf="dataItem['ContractStatusId'] == 9 &&
+                                      toggleActionButtonVisibility(dataItem['Actions'],',holding-from-continuing-contract,')" class="dropdown-item"
+                             (click)="reactivateContractDialog(dataItem['Id'],'Sales.Messages.DoYouWantRevertHoldingFromContinuing')">
+                              {{'Sales.Buttons.RevertContinuingContract' | translate}}
+                            </a>
+                          </ng-container>
+                          <ng-container *authorization="'sales-contract-under-activation-cancellation'">
+                            <a *ngIf="dataItem['ContractStatusId'] == 1 &&
+                             toggleActionButtonVisibility(dataItem['Actions'],',cancel-under-activation-contract,')" class="dropdown-item"
+                             (click)="reactivateContractDialog(dataItem['Id'],'Sales.Messages.DoYouWantCancelContract')">
+                              {{'Sales.Buttons.CancelContract' | translate}}
+                            </a>
+                          </ng-container>
+                          <ng-container *ngIf="!toggleActionButtonVisibility(dataItem['Actions'], 'no-action,')">
+                            <ng-container *authorization="'sales-contract-document-edit'">
+                              <a class="dropdown-item" title="{{'App.Buttons.Edit' | translate}}"
+                                (click)="editDataItem(dataItem['Id'])" *ngIf="
+                                  toggleActionButtonVisibility(
+                                    dataItem['Actions'],
+                                    'edit-contract,'
+                                  )">
+                                <!-- <i class="la la-edit"></i> -->
+                                {{'App.Buttons.Edit' | translate}}
+                              </a>
+                            </ng-container>
+
+                            <ng-container *authorization="'sales-contract-down-payment'">
+                              <a class="dropdown-item" data-toggle="modal" data-target="#createDownpaymentReceiptModal"
+                                (click)="createDownpaymentReceipt(dataItem['Id'])" *ngIf="
+                                    toggleActionButtonVisibility(dataItem['Actions'],'create-downpayment-receipt,')">
+                                <!-- <i class="la la-money"></i> -->
+                                {{'Sales.Buttons.DownPayment' | translate}}
+                              </a>
+                            </ng-container>
+
+                            <ng-container *authorization="'sales-contract-document-reciept'">
+                              <a class="dropdown-item" [routerLink]="['/sales/contract-attachments/',dataItem['Id']]"
+                                *ngIf=" dataItem['LaborerFileId'] != null
+                                  &&(toggleActionButtonVisibility(dataItem['Actions'],'attach-contract-documents,')
+                                  ||  toggleActionButtonVisibility(dataItem['Actions'],'attach-contract-documents-limited,'))">
+                                <!-- <i class="la la-file"></i> -->
+                                {{'Sales.Buttons.DocumentReciept' | translate}}
+                              </a>
+                            </ng-container>
+
+                            <ng-container *authorization="'sales-contract-contract-extention'">
+                              <a class="dropdown-item"
+                                [routerLink]="['/sales/create-contract-extention/', dataItem['Id']]" *ngIf="(dataItem['TerminationReasonId'] == '001' || dataItem['TerminationReasonId'] == '004' ) &&
+                                         (dataItem['ContractExtentionId'] == null || dataItem['ContractExtentionId'] === '') &&
+                                           dataItem['ContractStatusId'] == 6 && dataItem['RemainingDays'] > 0 ">
+                                <!-- <i class="la la-file"></i> -->
+                                {{'Sales.Buttons.ContractExtention' | translate}}
+                              </a>
+                            </ng-container>
+                            <!--<a class="dropdown-item" href="#" *ngIf="toggleActionButtonVisibility(dataItem['Actions'],'suspend-contract,')">-->
+                            <!--<i class="la la-pause"></i>-->
+                            <!--إيقاف العقد-->
+                            <!--</a>-->
+                            <ng-container *authorization="'sales-contract-terminate'">
+                              <a class="dropdown-item" data-toggle="modal" data-target="#terminateContract"
+                                (click)="ShowTerminateContractModal(dataItem)" *ngIf="
+                              toggleActionButtonVisibility(
+                                dataItem['Actions'],
+                                'terminate-contract,'
+                              )">
+
+                                {{'Sales.Buttons.EndContract' | translate}}
+                              </a>
+
+                            </ng-container>
+
+                            <ng-container *authorization="'sales-contract-holding'">
+                              <a class="dropdown-item" data-toggle="modal" data-target="#holdContract"
+                                (click)="ShowHoldContractModal(dataItem)" *ngIf="
+                                  toggleActionButtonVisibility(
+                                    dataItem['Actions'],
+                                    'contract-hold,'
+                                  )">
+
+                                {{'Sales.Buttons.HoldContract' | translate}}
+                              </a>
+
+                            </ng-container>
+
+                            <ng-container *authorization="'sales-holded-contract-terminate'">
+                              <a class="dropdown-item"
+                                (click)="terminateHoldedContract(dataItem)" *ngIf="
+                                  toggleActionButtonVisibility(
+                                    dataItem['Actions'],
+                                    'contract-hold-reactivate,'
+                                  )">
+
+                                  {{'Sales.Buttons.EndContract' | translate}}
+                              </a>
+
+                            </ng-container>
+
+                            <ng-container *authorization="'sales-contract-reactivate'">
+                              <a class="dropdown-item" data-toggle="modal" data-target="#re-activaite-holding"
+                                (click)="getLaborReactivateHolding(dataItem)" *ngIf="
+                                  toggleActionButtonVisibility(
+                                    dataItem['Actions'],
+                                    'contract-hold-reactivate,'
+                                  )">
+
+                                {{'Sales.Buttons.ReactivateContract' | translate}}
+                              </a>
+
+                            </ng-container>
+
+                            <ng-container *authorization="'sales-contract-labor-replacement'">
+                              <a class="dropdown-item" data-toggle="modal" data-target="#replacmentModal"
+                                (click)="getLaborReplacement(dataItem)" *ngIf="
+                              toggleActionButtonVisibility(
+                                dataItem['Actions'],
+                                'terminate-contract,'
+                              )">
+
+                                {{'Sales.Buttons.LaborReplacment' | translate}}
+                              </a>
+
+                            </ng-container>
+
+                            <ng-container *authorization="'sales-contract-print'">
+                              <a *ngIf="toggleActionButtonVisibility(dataItem['Actions'], 'print-contract,') && dataItem.SegmentContractId && !dataItem?.SegmentContractId.includes('--')"
+                                data-toggle="modal" data-target="#reportModal" class="dropdown-item"
+                                title="{{'Sales.Buttons.PrintContract' | translate}}"
+                                (click)="showReport('7', 'Sales.Titles.PrintContract', dataItem.SegmentContractId)">
+                                {{'Sales.Buttons.PrintContract' | translate}}
+                              </a>
+                            </ng-container>
+
+                            <!-- <ng-container *authorization="'sales-contract-print-client-account-statement'">
+                              <a *ngIf="toggleActionButtonVisibility(dataItem['Actions'], 'print-contract,')
+                               && dataItem['ContractStatusId']==6"
+                                data-toggle="modal" data-target="#reportModal" class="dropdown-item"
+                                title="{{'Sales.Buttons.PrintClientAccountStatement' | translate}}"
+                                (click)="showClientAccountStatementReport(dataItem.Id)">
+                                {{'Sales.Buttons.PrintClientAccountStatement' | translate}}
+                              </a>
+                            </ng-container> -->
+
+                            <ng-container *authorization="'sales-contract-print-transfer-of-sponsorship'">
+
+                              <a *ngIf="toggleActionButtonVisibility(dataItem['Actions'], 'print-contract,') && dataItem.SegmentContractId && !dataItem?.SegmentContractId.includes('--')"
+                                data-toggle="modal" data-target="#reportModal" class="dropdown-item"
+                                title="{{'Sales.Buttons.PrintContractNaqlkafala' | translate}}"
+                                (click)="showReport('18','Sales.Titles.PrintContractNaqlkafala',dataItem.SegmentContractId)">
+                                {{'Sales.Buttons.PrintContractNaqlkafala' | translate}}
+                              </a>
+                            </ng-container>
+
+                            <ng-container *authorization="'sales-contract-print-terminate-of-sponsorship'">
+
+                              <a *ngIf="toggleActionButtonVisibility(dataItem['Actions'], ',print-terminated-contract,') && dataItem.SegmentContractId && !dataItem?.SegmentContractId.includes('--')"
+                                data-toggle="modal" data-target="#reportModal" class="dropdown-item"
+                                title="{{'Sales.Buttons.PrintContractTerminateForSponsorship' | translate}}"
+                                (click)="showContractTerminateReport(dataItem.SegmentContractId, 'عقد تأجير عمالة منتهي بنقل كفالة')">
+                                {{'Sales.Buttons.PrintContractTerminateForSponsorship' | translate}}
+                              </a>
+                            </ng-container>
+
+                            <ng-container *authorization="'sales-contract-print-terminate-of-sponsorship'">
+
+                              <a *ngIf="toggleActionButtonVisibility(dataItem['Actions'], ',print-terminated-contract,') && dataItem.SegmentContractId && !dataItem?.SegmentContractId.includes('--')"
+                                data-toggle="modal" data-target="#reportModal" class="dropdown-item"
+                                title="{{'Sales.Buttons.PrintContractTerminateForSponsorship' | translate}}"
+                                (click)="showContractTerminateReport(dataItem.SegmentContractId, 'عقد تأجير عمالة')">
+                                {{'Sales.Buttons.PrintContractTerminate' | translate}}
+                              </a>
+                            </ng-container>
+                            <ng-container *authorization="'sales-contract-document-edit'">
+                              <a *ngIf="toggleActionButtonVisibility(dataItem['Actions'],',assign-labor,') && dataItem['LaborerFileId'] == null"
+                                (click)="assignLaborer(dataItem)"
+                               class="dropdown-item">
+                                {{ 'Sales.Buttons.AssignLabor' | translate }}
+                              </a>
+                            </ng-container>
+                          </ng-container>
+                        </div>
+                      </div>
+                    </span>
+                  </span>
+                </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="frozenheader">
+              <tr class="frozeheader">
+                <th>{{'App.Fields.Actions' | translate}}</th>
+              </tr>
+              <tr class="frozeheader">
+                <th>
+                  <div class="grid-buttons ">
+                    <button type="submit" class="btn btn-brand" title="search in gride">
+                      <i class="la la-search"></i>
+                    </button>
+                    <button title="reset" (click)="_dynamicSearchService.reset(searchForm, cols, getData.bind(this))"
+                      class="btn btn-secondary">
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                </th>
+              </tr>
+
+            </ng-template>
+
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of cols" [pSortableColumn]="col.field" [hidden]="col.hidden">
+                  {{ col.header | translate }}
+                  <p-sortIcon [field]="col.field" *ngIf="col.field !== 'ActionButtons'"></p-sortIcon>
+                </th>
+              </tr>
+              <!-- search caractria -->
+              <tr id="searchRow" formArrayName="SearchFields">
+                <th *ngFor="let col of cols let i = index" [ngSwitch]="col.field" [hidden]="col.hidden">
+                  <div [formGroupName]="i" *ngIf="col.searchable && !col.hidden" class="grid-search">
+                    <ng-container *ngIf="col.searchType == 'text'">
+
+                      <input formControlName="FieldName" type="text" class="form-control" [value]="col.field" hidden>
+                      <input formControlName="Value" type="text" class="form-control">
+                      <select formControlName="Operator" class="form-control">
+                        <option *ngFor="let item of operators" [value]="item">
+                          {{'App.SearchOperations.' + item | translate}}
+                        </option>
+                      </select>
+                    </ng-container>
+                    <ng-container *ngIf="col.searchType == 'date'">
+
+                      <input formControlName="FieldName" type="text" class="form-control" [value]="col.field" hidden>
+                      <input formControlName="Value" type="date" class="form-control">
+                      <select formControlName="Operator" class="form-control">
+                        <option *ngFor="let item of operators" [value]="item">
+                          {{'App.SearchOperations.' + item | translate}}
+                        </option>
+                      </select>
+                    </ng-container>
+
+                  </div>
+
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-dataItem let-columns="columns">
+              <tr [pSelectableRow]="dataItem" [pContextMenuRow]="dataItem">
+                <td *ngFor="let col of columns" [hidden]="col.hidden">
+                  <!--begin::Handle ActionButtons & Data Fields-->
+                  <ng-container *ngIf="
+                  col.field === 'ActionButtons';
+                  then render_action_buttons;
+                  else render_data_field
+                 "></ng-container>
+                  <!-- ref.children[1].children!=0 -->
+                  <ng-template #render_action_buttons>
+
+                  </ng-template>
+                  <ng-template #render_data_field>
+                    <!--begin::Handle IsInActive-->
+                    <ng-container *ngIf="
+                    col.field === 'IsInactive';
+                    then handle_inactive_field;
+                    else handle_other_field
+                  ">
+                    </ng-container>
+                    <ng-template #handle_inactive_field>
+                      <span class="m-badge status" [ngClass]="{
+                      'm-badge--success': !dataItem[col.field],
+                      'm-badge--danger': dataItem[col.field]
+                    }">
+                        {{ dataItem[col.field] ? ('App.Fields.InActive' | translate) : ('App.Fields.Active' | translate
+                        )}}
+                      </span>
+                    </ng-template>
+                    <ng-template #handle_other_field>
+                      {{ !col.pipe ? dataItem[col.field] || '---' : col.pipe === 'date' ? (dataItem[col.field] | date:
+                      col.pipeFormat) : ( col.pipe === 'currency'? (dataItem[col.field] | currency:' ') :
+                      dataItem[col.field])
+                      }}
+                    </ng-template>
+                    <!--end::Handle IsInActive-->
+                  </ng-template>
+                  <!--end::Handle ActionButtons & Data Fields-->
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage" let-columns>
+              <tr *ngIf="!progressSpinner">
+                <td [attr.colspan]="columns?.length" class="empty-grid-table">
+                  <span class="emp-msg">
+                    {{ 'App.Fields.NoData' | translate }}
+                  </span>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <!-- <p-contextMenu #cm [model]="menuItems"></p-contextMenu> -->
+      </div>
+    </div>
+  </form>
+
+</div>
+
+<!--begin::Modal for createDownpaymentReceiptModal-->
+<div *authorization="'sales-contract-down-payment'" class="custom-bottom-aside-modal modal fade"
+  id="createDownpaymentReceiptModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <app-create-downpayment-receipt (Oncancel)="hideModal('createDownpaymentReceiptModal')"
+        (OnComplete)="hideModal('createDownpaymentReceiptModal'); getData()">
+      </app-create-downpayment-receipt>
+    </div>
+  </div>
+</div>
+<!--end::Modal for createDownpaymentReceiptModal-->
+
+
+<!--begin::Modal for receiveLaborerModal-->
+<div *authorization="'sales-contract-terminate'" class="custom-bottom-aside-modal modal fade" id="terminateContract"
+  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <app-terminate-contract (refresh)="refresh()"></app-terminate-contract>
+</div>
+<!--end::Modal for receiveLaborerModal-->
+
+<!-- Holding contract -->
+<div *authorization="'sales-contract-holding'" class="custom-bottom-aside-modal modal fade" id="holdContract"
+  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <app-hold-contract (refresh)="refresh()"></app-hold-contract>
+</div>
+<!-- Holding Contract End -->
+
+<div class="custom-bottom-aside-modal modal fade" id="reportModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <app-custom-report></app-custom-report>
+</div>
+<div class="custom-bottom-aside-modal modal fade" id="detailsModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" *ngIf="showDetails" aria-hidden="true">
+  <app-laborer-details></app-laborer-details>
+</div>
+
+<div *authorization="'sales-contract-labor-replacement'" class="custom-bottom-aside-modal modal fade" id="replacmentModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <app-labor-replacement   *ngIf="showReplacement" [id]="selectedContractId" [branchId]="branchId" [professionId]="selectedProfId" [nationalityId]="selectedNationalId" (saved)="closeReplacementModal($event)"></app-labor-replacement>
+</div>
+
+<div *authorization="'sales-contract-holding'" class="custom-bottom-aside-modal modal fade" id="re-activaite-holding" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <app-available-labors-for-holding   *ngIf="showHolding" [id]="selectedContractId" [branchId]="branchId" [professionId]="selectedProfId" [nationalityId]="selectedNationalId" (saved)="closeReActivateHoldingModal($event)"></app-available-labors-for-holding>
+</div>
