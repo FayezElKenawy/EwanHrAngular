@@ -6,6 +6,7 @@ import { Observable } from "rxjs";
 import { IServiceResult, IResultVM, IResult } from "@shared/interfaces/results";
 import { catchError } from "rxjs/operators";
 import { SearchModel } from "@shared/interfaces/search-model";
+import { PagedList } from "@shared/interfaces/paged-list";
 
 @Injectable({
   providedIn: "root",
@@ -20,10 +21,10 @@ export class CreditNoteService {
     private _globalService: GlobalService
   ) {}
 
-  getAll(searchModel: SearchModel): Observable<IResult> {
+  getAll(searchModel: SearchModel): Observable<PagedList> {
     searchModel.PageNumber=1;
      searchModel.PageSize=20;
-    return this._http.post(`${this.serviceUrl}/GetPagedList`, searchModel)
+    return this._http.post<PagedList>(`${this.serviceUrl}/GetPagedList`, searchModel)
   }
 
   getCreate(): Observable<IServiceResult> {
