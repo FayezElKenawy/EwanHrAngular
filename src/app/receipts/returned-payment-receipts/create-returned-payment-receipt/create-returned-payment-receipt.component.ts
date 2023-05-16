@@ -4,7 +4,7 @@ import { DatePipe } from "@angular/common";
 import { Router } from "@angular/router";
 import { ReturnPaymentReceiptService } from "../return-payment-receipt.service";
 import { IServiceResult } from "@shared/interfaces/results";
-import { ServiceRequestService } from "src/app/sales/requests-services/service-request.service";
+
 import { GlobalService, MessageType } from "@shared/services/global.service";
 import { AuthService } from "@shared/services/auth.service";
 @Component({
@@ -39,7 +39,6 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
     private _datePipe: DatePipe,
     private _router: Router,
     private _returnPaymentReceipt: ReturnPaymentReceiptService,
-    private _serviceRequestService: ServiceRequestService,
     private _authService: AuthService
   ) {
     this.settlements = [];
@@ -222,13 +221,13 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
 
   searchCustomers(event: any) {
     setTimeout(() => {
-      this._serviceRequestService
-        .SearchCustomer(event.query)
-        .subscribe((result: IServiceResult) => {
-          this.filteredArray = [];
-          this.filteredArray = result.data;
-        });
-    }, 1500);
+    //   this._serviceRequestService
+    //     .SearchCustomer(event.query)
+    //     .subscribe((result: IServiceResult) => {
+    //       this.filteredArray = [];
+    //       this.filteredArray = result.data;
+    //     });
+     }, 1500);
   }
 
   onSelectCustomer(event: any) {

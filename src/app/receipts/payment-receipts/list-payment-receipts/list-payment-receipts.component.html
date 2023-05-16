@@ -18,8 +18,8 @@
       <div class="row mx-0 box-shadow">
         <div class="m_datatable w-100 list ">
           <p-table #dt [value]="dataItems" [scrollable]="true" frozenWidth="6.5%" class="w-100" [paginator]="true"
-            [totalRecords]="pagingMetaData?.TotalItemCount" [first]="pagingMetaData?.FirstItemOnPage"
-            [rows]="pagingMetaData?.PageSize" [autoLayout]="true" [responsive]="true" [loading]="progressSpinner"
+            [totalRecords]="pagingMetaData?.totalCount" [first]="pagingMetaData?.pageNumber"
+            [rows]="pagingMetaData?.pageSize" [autoLayout]="true" [responsive]="true" [loading]="progressSpinner"
             [columns]="cols" [(contextMenuSelection)]="selectedItem" [lazy]="true"
             (onLazyLoad)="_dynamicSearchService.lazy($event, searchModel, getData.bind(this))"
             [rowsPerPageOptions]="[10, 20, 30]">
@@ -178,6 +178,14 @@
                             title="{{'App.Buttons.Edit' | translate}}" (click)="setId(dataItems['Id'])">
                             {{'App.Buttons.Edit' | translate}}
                           </a>
+                          <a *authorization="'receipts-payment-receipts-edit'" class="dropdown-item"
+                          title="{{'App.Buttons.Edit' | translate}}" (click)="setId(dataItems['Id'])">
+                          {{'App.Buttons.Edit' | translate}}
+                        </a>
+                        <a *authorization="'receipts-payment-receipts-edit'" class="dropdown-item"
+                        title="{{'App.Buttons.Edit' | translate}}" (click)="setId(dataItems['Id'])">
+                        {{'App.Buttons.Edit' | translate}}
+                      </a>
                           <!-- <span *ngIf="dataItems.CreditReceivableId && !dataItems.CreditReceivableId.includes('--')" >
                           <a *authorization="'receipts-payment-receipts-print'" data-toggle="modal"
                             data-target="#reportModal" class="dropdown-item" title="{{'App.Buttons.Print' | translate}}"

@@ -4,7 +4,6 @@ import { GlobalService, MessageType } from "@shared/services/global.service";
 import { DatePipe } from "@angular/common";
 import { Router, ActivatedRoute } from "@angular/router";
 import { PaymentReceiptService } from "../payment-receipt.service";
-import { ServiceRequestService } from "src/app/sales/requests-services/service-request.service";
 import { IServiceResult } from "@shared/interfaces/results";
 import { AuthService } from "@shared/services/auth.service";
 
@@ -43,7 +42,6 @@ export class EditPaymentReceiptComponent implements OnInit {
     private _router: Router,
     private _route: ActivatedRoute,
     private _paymentReceiptService: PaymentReceiptService,
-    private _serviceRequestService: ServiceRequestService,
     private _authService: AuthService
   ) {
     this.settlements = [];
@@ -251,7 +249,7 @@ export class EditPaymentReceiptComponent implements OnInit {
       postedViewModel.Id = this.viewModel.PaymentReceipt.Id;
       postedViewModel.CustomerId = postedViewModel.Customer.Id;
       postedViewModel.ContractId = postedViewModel.Contract.Id;
-      
+
       if (postedViewModel.CreditCardType) {
         postedViewModel.CreditCardTypeId = postedViewModel.CreditCardType.Id;
       }

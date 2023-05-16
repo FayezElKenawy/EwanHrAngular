@@ -10,8 +10,8 @@
     <div class=" m-portlet__body">
       <div class="row mx-0 m_datatable  list box-shadow">
         <!--// Hena El Grid System of Users-->
-        <p-table [value]="dataItems" [paginator]="true" [totalRecords]="pagingMetaData?.TotalItemCount"
-          [rows]="pagingMetaData?.PageSize" [first]="pagingMetaData?.FirstItemOnPage" [autoLayout]="true"
+        <p-table [value]="dataItems" [paginator]="true" [totalRecords]="pagingMetaData?.totalCount"
+          [rows]="pagingMetaData?.pageSize" [first]="pagingMetaData?.pageNumber" [autoLayout]="true"
           [responsive]="true" [loading]="progressSpinner" [columns]="cols" [(contextMenuSelection)]="selectedItem"
           [lazy]="true" (onLazyLoad)="_dynamicSearchService.lazy($event, searchModel, getData.bind(this))"
           [rowsPerPageOptions]="[10, 20, 30]" [scrollable]="true" frozenWidth="6.5%" class="w-100">

@@ -4,7 +4,7 @@ import { GlobalService, MessageType } from "@shared/services/global.service";
 import { DatePipe } from "@angular/common";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ReturnPaymentReceiptService } from "../return-payment-receipt.service";
-import { ServiceRequestService } from "src/app/sales/requests-services/service-request.service";
+
 import { IServiceResult } from "@shared/interfaces/results";
 @Component({
   selector: "app-edit-returned-payment-receipt",
@@ -38,7 +38,7 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
     private _router: Router,
     private _route: ActivatedRoute,
     private _returnPaymentReceiptService: ReturnPaymentReceiptService,
-    private _serviceRequestService: ServiceRequestService
+  
   ) {
     this.settlements = [];
   }
@@ -182,11 +182,11 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
     this.settlements.forEach((item) => {
       totalrefund += item.RefundAmount;
     });
-     
+
     if(this.form.controls.BankWithdrawAmount.value < 0){
       this._globalService.messageAlert(
         MessageType.Error,
-        "App.Fields.NumberShouldBePositive", 
+        "App.Fields.NumberShouldBePositive",
         true
       );
       return ;

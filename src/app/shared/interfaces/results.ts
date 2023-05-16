@@ -12,3 +12,9 @@ export interface IServiceResult {
   data?: any;
   failedReason?: string;
 }
+
+
+export interface IResult {
+  entities?: any;
+  pagingData?: any;
+}
