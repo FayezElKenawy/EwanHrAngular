@@ -12,7 +12,7 @@ import { SearchModel } from "@shared/interfaces/search-model";
 })
 export class CreditNoteService {
   //?api-version=1
-  serviceUrl = `https://localhost:5001/api/CreditNote`;
+  serviceUrl = `${environment.financeURL}/CreditNote`;
   customerUrl = `${environment.coreApiUrl}/MasterData/Customer`;
   ContractUrl = `${environment.individualSectorApiUrl}/Sales/Contract`;
   constructor(

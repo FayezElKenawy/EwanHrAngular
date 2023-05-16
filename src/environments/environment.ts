@@ -11,10 +11,10 @@ export const environment = {
   individualSectorURL: 'http://localhost:4300/',
   businessSectorURL: "http://localhost:4400/",
   houseLabourSectorUrl: "http://localhost:4600/",
-
+  financeURL:"https://localhost:5001/api",
   storagePath: 'http://localhost/BroaERP.Core.API/Uploading/File/Public',
   storagePhysicalPath: "C:\\inetpub\\BroaERP\\Developing\\UploadFolder\\",
-  
+
   mapKey: "AIzaSyCMk0rodttpnH6PaTd0O6l6lcZfbXzCc8Q",
   timeoutPeriod: 5 * 60 * 60                     // in seconds
 };
