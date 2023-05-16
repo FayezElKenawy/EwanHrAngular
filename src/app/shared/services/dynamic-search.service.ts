@@ -7,14 +7,16 @@ import { SearchModel } from '@shared/interfaces/search-model';
 })
 export class DynamicSearchService {
   operators: string[] = [
-    'GreaterThan',
-    'GreaterThanOrEqual',
-    'LessThan',
-    'LessThanOrEqual',
-    'Contain',
-    'NotContain',
-    'Equal',
-    'NotEqual'
+    'gt',
+    'gte',
+    'lt',
+    'lte',
+    'contain',
+    'notContain',
+    'equal',
+    'notEqual',
+    "startsWith",
+    "endsWith"
   ];
 
   constructor(private _formBuilder: FormBuilder) {}
@@ -47,20 +49,34 @@ export class DynamicSearchService {
     });
     const formarray = searchForm.get('searchFields') as FormArray;
     cols.forEach(element => {
+      debugger;
       if (element.searchType === 'select') {
         formarray.push(
           this._formBuilder.group({
-            FieldName: [element.searchField],
-            Operator: ['Contain'],
-            Value: ['']
+            fieldName: [element.searchField],
+            operator: ['contain'],
+            value: [''],
+            isLocalized : [false],
+            searchType : element.searchType
           })
         );
       } else {
+        let searchField ='';
+        if(element.customSearchField)
+        searchField = element.customSearchField 
+        else searchField = element.field;
+
+        let isLocalized = false;
+        if(element.isLocalized)
+        isLocalized = element.isLocalized;
+
         formarray.push(
           this._formBuilder.group({
-            FieldName: [element.field],
-            Operator: ['Contain'],
-            Value: ['']
+            fieldName: [searchField],
+            operator: ['contain'],
+            value: [''],
+            isLocalized : [isLocalized],
+            searchType : element.searchType
           })
         );
       }
@@ -76,7 +92,7 @@ export class DynamicSearchService {
         searchForm
           .get('searchFields')
           .get(index.toString())
-          .get('Value')
+          .get('value')
           .reset();
       }
     }

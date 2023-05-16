@@ -170,14 +170,16 @@
             "Ntification3": "إشعار 3"
         },
         "SearchOperations": {
-            "GreaterThan": "اكبر من",
-            "GreaterThanOrEqual": "أكبر من او يساوي",
-            "LessThan": "أقل من",
-            "LessThanOrEqual": "أقل من أو يساوي",
-            "Contain": "تحتوي",
-            "NotContain": "لا تحتوي",
-            "Equal": "يساوي",
-            "NotEqual": "لا يساوي"
+            "gt": "اكبر من",
+            "gte": "أكبر من او يساوي",
+            "lt": "أقل من",
+            "lte": "أقل من أو يساوي",
+            "contain": "تحتوي",
+            "notContain": "لا تحتوي",
+            "equal": "يساوي",
+            "notEqual": "لا يساوي",
+            "startsWith":"يبدأ ب",
+            "endsWith":"ينتهى ب"
         },
         "Assets": {
             "SecurityCard": "assets/images/ar/card3.png",

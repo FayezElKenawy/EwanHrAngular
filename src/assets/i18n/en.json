@@ -161,14 +161,16 @@
             "Confirm": "Confirm"
         },
         "SearchOperations": {
-            "GreaterThan": "Greater Than",
-            "GreaterThanOrEqual": "Greater Than Or Equal to",
-            "LessThan": "Less than",
-            "LessThanOrEqual": "Less than or equal to",
-            "Contain": "Contain",
-            "NotContain": "Does not contain",
-            "Equal": "Equal",
-            "NotEqual": "NotEqual"
+            "gt": "Greater Than",
+            "gte": "Greater Than Or Equal to",
+            "lt": "Less than",
+            "lte": "Less than or equal to",
+            "contain": "Contain",
+            "notContain": "Does not contain",
+            "equal": "Equal",
+            "notEqual": "Not Equal",
+            "startsWith":"Starts With",
+            "endsWith":"Ends With"
         },
         "Assets": {
             "SecurityCard": "assets/images/en/card3.png",

@@ -7,7 +7,7 @@ export class SearchModel {
 }
 
 export class SearchField {
-  FieldName: string;
-  Operator: string;
-  Value: string;
+  fieldName: string;
+  operator: string;
+  value: string;
 }

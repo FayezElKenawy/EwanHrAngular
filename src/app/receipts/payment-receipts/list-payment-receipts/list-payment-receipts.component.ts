@@ -9,6 +9,10 @@ import { DynamicSearchService } from '@shared/services/dynamic-search.service';
 import { ReportModelViewerComponent } from '@shared/components/report-model-viewer/report-model-viewer.component';
 import { AuthService } from '@shared/services/auth.service';
 import { PagedList } from '@shared/interfaces/paged-list';
+import { ColumnType } from '@shared/models/column-type.model';
+import { ColumnPipeType } from '@shared/enum/column-pipe.enum';
+import { ColumnPipeFormat } from '@shared/enum/columns-pipe-format.enum';
+import { SearchType } from '@shared/enum/searchType.enum';
 
 @Component({
   selector: 'app-list-payment-receipts',
@@ -19,7 +23,7 @@ export class ListPaymentReceiptsComponent implements OnInit {
   @ViewChild(ReportModelViewerComponent)
   reportchild: ReportModelViewerComponent;
   dataItems: any[];
-  cols: any;
+  cols: ColumnType[] = [];
   menuItems: MenuItem[];
   selectedItem: any;
   progressSpinner = true;
@@ -45,105 +49,70 @@ export class ListPaymentReceiptsComponent implements OnInit {
   createCols(){
     this.cols = [
       {
-        field: 'id',
-        header: 'Receipts.Fields.ReciptId',
-        hidden: true,
-      },
-      {
         field: 'code',
-        header: 'Receipts.Fields.ReciptId',
-        hidden: false,
-        searchable: true,
-        searchType: 'text',
+        header: 'Receipts.Fields.ReciptId'
       },
       {
         field: 'documentDate',
         header: 'Receipts.Fields.ReciptDate',
-        hidden: false,
-        pipe: 'date',
-        pipeFormat: 'yyyy-MM-dd',
-        searchable: true,
-        searchType: 'date',
+        searchType:SearchType.Date,
+        pipe: ColumnPipeType.Date,
+        pipeFormat: ColumnPipeFormat.DatePipeFormat,
       },
       {
         field: 'customerCode',
         header: 'Receipts.Fields.customerCode',
-        hidden: false,
-        searchable: true,
-        searchType: 'text',
+        customSearchField:"Customer.Code",
       },
       {
         field: 'customerName',
         header: 'Receipts.Fields.CustomerName',
-        hidden: false,
-        searchable: true,
-        searchType: 'text',
+        customSearchField:"Customer.Name",
+        isLocalized:true,
       },
       {
         field: 'entityCode',
         header: 'Receipts.Fields.ContractId',
-        hidden: false,
-        searchable: true,
-        searchType: 'text',
       },
       {
         field: 'bankName',
         header: 'Receipts.Fields.BankAccountName',
-        hidden: false,
-        searchable: true,
-        searchType: 'text',
+        customSearchField:"Bank.Name",
+        isLocalized:true,
       },
       {
         field: 'cashBoxName',
         header: 'Receipts.Fields.CashBoxName',
-        hidden: false,
-        searchable: true,
-        searchType: 'text',
+        customSearchField:"CashBox.Name",
+        isLocalized:true,
       },
       {
         field: 'creditCardTypeName',
         header: 'Receipts.Fields.CreditCardTypeName',
-        hidden: false,
-        searchable: true,
-        searchType: 'text',
+        customSearchField:"CreditCardType.Name",
+        isLocalized:true,
       },
       {
         field: 'branchName',
         header: 'App.Fields.Branch',
-        hidden: false,
-        searchable: true,
-        searchType: 'text',
+        customSearchField:"Branch.Name",
+        isLocalized:true,
       },
       {
         field: 'netValueAfterTax',
         header: 'Receipts.Fields.ReciptValue',
-        hidden: false,
-        searchable: true,
-        pipe: 'currency',
-        searchType: 'text',
       },
       {
         field: 'isDownPayment',
         header: 'Receipts.Fields.ReciptType',
-        hidden: false,
-        searchable: false,
-        searchType: 'text',
       },
       {
         field: 'tolalPaid',
         header: 'Receipts.Fields.InvoiceGetPaid',
-        hidden: false,
-        searchable: true,
-        pipe: 'currency',
-        searchType: 'text',
       },
       {
         field: 'totalRefund',
         header: 'Receipts.Fields.AllRetreived',
-        hidden: false,
-        searchable: true,
-        pipe: 'currency',
-        searchType: 'text',
       },
     ];
   }
