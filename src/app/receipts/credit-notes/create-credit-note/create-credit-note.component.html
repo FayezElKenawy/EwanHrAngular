@@ -178,15 +178,15 @@
                   <span class="required">*</span>
                 </div>
                 <div class="col-12 px-0">
-                  <p-autoComplete (onClear)="Clear()" class="p-0 form-control" field="FullName"
+                  <p-autoComplete (onClear)="Clear()" class="p-0 form-control" field="name"
                     [suggestions]="filteredArray" (onSelect)="onSelectItem($event)"
-                    (completeMethod)="filterArray($event, viewModel?.CostElements)" [forceSelection]="true" [size]="30"
+                    (completeMethod)="filterArray($event, AllCostElements,'name')" [forceSelection]="true" [size]="30"
                     [minLength]="1" placeholder="{{'Sales.Fields.CostElementSelect' | translate}}" [dropdown]="true"
                     [ngClass]="{'is-invalid': selected && !selectedItem}">
                     <ng-template let-CostElements pTemplate="item">
                       <div class="ui-helper-clearfix">
                         <div>
-                          {{ CostElements.FullName }}
+                          {{ CostElements.name }}
                         </div>
                       </div>
                     </ng-template>
@@ -344,9 +344,9 @@
                   <span class="required">*</span>
                 </div>
                 <div class="col-12 px-0">
-                  <p-autoComplete class="p-0 form-control" field="VoucherId" [suggestions]="filteredArray"
+                  <p-autoComplete class="p-0 form-control" field="voucherCode" [suggestions]="filteredArray"
                     [(ngModel)]="selectedVoucher" [ngModelOptions]="{ standalone: true }"
-                    (completeMethod)="filterArray($event, filteredVouchers,'VoucherId')" [forceSelection]="true"
+                    (completeMethod)="filterArray($event, filteredVouchers,'voucherCode')" [forceSelection]="true"
                     [size]="30" [minLength]="1" placeholder="{{ 'Receipts.Fields.ReciptName' | translate}}"
                     [dropdown]="true" [ngClass]="{
                                 'is-invalid': added && !selectedVoucher
@@ -354,7 +354,7 @@
                     <ng-template let-voucher pTemplate="item">
                       <div class="ui-helper-clearfix">
                         <div>
-                          {{ voucher.VoucherId }}
+                          {{ voucher.voucherCode }}
                         </div>
                       </div>
                     </ng-template>
@@ -537,7 +537,7 @@
             <div class="col-12" *ngIf="filteredVouchers">
               <div class="m-portlet__body box-shadow">
                 <p-table [columns]="vouchersCols" [value]="filteredVouchers" [(selection)]="selectedVoucher"
-                  dataKey="VoucherId" [paginator]="true" [rows]="4">
+                  dataKey="id" [paginator]="true" [rows]="4">
                   <ng-template pTemplate="header" let-columns>
                     <tr>
                       <th style="width: 3em"></th>

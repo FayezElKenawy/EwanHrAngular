@@ -27,6 +27,7 @@ export class CreateCreditNoteComponent implements OnInit {
   selectedItem: any;
   costElementCols: any[] = [];
   costElements: any[] = [];
+  AllCostElements:any[]=[];
   DebitNoteCostElements: any[] = [];
   NetVal: number;
   NetValAfterTax: number;
@@ -54,35 +55,34 @@ export class CreateCreditNoteComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
-    this.getCreatFormData();
-
+    this.getCostElements();
     this.vouchersCols = [
-      { field: "VoucherId", header: "App.Fields.DocumentId", hidden: false },
+      { field: "id", header: "App.Fields.DocumentId", hidden: false },
       {
-        field: "VoucherTypeId",
+        field: "voucherTypeId",
         header: "Receipts.Fields.DocumentType",
         hidden: true,
       },
       {
-        field: "VoucherTypeArabicName",
+        field: "voucherTypeName",
         header: "Receipts.Fields.DocumentType",
         hidden: false,
       },
       {
-        field: "NetValueAfterTax",
+        field: "netValueAfterTax",
         header: "Receipts.Fields.ReciptValue",
         hidden: false,
       },
       {
-        field: "CurrentBalance",
+        field: "currentBalance",
         header: "Receipts.Fields.CurrentBalance",
         hidden: false
       },
     ];
     this.costElementCols = [
-      { field: "Id", header: "Sales.Fields.CostElementId", hidden: false },
+      { field: "id", header: "Sales.Fields.CostElementId", hidden: false },
       {
-        field: "Name",
+        field: "name",
         header: "Sales.Fields.CostElementName",
         hidden: false,
       },
@@ -132,23 +132,14 @@ export class CreateCreditNoteComponent implements OnInit {
     ];
   }
 
-  getCreatFormData() {
-    this.progressSpinner = true;
 
-    this._creditNoteService.getCreate().subscribe((result: IServiceResult) => {
-      this.viewModel = result.data;
-      this.progressSpinner = false;
-
-      this.form
-        .get("DocumentDate")
-        .setValue(
-          new Date(this.viewModel.CurrentDate)
-        );
-
-        this.minDateValue = new Date(this.viewModel.MinSelectableDate);
-    });
+  getCostElements(){
+    this._creditNoteService.getCostElements().subscribe(
+      (res:any)=>{
+        this.AllCostElements=res;
+      }
+    )
   }
-
   createForm() {
     this.form = this._formBuilder.group({
       DocumentDate: ["", Validators.required],
@@ -160,12 +151,13 @@ export class CreateCreditNoteComponent implements OnInit {
   }
 
   onSelectVoucherType() {
+    debugger
     if(this.vouchers){
       this.filteredVouchers = this.vouchers.filter(
-        (v) => v.VoucherTypeId === this.voucherType
+        (v) => v.voucherTypeId === this.voucherType
       );
       this.selectedVoucher = undefined;
-    }  
+    }
   }
 
   createCreditNote() {
@@ -194,17 +186,18 @@ export class CreateCreditNoteComponent implements OnInit {
         );
         return;
       }
-      
+
       this.progressSpinner = true;
       const postedViewModel = Object.assign({}, this.form.value);
-      postedViewModel.CustomerId = postedViewModel.Customer.Id;
+      postedViewModel.CustomerId = 2;
       postedViewModel.ContractId = postedViewModel.Contract.Id;
-      postedViewModel.DocumentDate = this._datePipe.transform(
-        postedViewModel.DocumentDate
-      );
+      postedViewModel.DocumentDate ="2023-05-14T13:25:32.213Z";
       postedViewModel.PaymentsTransactions = this.settlements;
       postedViewModel.costElements = this.costElements;
       postedViewModel.NetValue = this.NetVal;
+      postedViewModel.EntityCode="10007";
+      postedViewModel.SectorTypeId="01-02"
+
       this._creditNoteService.create(postedViewModel).subscribe(
         (result: IServiceResult) => {
           if (result.isSuccess) {
@@ -260,38 +253,37 @@ export class CreateCreditNoteComponent implements OnInit {
     this.settlements = [];
     this.vouchers = [];
     this.selectedVoucher = undefined;
-    
+
     this._creditNoteService
       .getVouchers(event.Id)
-      .subscribe((result: IServiceResult) => {
+      .subscribe((result: any) => {
         this.progressSpinner = false;
-        this.vouchers = result.data;
-        
+        this.vouchers = result;
         this.onSelectVoucherType();
       });
   }
 
   addSettlement() {
-    debugger;
     this.added = true;
     if (this.selectedVoucher && this.paidValue > 0) {
       const settlement = {
-        Id: this.selectedVoucher.Id,
-        DebitReceivableIdFK: this.selectedVoucher.Id,
-        DebitReceivableId: this.selectedVoucher.VoucherId,
-        DebitReceivableTypeId: this.selectedVoucher.VoucherTypeId,
+        Id: this.selectedVoucher.id,
+        DebitReceivableIdFK: this.selectedVoucher.id,
+        DebitReceivableId: this.selectedVoucher.voucherCode,
+        DebitReceivableVoucherTypeId: this.selectedVoucher.voucherTypeId,
         PaidAmount: this.paidValue,
-        NetValueAfterTax: this.selectedVoucher.NetValueAfterTax,
-        VoucherTypeArabicName: this.selectedVoucher.VoucherTypeArabicName,
-        CurrentBalance: this.selectedVoucher.CurrentBalance,
-        CanBePay: this.selectedVoucher.CurrentBalance,
+        NetValueAfterTax: this.selectedVoucher.netValueAfterTax,
+        VoucherTypeArabicName: this.selectedVoucher.voucherTypeName,
+        CurrentBalance: this.selectedVoucher.currentBalance,
+        CanBePay: this.selectedVoucher.currentBalance,
       };
-
+      //settlement.DebitReceivableId=Number(settlement.DebitReceivableId);
+      settlement.DebitReceivableId=44;
       if (
         this.settlements.find(
           (e) =>
             e.Id === settlement.Id &&
-            e.DebitReceivableTypeId === settlement.DebitReceivableTypeId
+            e.DebitReceivableTypeId === settlement.DebitReceivableVoucherTypeId
         ) === undefined
       ) {
         if (this.selectedVoucher.CurrentBalance < settlement.PaidAmount) {
@@ -382,16 +374,18 @@ export class CreateCreditNoteComponent implements OnInit {
   }
 
   addCostElement() {
-     
+
     this.selected = true;
     if (this.Amount > 0 && this.selectedItem) {
       if (
-        this.costElements.find((e) => e.Id === this.selectedItem.Id) ===
+        this.costElements.find((e) => e.id === this.selectedItem.id) ===
         undefined
       ) {
         const costElement = Object.assign({}, this.selectedItem);
+        costElement.TaxRatio=this.selectedItem.tax.taxRatio;
         costElement.Amount = ((this.Amount * 100) / (100 + costElement.TaxRatio)).toFixed(4);
         costElement.TaxAmount = (this.Amount - costElement.Amount).toFixed(4);
+
         this.costElements.push(costElement);
         this.selected = false;
         this.calculateCreditNote();
@@ -411,7 +405,7 @@ export class CreateCreditNoteComponent implements OnInit {
   }
 
   calculateCreditNote() {
-     
+
     this.NetVal = Number(
       Number(this.costElements.reduce((sum, current) => sum + Number(current.Amount), 0)).toFixed(4)
     );
@@ -451,18 +445,17 @@ export class CreateCreditNoteComponent implements OnInit {
          number[1].length>=2){
         return false
       }
-    }   
+    }
     return true;
   }
 
   filterArray(event, arrayObject: any, ColName = "FullName") {
     this.filteredArray = [];
-
     if(arrayObject){
       for (let i = 0; i < arrayObject.length; i++) {
         const item = arrayObject[i];
         var itemFullName = item[ColName];
-  
+
         itemFullName = itemFullName.replace(/\s/g, "").toLowerCase();
         var queryString = event.query.replace(/\s/g, "").toLowerCase();
         if (itemFullName.indexOf(queryString) >= 0) {

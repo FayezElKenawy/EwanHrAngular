@@ -13,7 +13,7 @@ import { PagedList } from "@shared/interfaces/paged-list";
 })
 export class CreditNoteService {
   //?api-version=1
-  serviceUrl = `${environment.financeURL}/CreditNote`;
+  serviceUrl = `${environment.financeURL}`;
   customerUrl = `${environment.coreApiUrl}/MasterData/Customer`;
   ContractUrl = `${environment.individualSectorApiUrl}/Sales/Contract`;
   constructor(
@@ -24,7 +24,7 @@ export class CreditNoteService {
   getAll(searchModel: SearchModel): Observable<PagedList> {
     searchModel.PageNumber=1;
      searchModel.PageSize=20;
-    return this._http.post<PagedList>(`${this.serviceUrl}/GetPagedList`, searchModel)
+    return this._http.post<PagedList>(`${this.serviceUrl}/CreditNote/GetPagedList`, searchModel)
   }
 
   getCreate(): Observable<IServiceResult> {
@@ -52,108 +52,8 @@ export class CreditNoteService {
     });
   }
 
-  create(postedVM: any): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return Observable.create((observer) => {
-      this._http
-        .post(`${this.serviceUrl}/Create`, postedVM)
-        .pipe(catchError(this._globalService.errorHandler))
-        .subscribe(
-          (resultVM: IResultVM) => {
-            if (resultVM.IsSuccess) {
-              serviceResult.data = resultVM.Data;
-              this._globalService.messageAlert(
-                MessageType.Success,
-                this._globalService.translateWordByKey(
-                  "App.Messages.SavedSuccessfully"
-                )
-              );
-            } else {
-              if (resultVM.FailedReason === "missing-customer-id") {
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  this._globalService.translateWordByKey(
-                    "Receipts.Messages.CustomerNotExist"
-                  )
-                );
-              } else if (resultVM.FailedReason === "invalid-date") {
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  "App.Messages.DocumentDateIsInvalid",
-                  true
-                );
-              }else if (resultVM.FailedReason === "missing-contract-id") {
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  this._globalService.translateWordByKey(
-                    "Receipts.Messages.MissingContractId"
-                  )
-                );
-              } else if (resultVM.FailedReason === "invalid-netval") {
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  this._globalService.translateWordByKey(
-                    "Receipts.Messages.InvalidNetval"
-                  )
-                );
-              } else if (resultVM.FailedReason === "invalid-contract-id") {
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  this._globalService.translateWordByKey(
-                    "Receipts.Messages.MissingContractId"
-                  )
-                );
-              } else if (
-                resultVM.FailedReason === "netval-less-than-totalpaid"
-              ) {
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  this._globalService.translateWordByKey(
-                    "Receipts.Messages.NetvalLessThanTotalpaid"
-                  )
-                );
-              } else if (
-                resultVM.FailedReason === "current-balance-less-than-totalpaid"
-              ) {
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  this._globalService.translateWordByKey(
-                    "Receipts.Messages.CurrentBalanceLessThanTotalpaid" +
-                      resultVM.Data
-                  )
-                );
-              } else if (resultVM.FailedReason === "failed-in-segments") {
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  this._globalService.translateWordByKey(
-                    "App.Messages.FailedInSegments"
-                  )
-                );
-              } else if (resultVM.FailedReason === "period-no-not-exist") {
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  this._globalService.translateWordByKey(
-                    "App.Messages.NoPeriodInSegments"
-                  )
-                );
-              } else if(resultVM.Message){
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  resultVM.Message
-                );
-              }
-            }
-            serviceResult.isSuccess = resultVM.IsSuccess;
-            observer.next(serviceResult);
-            observer.complete();
-            return observer;
-          },
-          () => {
-            observer.complete();
-            return observer;
-          }
-        );
-    });
+  create(postedVM: any): Observable<any> {
+      return this._http.post(`${this.serviceUrl}/CreditNote/Create`, postedVM)
   }
 
   edit(postedVM: any): Observable<IServiceResult> {
@@ -276,29 +176,10 @@ export class CreditNoteService {
     });
   }
 
-  getVouchers(contractId: number): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return Observable.create((observer) => {
-      this._http
-        .get(`${this.serviceUrl}/GetVouchers?contractId=${contractId}`)
-        .pipe(catchError(this._globalService.errorHandler))
-        .subscribe(
-          (resultVM: IResultVM) => {
-            if (resultVM.IsSuccess) {
-              serviceResult.data = resultVM.Data;
-            } else {
-            }
-            serviceResult.isSuccess = resultVM.IsSuccess;
-            observer.next(serviceResult);
-            observer.complete();
-            return observer;
-          },
-          () => {
-            observer.complete();
-            return observer;
-          }
-        );
-    });
+  getVouchers(contractId: number): Observable<any> {
+
+    return this._http.get(`${this.serviceUrl}/Voucher/GetVouchersById?entityCode=EIS020002186007`);
+
   }
 
   getEdit(paymentId: string): Observable<IServiceResult> {
@@ -353,5 +234,9 @@ export class CreditNoteService {
           }
         );
     });
+  }
+
+  getCostElements():Observable<any>{
+    return this._http.get(`${this.serviceUrl}/v1/CostElement/GetSelectList`)
   }
 }
