@@ -10,6 +10,9 @@ import { ReportModelViewerComponent } from "@shared/components/report-model-view
 import { AuthService } from "@shared/services/auth.service";
 import { IResult } from "@shared/interfaces/results";
 import { PagedList } from "@shared/interfaces/paged-list";
+import { SearchType } from "@shared/enum/searchType.enum";
+import { ColumnPipeType } from "@shared/enum/column-pipe.enum";
+import { ColumnPipeFormat } from "@shared/enum/columns-pipe-format.enum";
 
 @Component({
   selector: "app-list-credit-notes",
@@ -37,44 +40,40 @@ export class ListCreditNotesComponent implements OnInit {
 
   ngOnInit() {
 
+    this.createCols()
+
+    // build form for search
+    this.searchForm = this._dynamicSearchService.buildSearchForm(this.cols);
+    this.operators = this._dynamicSearchService.operators;
+  }
+
+  createCols(){
     this.cols = [
-      // { field: 'ActionButtons', header: '', hidden: false, searchable: false },
       {
-        field: "creditReceivableId",
+        field: "code",
         header: "Receipts.Fields.CreditNoteId",
-        hidden: false,
-        searchable: true,
-        searchType: "text"
       },
       {
         field: "documentDate",
         header: "Receipts.Fields.CreditNoteDate",
-        hidden: false,
-        pipe: "date",
-        pipeFormat: "yyyy-MM-dd",
-        searchable: true,
-        searchType: "date"
+        searchType:SearchType.Date,
+        pipe: ColumnPipeType.Date,
+        pipeFormat: ColumnPipeFormat.DatePipeFormat,
       },
       {
-        field: "segmentsCustomerId",
-        header: "Receipts.Fields.SegmentsCustomerId",
-        hidden: false,
-        searchable: true,
-        searchType: "text"
+        field: 'customerCode',
+        header: 'Receipts.Fields.customerCode',
+        customSearchField:"Customer.Code",
       },
       {
         field: "customerFullName",
         header: "Receipts.Fields.CustomerName",
-        hidden: false,
-        searchable: true,
-        searchType: "text"
+        customSearchField:"Customer.Name",
+        isLocalized:true,
       },
       {
-        field: "segmentContractId",
-        header: "Receipts.Fields.ContractId",
-        hidden: false,
-        searchable: true,
-        searchType: "text"
+        field: 'entityCode',
+        header: 'Receipts.Fields.ContractId',
       },
       // {
       //   field: "CreatedBy",
@@ -86,39 +85,25 @@ export class ListCreditNotesComponent implements OnInit {
       {
         field: "branchName",
         header: "App.Fields.Branch",
-        hidden: false,
-        searchable: true,
-        searchType: "text"
+        customSearchField:"Bank.Name",
+        isLocalized:true,
       },
       {
         field: "netValueAfterTax",
         header: "Receipts.Fields.CreditNoteValue",
-        hidden: false,
-        pipe: "currency",
-        searchable: true,
-        searchType: "text"
+        pipe:ColumnPipeType.Currency,
       },
       {
         field: "tolalPaid",
         header: "Receipts.Fields.InvoiceGetPaid",
-        hidden: false,
-        pipe: "currency",
-        searchable: true,
-        searchType: "text"
+        pipe:ColumnPipeType.Currency,
       },
       {
         field: "otalRefund",
         header: "Receipts.Fields.AllRetreived",
-        hidden: false,
-        pipe: "currency",
-        searchable: true,
-        searchType: "text"
+        pipe:ColumnPipeType.Currency,
       }
     ];
-
-    // build form for search
-    this.searchForm = this._dynamicSearchService.buildSearchForm(this.cols);
-    this.operators = this._dynamicSearchService.operators;
   }
 
   setId(id: string) {

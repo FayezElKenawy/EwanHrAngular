@@ -26,7 +26,7 @@
                 <col *ngFor="let col of columns" style="width:150px">
               </colgroup>
             </ng-template> -->
-           
+
             <ng-template pTemplate="header" let-columns>
               <tr>
                 <th *ngFor="let col of cols" [pSortableColumn]="col.field" [hidden]="col.hidden">
@@ -38,30 +38,26 @@
               <!-- search caractria -->
               <tr id="searchRow" formArrayName="searchFields">
                 <th *ngFor="let col of cols let i = index" [ngSwitch]="col.field" [hidden]="col.hidden">
-                  <div [formGroupName]="i" *ngIf="col.searchable && !col.hidden" class="grid-search">
-                    <ng-container *ngIf="col.searchType == 'text'">
-
-                      <input formControlName="FieldName" type="text" class="form-control" [value]="col.field" hidden>
-                      <input formControlName="Value" type="text" class="form-control">
-                      <select formControlName="Operator" class="form-control">
+                  <div [formGroupName]="i" *ngIf="col.searchable != false && col.hidden != true" class="grid-search">
+                    <ng-container *ngIf="!col.searchType || col.searchType == 'text'">
+                      <input formControlName="fieldName" type="text" class="form-control" [value]="col.field" hidden>
+                      <input formControlName="value" type="text" class="form-control">
+                      <select formControlName="operator" class="form-control">
                         <option *ngFor="let item of operators" [value]="item">
                           {{'App.SearchOperations.' + item | translate}}
                         </option>
                       </select>
                     </ng-container>
                     <ng-container *ngIf="col.searchType == 'date'">
-
-                      <input formControlName="FieldName" type="text" class="form-control" [value]="col.field" hidden>
-                      <input formControlName="Value" type="date" class="form-control">
-                      <select formControlName="Operator" class="form-control">
+                      <input formControlName="fieldName" type="text" class="form-control" [value]="col.field" hidden>
+                      <input formControlName="value" type="date" class="form-control">
+                      <select formControlName="operator" class="form-control">
                         <option *ngFor="let item of operators" [value]="item">
                           {{'App.SearchOperations.' + item | translate}}
                         </option>
                       </select>
                     </ng-container>
-
                   </div>
-
                 </th>
                 <th pFrozenColumn class="left-frozen">
                   <div class="grid-buttons ">
