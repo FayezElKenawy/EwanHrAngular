@@ -26,62 +26,14 @@
                 <col *ngFor="let col of columns" style="width:150px">
               </colgroup>
             </ng-template> -->
-            <ng-template pTemplate="frozenbody" let-dataItems>
-              <tr>
-                <td>
-                  <span class="d-flex justify-content-center">
-                    <span class="d-inline-block">
-                      <div class="dropdown">
-                        <a href="#" class="btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill"
-                          data-toggle="dropdown" aria-expanded="true">
-                          <i class="la la-ellipsis-v"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                          <a *authorization="'IND-Receipts-Credit-Note-Details'" class="dropdown-item"
-                            title="{{'App.Buttons.Details' | translate}}" (click)="setId(dataItems['Id'])">
-                            {{'App.Buttons.Details' | translate}}
-                          </a>
-                          <span *ngIf="dataItems.CreditReceivableId && !dataItems.CreditReceivableId.includes('--')" >
-                          <a *authorization="'receipts-credit-notes-report'" class="dropdown-item"
-                            data-toggle="modal" data-target="#reportModal"
-                            title="{{'App.Buttons.Report' | translate}}" (click)="showReport(dataItems['CreditReceivableId'])">
-                            {{'App.Buttons.Print' | translate}}
-                          </a>
-                          </span>
-                        </div>
-                      </div>
-                    </span>
-                  </span>
-                </td>
-              </tr>
-            </ng-template>
-
-
-            <ng-template pTemplate="frozenheader">
-              <tr class="frozeheader">
-                <th>{{'App.Fields.Actions' | translate}}</th>
-              </tr>
-              <tr class="frozeheader">
-                <th>
-                  <div class="grid-buttons ">
-                    <button type="submit" class="btn btn-brand" title="search in gride">
-                      <i class="la la-search"></i>
-                    </button>
-                    <button title="reset" (click)="_dynamicSearchService.reset(searchForm, cols, getData.bind(this))"
-                      class="btn btn-secondary">
-                      <i class="fa fa-times"></i>
-                    </button>
-                  </div>
-                </th>
-              </tr>
-
-            </ng-template>
+           
             <ng-template pTemplate="header" let-columns>
               <tr>
                 <th *ngFor="let col of cols" [pSortableColumn]="col.field" [hidden]="col.hidden">
                   {{ col.header | translate }}
                   <p-sortIcon [field]="col.field" *ngIf="col.field !== 'ActionButtons'"></p-sortIcon>
                 </th>
+                <th pFrozenColumn class="left-frozen">{{'App.Fields.Actions' | translate}}</th>
               </tr>
               <!-- search caractria -->
               <tr id="searchRow" formArrayName="SearchFields">
@@ -111,6 +63,17 @@
                   </div>
 
                 </th>
+                <th pFrozenColumn class="left-frozen">
+                  <div class="grid-buttons ">
+                    <button type="submit" class="btn btn-brand" title="search in gride">
+                      <i class="la la-search"></i>
+                    </button>
+                    <button title="reset" (click)="_dynamicSearchService.reset(searchForm, cols, getData.bind(this))"
+                      class="btn btn-secondary">
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                </th>
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-dataItem let-columns="columns">
@@ -133,6 +96,40 @@
                     }}
                   </ng-template>
 
+                </td>
+                <td pFrozenColumn class="left-frozen">
+                  <span class="d-flex justify-content-center">
+                    <span class="d-inline-block">
+                      <div class="dropdown">
+                        <a href="#" class="btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill"
+                          data-toggle="dropdown" aria-expanded="true">
+                          <i class="la la-ellipsis-v"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                          <a *authorization="'receipts-payment-receipts-edit'" class="dropdown-item"
+                            title="{{'App.Buttons.Edit' | translate}}" (click)="setId(dataItems['Id'])">
+                            {{'App.Buttons.Edit' | translate}}
+                          </a>
+                          <a *authorization="'receipts-payment-receipts-edit'" class="dropdown-item"
+                          title="{{'App.Buttons.Edit' | translate}}" (click)="setId(dataItems['Id'])">
+                          {{'App.Buttons.Edit' | translate}}
+                        </a>
+                        <a *authorization="'receipts-payment-receipts-edit'" class="dropdown-item"
+                        title="{{'App.Buttons.Edit' | translate}}" (click)="setId(dataItems['Id'])">
+                        {{'App.Buttons.Edit' | translate}}
+                      </a>
+                          <!-- <span *ngIf="dataItems.CreditReceivableId && !dataItems.CreditReceivableId.includes('--')" >
+                          <a *authorization="'receipts-payment-receipts-print'" data-toggle="modal"
+                            data-target="#reportModal" class="dropdown-item" title="{{'App.Buttons.Print' | translate}}"
+                            (click)="showReport(dataItems.CreditReceivableId)">
+                            {{'App.Buttons.Print' | translate}}
+                          </a>
+                          </span> -->
+                        </div>
+
+                      </div>
+                    </span>
+                  </span>
                 </td>
               </tr>
             </ng-template>
