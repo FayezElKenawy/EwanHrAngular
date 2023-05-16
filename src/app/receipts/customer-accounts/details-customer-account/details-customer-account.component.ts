@@ -3,7 +3,6 @@ import { CustomerAccountService } from "../customer-account.service";
 import { DatePipe } from "@angular/common";
 import { ActivatedRoute } from "@angular/router";
 import { IServiceResult } from "@shared/interfaces/results";
-import { ContractService } from "src/app/sales/contracts/contract.service";
 import { GlobalService } from "@shared/services/global.service";
 import { CustomReportComponent } from "@shared/components/reporting/custom-report/custom-report.component";
 import { Operators } from "@shared/models/Operators";
@@ -34,7 +33,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
 
   constructor(
     private _customerAccountService: CustomerAccountService,
-    private contractService: ContractService,
+
     private _globalService: GlobalService,
 
     private _datePipe: DatePipe,
@@ -88,7 +87,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
         hidden: false,
       },
     ];
-    
+
     this.creditCols = [
       {
         field: "CreditReceivableId",
@@ -171,18 +170,18 @@ export class DetailsCustomerAccountComponent implements OnInit {
 
   getCustomerContracts() {
     this.progressSpinner = true;
-    this.contractService
-      .getCustomerContracts(this.customerId)
-      .subscribe((result: IServiceResult) => {
-        debugger;
-        this.progressSpinner = false;
-        this.filteredArray = [];
-        this.filteredArray = result.data;
-        this.filteredArray.unshift({ Id: "All",SegmentId:'All' });
+    // this.contractService
+    //   .getCustomerContracts(this.customerId)
+    //   .subscribe((result: IServiceResult) => {
+    //     debugger;
+    //     this.progressSpinner = false;
+    //     this.filteredArray = [];
+    //     this.filteredArray = result.data;
+    //     this.filteredArray.unshift({ Id: "All",SegmentId:'All' });
 
-        this.selectedContract = { Id: "الكل",SegmentId:'الكل' };
-        this.contracts = result.data;
-      });
+    //     this.selectedContract = { Id: "الكل",SegmentId:'الكل' };
+    //     this.contracts = result.data;
+    //   });
   }
 
   filterArray(event, arrayObject: any, ColName = "FullName") {
@@ -377,7 +376,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
       this.selectedContract.SegmentId === "All" || this.selectedContract.SegmentId === "الكل"
         ? ""
         : `رقم العقد : (${this.selectedContract.SegmentId})`;
-    return `عميلنا العزيز / ${this.customerData.Name} 
+    return `عميلنا العزيز / ${this.customerData.Name}
     لديك فواتير لم تسدد بعد، يُرجى سداد المبلغ المستحق
     ${contId}
     مبلغ المديونية: ( ${this.viewModel.CustomerAccount.CurrentBalance} ريال)
@@ -394,7 +393,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
         ? ""
         : `رقم العقد : (${this.selectedContract.SegmentId})`;
 
-    return `عزيزى العميل / ${this.customerData.Name} 
+    return `عزيزى العميل / ${this.customerData.Name}
     لديك فاتورة مستحقة متأخرة لم يتم سدادها ، فضلاً سداد المبلغ فى مدة اقصاها ثلاثة ايام تجنباً لتحويل العقد لقسم الشؤون القانونية
     ${contId}
     مبلغ المديونية: ( ${this.viewModel.CustomerAccount.CurrentBalance} ريال)
@@ -410,7 +409,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
       this.selectedContract.SegmentId === "All" || this.selectedContract.SegmentId === "الكل"
         ? ""
         : `رقم العقد : (${this.selectedContract.SegmentId})`;
-    return `عزيزى العميل / ${this.customerData.Name} 
+    return `عزيزى العميل / ${this.customerData.Name}
     لديك فاتورة مستحقة متأخرة لم يتم سدادها ، فضلاً سداد المبلغ فى مدة أقصاها 48 ساعة تجنباً لإتخاذ الإجراءات القانونية
     ${contId}
     مبلغ المديونية: ( ${this.viewModel.CustomerAccount.CurrentBalance} ريال)
@@ -424,7 +423,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
   showClientAccountStatementReport(contractId) {
     debugger;
     let x =this.selectedContract;
-    
+
     this.report.filters = [
       {
         dataSourceName: "Ds1",
@@ -445,7 +444,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
     ];
     this.report.reportId = "24";
     this.report.reportName = "Sales.Titles.PrintClientAccountStatement";
-    
+
     this.report.showReport();
   }
 }

@@ -8,6 +8,7 @@ import { SearchModel } from "@shared/interfaces/search-model";
 import { DynamicSearchService } from "@shared/services/dynamic-search.service";
 import { ReportModelViewerComponent } from "@shared/components/report-model-viewer/report-model-viewer.component";
 import { AuthService } from "@shared/services/auth.service";
+import { IResult } from "@shared/interfaces/results";
 
 @Component({
   selector: "app-list-credit-notes",
@@ -34,17 +35,18 @@ export class ListCreditNotesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
     this.cols = [
       // { field: 'ActionButtons', header: '', hidden: false, searchable: false },
       {
-        field: "CreditReceivableId",
+        field: "creditReceivableId",
         header: "Receipts.Fields.CreditNoteId",
         hidden: false,
         searchable: true,
         searchType: "text"
       },
       {
-        field: "DocumentDate",
+        field: "documentDate",
         header: "Receipts.Fields.CreditNoteDate",
         hidden: false,
         pipe: "date",
@@ -53,21 +55,21 @@ export class ListCreditNotesComponent implements OnInit {
         searchType: "date"
       },
       {
-        field: "SegmentsCustomerId",
+        field: "segmentsCustomerId",
         header: "Receipts.Fields.SegmentsCustomerId",
         hidden: false,
         searchable: true,
         searchType: "text"
       },
       {
-        field: "CustomerFullName",
+        field: "customerFullName",
         header: "Receipts.Fields.CustomerName",
         hidden: false,
         searchable: true,
         searchType: "text"
       },
       {
-        field: "SegmentContractId",
+        field: "segmentContractId",
         header: "Receipts.Fields.ContractId",
         hidden: false,
         searchable: true,
@@ -81,14 +83,14 @@ export class ListCreditNotesComponent implements OnInit {
       //   searchType: "text"
       // },
       {
-        field: "BranchName",
+        field: "branchName",
         header: "App.Fields.Branch",
         hidden: false,
         searchable: true,
         searchType: "text"
       },
       {
-        field: "NetValueAfterTax",
+        field: "netValueAfterTax",
         header: "Receipts.Fields.CreditNoteValue",
         hidden: false,
         pipe: "currency",
@@ -96,7 +98,7 @@ export class ListCreditNotesComponent implements OnInit {
         searchType: "text"
       },
       {
-        field: "TolalPaid",
+        field: "tolalPaid",
         header: "Receipts.Fields.InvoiceGetPaid",
         hidden: false,
         pipe: "currency",
@@ -104,7 +106,7 @@ export class ListCreditNotesComponent implements OnInit {
         searchType: "text"
       },
       {
-        field: "TotalRefund",
+        field: "otalRefund",
         header: "Receipts.Fields.AllRetreived",
         hidden: false,
         pipe: "currency",
@@ -125,11 +127,10 @@ export class ListCreditNotesComponent implements OnInit {
   getData() {
     this.progressSpinner = true;
     this._creditNotService.getAll(this.searchModel).subscribe(
-      result => {
-        if (result.isSuccess) {
-          this.dataItems = result.data.CreditNotes;
-          this.pagingMetaData = result.data.PagingMetaData;
-        }
+      (result) => {
+        debugger
+          this.dataItems = result.entities;
+          this.pagingMetaData = result.pagingData;
       },
       () => (this.progressSpinner = false),
       () => (this.progressSpinner = false)

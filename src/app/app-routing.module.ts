@@ -19,11 +19,11 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
   },
-  {
-    path: 'sales',
-    canActivateChild: [AuthGuard],
-    loadChildren: () => import('./sales/sales.module').then(m => m.SalesModule)
-  },
+  // {
+  //   // path: 'sales',
+  //   // canActivateChild: [AuthGuard],
+  //   // loadChildren: () => import('./sales/sales.module').then(m => m.SalesModule)
+  // },
   {
     path: 'individual/receipts',
     canActivateChild: [AuthGuard],

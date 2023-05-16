@@ -16,11 +16,11 @@
     <div class="m-portlet__body">
       <div class="row mx-0 m_datatable box-shadow">
         <div class="m_datatable w-100 list ">
-          <p-table #dt [value]="dataItems" [paginator]="true" [totalRecords]="pagingMetaData?.TotalItemCount"
-            [rows]="pagingMetaData?.PageSize" [first]="pagingMetaData?.FirstItemOnPage" [autoLayout]="true"
-            [responsive]="true" [loading]="progressSpinner" [columns]="cols" [(contextMenuSelection)]="selectedItem"
-            [lazy]="true" (onLazyLoad)="_dynamicSearchService.lazy($event, searchModel, getData.bind(this))"
-            [rowsPerPageOptions]="[10, 20, 30]" [scrollable]="true" frozenWidth="6.5%" class="w-100">
+          <p-table #dt [value]="dataItems" [paginator]="true" [totalRecords]="pagingMetaData?.totalCount"
+          [rows]="pagingMetaData?.pageSize" [first]="pagingMetaData?.pageNumber" [autoLayout]="true"
+          [responsive]="true" [loading]="progressSpinner" [columns]="cols" [(contextMenuSelection)]="selectedItem"
+          [lazy]="true" (onLazyLoad)="_dynamicSearchService.lazy($event, searchModel, getData.bind(this))"
+          [rowsPerPageOptions]="[10, 20, 30]" [scrollable]="true" frozenWidth="6.5%" class="w-100">
             <!-- <ng-template pTemplate="colgroup" let-columns>
               <colgroup>
                 <col *ngFor="let col of columns" style="width:150px">
@@ -157,3 +157,5 @@
   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <app-report-model-viewer></app-report-model-viewer>
 </div>
+
+

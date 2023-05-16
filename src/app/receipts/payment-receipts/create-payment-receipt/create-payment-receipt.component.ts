@@ -4,7 +4,6 @@ import { DatePipe } from "@angular/common";
 import { Router } from "@angular/router";
 import { PaymentReceiptService } from "../payment-receipt.service";
 import { IServiceResult } from "@shared/interfaces/results";
-import { ServiceRequestService } from "src/app/sales/requests-services/service-request.service";
 import { GlobalService, MessageType } from "@shared/services/global.service";
 import { AuthService } from "@shared/services/auth.service";
 
@@ -41,7 +40,6 @@ export class CreatePaymentReceiptComponent implements OnInit {
     private _datePipe: DatePipe,
     private _router: Router,
     private _paymentReceipt: PaymentReceiptService,
-    private _serviceRequestService: ServiceRequestService,
     private _authService: AuthService
   ) {
     this.settlements = [];
@@ -217,12 +215,12 @@ export class CreatePaymentReceiptComponent implements OnInit {
 
   searchCustomers(event: any) {
     setTimeout(() => {
-      this._serviceRequestService
-        .SearchCustomer(event.query)
-        .subscribe((result: IServiceResult) => {
-          this.filteredArray = [];
-          this.filteredArray = result.data;
-        });
+      // this._serviceRequestService
+      //   .SearchCustomer(event.query)
+      //   .subscribe((result: IServiceResult) => {
+      //     this.filteredArray = [];
+      //     this.filteredArray = result.data;
+      //   });
     }, 1500);
   }
 
