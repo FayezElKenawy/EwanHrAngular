@@ -23,10 +23,14 @@ export class HttpTokenInterceptor implements HttpInterceptor {
     const headersConfig = {};
     const token = this._authService.getToken();
     const lang = this._globalService.languageGetCurrent;
+    
     if (token) {
       headersConfig['Authorization'] = `${token}`;
     }
+
+    headersConfig['Accept-Language'] = `${lang}`;
     headersConfig['Language'] = `${lang}`;
+
     const request = req.clone({ setHeaders: headersConfig });
     return next.handle(request);
   }

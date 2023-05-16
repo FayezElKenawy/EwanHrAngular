@@ -117,14 +117,14 @@ export class HeaderComponent implements OnInit {
       element.scrollHeight - element.scrollTop === element.clientHeight;
 
     if (atBottom) {
-      this.searchModel.PageNumber++;
+      this.searchModel.pageNumber++;
       this.getBranches();
     }
   }
   showBranches() {
     if (this.branches.length === 0) {
       this.branches = [];
-      this.searchModel = { PageNumber: 1, PageSize: 10 };
+      this.searchModel = { pageNumber: 1, pageSize: 10 };
       this.getBranches();
     }
   }

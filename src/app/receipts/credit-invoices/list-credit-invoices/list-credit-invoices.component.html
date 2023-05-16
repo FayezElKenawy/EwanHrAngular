@@ -80,7 +80,7 @@
               </th>
             </tr>
             <!-- search caractria -->
-            <tr id="searchRow" formArrayName="SearchFields">
+            <tr id="searchRow" formArrayName="searchFields">
               <th *ngFor="let col of cols let i = index" [ngSwitch]="col.field" [hidden]="col.hidden">
                 <div [formGroupName]="i" *ngIf="col.searchable && !col.hidden" class="grid-search">
                   <ng-container *ngIf="col.searchType == 'text'">

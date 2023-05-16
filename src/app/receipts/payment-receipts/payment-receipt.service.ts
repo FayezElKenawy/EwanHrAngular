@@ -6,12 +6,13 @@ import { Observable } from "rxjs";
 import { IServiceResult, IResultVM } from "@shared/interfaces/results";
 import { catchError } from "rxjs/operators";
 import { SearchModel } from "@shared/interfaces/search-model";
+import { PagedList } from "@shared/interfaces/paged-list";
 
 @Injectable({
   providedIn: "root",
 })
 export class PaymentReceiptService {
-  serviceUrl = `${environment.individualSectorApiUrl}/Receipts/PaymentReceipt`;
+  serviceUrl = `${environment.financeSector}/v1/PaymentReceipt`;
   ContractUrl = `${environment.individualSectorApiUrl}/Sales/Contract`;
   customerUrl = `${environment.coreApiUrl}/MasterData/Customer`;
 
@@ -20,29 +21,8 @@ export class PaymentReceiptService {
     private _globalService: GlobalService
   ) {}
 
-  getAll(searchModel: SearchModel): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return Observable.create((observer) => {
-      this._http
-        .post(`${this.serviceUrl}/GetListPage`, searchModel)
-        .pipe(catchError(this._globalService.errorHandler))
-        .subscribe(
-          (resultVM: IResultVM) => {
-            if (resultVM.IsSuccess) {
-              serviceResult.data = resultVM.Data;
-            } else {
-            }
-            serviceResult.isSuccess = resultVM.IsSuccess;
-            observer.next(serviceResult);
-            observer.complete();
-            return observer;
-          },
-          () => {
-            observer.complete();
-            return observer;
-          }
-        );
-    });
+  getPagedList(searchModel: SearchModel): Observable<PagedList> {
+    return this._http.post<PagedList>(`${this.serviceUrl}/GetPagedList`, searchModel)
   }
 
   getCreate(): Observable<IServiceResult> {
