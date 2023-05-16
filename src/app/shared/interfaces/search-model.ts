@@ -1,12 +1,12 @@
-export interface SearchModel {
+export class SearchModel {
   searchFields?: SearchField[];
   orderBy?: string;
   orderType?: string;
-  pageNumber?: number;
-  pageSize?: number;
+  pageNumber?: number = 1;
+  pageSize?: number = 10;
 }
 
-export interface SearchField {
+export class SearchField {
   FieldName: string;
   Operator: string;
   Value: string;

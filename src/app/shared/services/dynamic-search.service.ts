@@ -22,18 +22,30 @@ export class DynamicSearchService {
   initializeSearch() {}
 
   lazy(event, searchModel: SearchModel, func) {
-    searchModel.OrderBy = event.sortField;
-    searchModel.OrderType = event.sortOrder === 1 ? 'asc' : 'desc';
-    searchModel.PageNumber = event.first / event.rows + 1;
-    searchModel.PageSize = event.rows;
+    debugger;
+    if(event.sortField)
+    searchModel.orderBy = event.sortField;
+
+    if(event.sortOrder)
+    searchModel.orderType = event.sortOrder === 1 ? 'asc' : 'desc';
+    
+    if(event.first && event.first > 0 && event.rows)
+      searchModel.pageNumber = event.first / event.rows + 1;
+    else
+      searchModel.pageNumber = 1;
+
+    if(event.rows)
+    searchModel.pageSize = event.rows;
+
     func();
   }
 
   buildSearchForm(cols: any) {
+    debugger;
     const searchForm = this._formBuilder.group({
-      SearchFields: this._formBuilder.array([])
+      searchFields: this._formBuilder.array([])
     });
-    const formarray = searchForm.get('SearchFields') as FormArray;
+    const formarray = searchForm.get('searchFields') as FormArray;
     cols.forEach(element => {
       if (element.searchType === 'select') {
         formarray.push(
@@ -57,11 +69,12 @@ export class DynamicSearchService {
   }
 
   reset(searchForm, cols, func) {
-    const x = searchForm.get('SearchFields') as FormArray;
+    debugger;
+    const x = searchForm.get('searchFields') as FormArray;
     for (let index = 0; index < cols.length; index++) {
       if (cols[index].searchable) {
         searchForm
-          .get('SearchFields')
+          .get('searchFields')
           .get(index.toString())
           .get('Value')
           .reset();
@@ -71,8 +84,9 @@ export class DynamicSearchService {
   }
 
   search(searchForm, searchModel, func) {
-    searchModel.PageNumber = 1;
-    searchModel.SearchFields = searchForm.get('SearchFields').value;
+    debugger;
+    searchModel.pageNumber = 1;
+    searchModel.searchFields = searchForm.get('searchFields').value;
     func();
   }
 }

@@ -12,7 +12,7 @@
     </div>
   </div>
   <!-- END: Subheader -->
-  <form [formGroup]="searchForm" (ngSubmit)="_dynamicSearchService.search(searchForm,searchModel, getData.bind(this))">
+  <form [formGroup]="searchForm" (ngSubmit)="_dynamicSearchService.search(searchForm,searchModel, getPagedList.bind(this))">
     <div class="m-portlet__body">
       <!--<div class="m-separator m-separator&#45;&#45;md m-separator&#45;&#45;dashed my-4"></div>-->
       <div class="row mx-0 box-shadow">
@@ -21,65 +21,9 @@
             [totalRecords]="pagingMetaData?.totalCount" [first]="pagingMetaData?.pageNumber"
             [rows]="pagingMetaData?.pageSize" [autoLayout]="true" [responsive]="true" [loading]="progressSpinner"
             [columns]="cols" [(contextMenuSelection)]="selectedItem" [lazy]="true"
-            (onLazyLoad)="_dynamicSearchService.lazy($event, searchModel, getData.bind(this))"
+            (onLazyLoad)="_dynamicSearchService.lazy($event, searchModel, getPagedList.bind(this))"
             [rowsPerPageOptions]="[10, 20, 30]">
-            <!-- <ng-template pTemplate="colgroup" let-columns>
-              <colgroup>
-                <col *ngFor="let col of columns" style="width:150px">
-              </colgroup>
-            </ng-template> -->
-            <!-- <ng-template pTemplate="frozenbody" let-dataItems>
-              <tr >
-                <td>
-                  <span class="d-flex justify-content-center">
-                    <span class="d-inline-block">
-                      <div class="dropdown">
-                        <a href="#" class="btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill"
-                          data-toggle="dropdown" aria-expanded="true">
-                          <i class="la la-ellipsis-v"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                          <a *authorization="'receipts-payment-receipts-edit'" class="dropdown-item"
-                            title="{{'App.Buttons.Edit' | translate}}" (click)="setId(dataItems['Id'])">
-                            {{'App.Buttons.Edit' | translate}}
-                          </a>
-                          <span *ngIf="dataItems.CreditReceivableId && !dataItems.CreditReceivableId.includes('--')" >
-                          <a *authorization="'receipts-payment-receipts-print'" data-toggle="modal"
-                            data-target="#reportModal" class="dropdown-item" title="{{'App.Buttons.Print' | translate}}"
-                            (click)="showReport(dataItems.CreditReceivableId)">
-                            {{'App.Buttons.Print' | translate}}
-                          </a>
-                          </span>
-                        </div>
-
-                      </div>
-                    </span>
-                  </span>
-                </td>
-              </tr>
-            </ng-template> -->
-
-
-            <!-- <ng-template pTemplate="frozenheader">
-              <tr class="frozeheader">
-                <th>{{'App.Fields.Actions' | translate}}</th>
-              </tr>
-              <tr class="frozeheader">
-                <th>
-                  <div class="grid-buttons ">
-                    <button type="submit" class="btn btn-brand" title="search in gride">
-                      <i class="la la-search"></i>
-                    </button>
-                    <button title="reset" (click)="_dynamicSearchService.reset(searchForm, cols, getData.bind(this))"
-                      class="btn btn-secondary">
-                      <i class="fa fa-times"></i>
-                    </button>
-                  </div>
-                </th>
-              </tr>
-
-            </ng-template> -->
-
+            
             <ng-template pTemplate="header" let-columns>
               <tr>
                 <th *ngFor="let col of cols" [pSortableColumn]="col.field" [hidden]="col.hidden">
@@ -89,7 +33,7 @@
                 <th pFrozenColumn class="left-frozen">{{'App.Fields.Actions' | translate}}</th>
               </tr>
               <!-- search caractria -->
-              <tr id="searchRow" formArrayName="SearchFields">
+              <tr id="searchRow" formArrayName="searchFields">
                 <th *ngFor="let col of cols let i = index" [ngSwitch]="col.field" [hidden]="col.hidden">
                   <div [formGroupName]="i" *ngIf="col.searchable && !col.hidden" class="grid-search">
                     <ng-container *ngIf="col.searchType == 'text'">
@@ -121,7 +65,7 @@
                     <button type="submit" class="btn btn-brand" title="search in gride">
                       <i class="la la-search"></i>
                     </button>
-                    <button title="reset" (click)="_dynamicSearchService.reset(searchForm, cols, getData.bind(this))"
+                    <button title="reset" (click)="_dynamicSearchService.reset(searchForm, cols, getPagedList.bind(this))"
                       class="btn btn-secondary">
                       <i class="fa fa-times"></i>
                     </button>
@@ -161,7 +105,6 @@
                       dataItem[col.field])
                       }}
                     </ng-template>
-                    <!--end::Handle IsDownPayment-->
                   </ng-template>
 
                 </td>
@@ -183,16 +126,9 @@
                           {{'App.Buttons.Edit' | translate}}
                         </a>
                         <a *authorization="'receipts-payment-receipts-edit'" class="dropdown-item"
-                        title="{{'App.Buttons.Edit' | translate}}" (click)="setId(dataItems['Id'])">
-                        {{'App.Buttons.Edit' | translate}}
-                      </a>
-                          <!-- <span *ngIf="dataItems.CreditReceivableId && !dataItems.CreditReceivableId.includes('--')" >
-                          <a *authorization="'receipts-payment-receipts-print'" data-toggle="modal"
-                            data-target="#reportModal" class="dropdown-item" title="{{'App.Buttons.Print' | translate}}"
-                            (click)="showReport(dataItems.CreditReceivableId)">
-                            {{'App.Buttons.Print' | translate}}
-                          </a>
-                          </span> -->
+                          title="{{'App.Buttons.Edit' | translate}}" (click)="setId(dataItems['Id'])">
+                          {{'App.Buttons.Edit' | translate}}
+                         </a>
                         </div>
 
                       </div>

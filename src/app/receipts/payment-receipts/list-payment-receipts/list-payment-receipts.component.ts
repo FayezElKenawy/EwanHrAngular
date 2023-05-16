@@ -8,6 +8,7 @@ import { SearchModel } from '@shared/interfaces/search-model';
 import { DynamicSearchService } from '@shared/services/dynamic-search.service';
 import { ReportModelViewerComponent } from '@shared/components/report-model-viewer/report-model-viewer.component';
 import { AuthService } from '@shared/services/auth.service';
+import { PagedList } from '@shared/interfaces/paged-list';
 
 @Component({
   selector: 'app-list-payment-receipts',
@@ -35,8 +36,14 @@ export class ListPaymentReceiptsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.createCols();
+    debugger;
+    this.searchForm = this._dynamicSearchService.buildSearchForm(this.cols);
+    this.operators = this._dynamicSearchService.operators;
+  }
+
+  createCols(){
     this.cols = [
-      // { field: 'ActionButtons', header: '', hidden: false },
       {
         field: 'id',
         header: 'Receipts.Fields.ReciptId',
@@ -139,31 +146,22 @@ export class ListPaymentReceiptsComponent implements OnInit {
         searchType: 'text',
       },
     ];
+  }
 
-    // build form for search
-    this.searchForm = this._dynamicSearchService.buildSearchForm(this.cols);
-    this.operators = this._dynamicSearchService.operators;
+  getPagedList() {
+    debugger;
+    this.progressSpinner = true;
+    this._paymentReceiptService
+      .getPagedList(this.searchModel)
+      .subscribe((result: PagedList) => {
+        this.dataItems = result.entities;
+        this.pagingMetaData = result.pagingData;
+        this.progressSpinner = false;
+      });
   }
 
   setId(id: string) {
     this._router.navigate(['/individual/receipts/edit-payment-receipts', id]);
-  }
-
-  getData() {
-    this.progressSpinner = true;
-    this._paymentReceiptService.getPagedList(this.searchModel).subscribe(
-      (result) => {
-        if (result.isSuccess) {
-          this.dataItems = result.data.PaymentReceipts;
-          this.pagingMetaData = result.data.PagingMetaData;
-          this.dataItems.forEach((element) => {
-            if (element.CreditCardTypeId == null) {
-              element.CreditCardTypeName = 'ــــــ';
-            }
-          });
-        }
-      }
-    );
   }
 
   showReport(paymentId) {
