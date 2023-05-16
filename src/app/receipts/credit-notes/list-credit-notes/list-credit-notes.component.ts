@@ -9,6 +9,7 @@ import { DynamicSearchService } from "@shared/services/dynamic-search.service";
 import { ReportModelViewerComponent } from "@shared/components/report-model-viewer/report-model-viewer.component";
 import { AuthService } from "@shared/services/auth.service";
 import { IResult } from "@shared/interfaces/results";
+import { PagedList } from "@shared/interfaces/paged-list";
 
 @Component({
   selector: "app-list-credit-notes",
@@ -127,8 +128,7 @@ export class ListCreditNotesComponent implements OnInit {
   getData() {
     this.progressSpinner = true;
     this._creditNotService.getAll(this.searchModel).subscribe(
-      (result) => {
-        debugger
+      (result:PagedList) => {
           this.dataItems = result.entities;
           this.pagingMetaData = result.pagingData;
       },
