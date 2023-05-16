@@ -1,9 +1,9 @@
 export interface SearchModel {
-  SearchFields?: SearchField[];
-  OrderBy?: string;
-  OrderType?: string;
-  PageNumber?: number;
-  PageSize?: number;
+  searchFields?: SearchField[];
+  orderBy?: string;
+  orderType?: string;
+  pageNumber?: number;
+  pageSize?: number;
 }
 
 export interface SearchField {

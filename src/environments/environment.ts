@@ -6,7 +6,8 @@ export const environment = {
   coreApiUrl: 'http://localhost/BroaERP.Core.API',
   individualSectorApiUrl: 'http://localhost/BroaERP.IndividualSector.API',
   reportingApiUrl: 'http://localhost/BroaERP.Reporting.API',
-
+  financeSector:"https://localhost:5001/api",
+  
   coreUrl: 'http://localhost:4200',
   individualSectorURL: 'http://localhost:4300/',
   businessSectorURL: "http://localhost:4400/",
