@@ -34,12 +34,9 @@ import { DynamicReportViewerComponent } from "./components/reporting/dynamic-rep
 import { NotAuthorizedComponent } from "./components/not-authorized/not-authorized.component";
 import { AuthorizationDirective } from "./directives/authorization.directive";
 import { UserNotificationListComponent } from "../notification/user-notification/user-notification-list/user-notification-list.component";
-
-
 import { InputSwitchModule } from 'primeng/inputswitch';
-
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
-import { DataListComponent } from './components/data-list/data-list.component';
+import { PageListComponent } from './components/page-list/page-list.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(
@@ -68,7 +65,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     CustomReportComponent,
     DynamicReportViewerComponent,
     UserNotificationListComponent,
-    DataListComponent,
+    PageListComponent,
   ],
   entryComponents: [NotAuthorizedComponent],
   imports: [
@@ -131,6 +128,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ChartModule,
     DynamicReportViewerComponent,
     CustomReportComponent,
+    PageListComponent,
     InputSwitchModule,
     DynamicDialogModule
   ],
