@@ -175,9 +175,7 @@ export class CreditNoteService {
   }
 
   getVouchers(entityCode: any): Observable<any> {
-   entityCode='EIS020002186007'
     return this._http.get(`${this.serviceUrl}/Voucher/GetVouchersById?entityCode=${entityCode}`);
-
   }
 
   getEdit(paymentId: string): Observable<IServiceResult> {

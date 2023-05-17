@@ -1,11 +1,11 @@
-<div class="m-portlet m-portlet--mobile" *authorization="{actionName:'receipts-credit-notes-list',pageLevel:true}">
+<div class="m-portlet m-portlet--mobile" >
   <!-- BEGIN: Subheader -->
   <div class="m-portlet__head m-subheader d-flex align-items-center">
     <div class="mr-auto">
       <h3 class="m-subheader__title p-0">{{ 'Receipts.Titles.CreditNotesListPage' | translate}}</h3>
     </div>
     <div>
-      <button *authorization="'receipts-credit-notes-create'" routerLink="/individual/receipts/create-credit-note"
+      <button  routerLink="/individual/receipts/create-credit-note"
         type="button" class="btn btn-brand btn-cons">
         {{ 'Receipts.Buttons.CreditNoteCreate' | translate}}
       </button>

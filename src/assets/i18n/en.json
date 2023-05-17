@@ -376,7 +376,8 @@
             "SettlementValueNotEqualToNoteValue": "The settled value must equal the note value after tax",
             "CreditNoteMustSettleOneInvoice": "Credit note cannot be linked to more than one invoice.",
             "invalidCredit": "Credit Balance Value has been changed",
-            "invalidDebit": "Debit Balance Value has been changed"
+            "invalidDebit": "Debit Balance Value has been changed",
+            "creditNoteAdded":"Credit Note Added Successfully"
         }
     },
     "Auth": {

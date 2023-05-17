@@ -6,6 +6,8 @@ import { DatePipe } from "@angular/common";
 import { Router } from "@angular/router";
 import { IServiceResult } from "@shared/interfaces/results";
 import { CustomerService } from "@shared/services/customer.service";
+import { ContractService } from "@shared/services/contract.service";
+import { SalesPeriodService } from "src/app/master-data/services/sales-period.service";
 
 @Component({
   selector: "app-create-credit-note",
@@ -49,7 +51,9 @@ export class CreateCreditNoteComponent implements OnInit {
     private _datePipe: DatePipe,
     private _router: Router,
     private _creditNoteService: CreditNoteService,
-    private _customerService:CustomerService
+    private _customerService:CustomerService,
+    private _contractService:ContractService,
+    private _salesPeriodService:SalesPeriodService
   ) {
     this.settlements = [];
     this.voucherType = 'CR';
@@ -137,6 +141,11 @@ export class CreateCreditNoteComponent implements OnInit {
       { field: "PaidAmount", header: "Receipts.Fields.Value", hidden: false },
       { field: "ActionButtons", header: "", hidden: false },
     ];
+    this._salesPeriodService.getMinSelectedDate('01-02').subscribe(
+      res=>{
+          this.minDateValue=new Date(res);
+      }
+    )
   }
 
 
@@ -196,8 +205,7 @@ export class CreateCreditNoteComponent implements OnInit {
       this.progressSpinner = true;
       const postedViewModel = Object.assign({}, this.form.value);
       postedViewModel.CustomerId = this.form.value.Customer.id;
-      debugger
-      postedViewModel.ContractId = postedViewModel.Contract.Id;
+
       postedViewModel.DocumentDate = this._datePipe.transform(
         postedViewModel.DocumentDate,'yyyy-MM-ddTHH:mm:ss'
       );
@@ -205,15 +213,21 @@ export class CreateCreditNoteComponent implements OnInit {
       postedViewModel.costElements = this.costElements;
       postedViewModel.NetValue = this.NetVal;
       debugger
-      postedViewModel.EntityCode = postedViewModel.Contract.SegmentId;
+      postedViewModel.EntityCode = postedViewModel.Contract.entityCode;
       postedViewModel.SectorTypeId = "01-02"
 
       this._creditNoteService.create(postedViewModel).subscribe(
         (result: IServiceResult) => {
-          if (result.isSuccess) {
+          if (result) {
             this.submitted = false;
             this.form.reset();
             // this.Oncancel.emit();
+            this._globalService.messageAlert(
+              MessageType.Success,
+              this._globalService.translateWordByKey(
+                "Receipts.Messages.creditNoteAdded"
+              )
+            );
             this._router.navigate(["/individual/receipts/credit-notes"]);
           }
         },
@@ -241,14 +255,14 @@ export class CreateCreditNoteComponent implements OnInit {
     this.settlements = [];
     this.vouchers = [];
     this.selectedVoucher = undefined;
-    this._creditNoteService
-      .getContractShortList(event.Id)
-      .subscribe((result: IServiceResult) => {
+    this._contractService
+      .getAll(event.code)
+      .subscribe((result) => {
         this.progressSpinner = false;
         this.filteredArray = [];
-        this.filteredArray = result.data;
-        this.Contracts = result.data;
-        if (result.data.length > 0) {
+        this.filteredArray = result;
+        this.Contracts = result;
+        if (result.length > 0) {
           this.form.controls.Contract.enable();
           this.form.controls.Contract.reset();
         } else {
@@ -263,9 +277,8 @@ export class CreateCreditNoteComponent implements OnInit {
     this.settlements = [];
     this.vouchers = [];
     this.selectedVoucher = undefined;
-    debugger
     this._creditNoteService
-      .getVouchers(event.SegmentId)
+      .getVouchers(event.entityCode)
       .subscribe((result: any) => {
         this.progressSpinner = false;
         this.vouchers = result;
@@ -278,16 +291,14 @@ export class CreateCreditNoteComponent implements OnInit {
     if (this.selectedVoucher && this.paidValue > 0) {
       const settlement = {
         Id: this.selectedVoucher.id,
-        DebitReceivableIdFK: this.selectedVoucher.id,
-        DebitReceivableId: this.selectedVoucher.voucherCode,
+        DebitReceivableId: this.selectedVoucher.id,
         DebitReceivableVoucherTypeId: this.selectedVoucher.voucherTypeId,
         PaidAmount: this.paidValue,
         NetValueAfterTax: this.selectedVoucher.netValueAfterTax,
         VoucherTypeArabicName: this.selectedVoucher.voucherTypeName,
-        CurrentBalance: this.selectedVoucher.currentBalance,
-        CanBePay: this.selectedVoucher.currentBalance,
+        CurrentBalance: Number(this.selectedVoucher.currentBalance),
+        CanBePay: Number(this.selectedVoucher.currentBalance),
       };
-      settlement.DebitReceivableId = Number(settlement.DebitReceivableId);
       if (
         this.settlements.find(
           (e) =>
@@ -295,7 +306,8 @@ export class CreateCreditNoteComponent implements OnInit {
             e.DebitReceivableTypeId === settlement.DebitReceivableVoucherTypeId
         ) === undefined
       ) {
-        if (this.selectedVoucher.CurrentBalance < settlement.PaidAmount) {
+
+        if (settlement.CurrentBalance < settlement.PaidAmount) {
           this._globalService.messageAlert(
             MessageType.Warning,
             this._globalService.translateWordByKey(

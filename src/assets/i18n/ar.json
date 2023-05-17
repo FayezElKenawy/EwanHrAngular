@@ -401,7 +401,8 @@
             "CreditNoteMustSettleOneInvoice": "لا يمكن ربط الإشعار بأكثر من فاتورة",
             "ReplacementDateIsInvalid": "تاريخ الاستبدال يجب ان يكون بعد تاريخ البداية الفعلى",
             "invalidCredit": "قيمة الدائن قد تم تعديلها",
-            "invalidDebit": "قيمة المدين قد تم تعديلها"
+            "invalidDebit": "قيمة المدين قد تم تعديلها",
+            "creditNoteAdded":"تم اضافة الاشعار بنجاح"
         }
     },
     "Auth": {

@@ -1,5 +1,5 @@
 <!--begin::Portlet-->
-<div class="details" *authorization="{actionName:'receipts-credit-notes-create',pageLevel:true}">
+<div class="details" >
   <div class="m-portlet m-0">
     <div class="m-portlet__head">
       <div class="m-portlet__head-caption">
@@ -97,8 +97,8 @@
                   <span class="required">*</span>
                 </div>
                 <div class="col-12 px-0">
-                  <p-autoComplete id="Contract" class="p-0 form-control" formControlName="Contract" field="SegmentId"
-                    [suggestions]="filteredArray" (completeMethod)="filterArray($event, Contracts,'SegmentId')"
+                  <p-autoComplete id="Contract" class="p-0 form-control" formControlName="Contract" field="entityCode"
+                    [suggestions]="filteredArray" (completeMethod)="filterArray($event, Contracts,'entityCode')"
                     (onSelect)="onSelectContract($event)" (onClear)="onClear('Contract')" [forceSelection]="true"
                     [size]="30" [minLength]="1" placeholder="{{ 'Receipts.Fields.ContractName' | translate}}"
                     [dropdown]="true" [ngClass]="{
@@ -107,7 +107,7 @@
                     <ng-template let-Contract pTemplate="item">
                       <div class="ui-helper-clearfix">
                         <div>
-                          {{ Contract.SegmentId }}
+                          {{ Contract.entityCode }}
                         </div>
                       </div>
                     </ng-template>
