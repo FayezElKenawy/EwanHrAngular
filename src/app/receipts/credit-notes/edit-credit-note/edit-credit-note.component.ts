@@ -434,7 +434,7 @@ export class EditCreditNoteComponent implements OnInit {
   }
   
   filterArray(event, arrayObject: any, ColName = "FullArabicName") {
-    debugger;
+    
     this.filteredArray = [];
 
     if(arrayObject){

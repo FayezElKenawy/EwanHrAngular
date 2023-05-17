@@ -258,7 +258,7 @@ export class CreatePaymentReceiptComponent implements OnInit {
     this._paymentReceipt
       .getVouchers(event.Id)
       .subscribe((result: IServiceResult) => {
-        debugger;
+        
         this.progressSpinner = false;
         this.vouchers = result.data;
         //////////// me
@@ -269,7 +269,7 @@ export class CreatePaymentReceiptComponent implements OnInit {
   }
 
   onSelectVoucherType() {
-    debugger;
+    
     this.filteredVouchers = this.vouchers.filter(
       (v) => v.VoucherTypeId === this.voucherType
     );
@@ -277,7 +277,7 @@ export class CreatePaymentReceiptComponent implements OnInit {
   }
 
   addSettlement() {
-    debugger;
+    
     this.added = true;
     if (this.selectedVoucher && Number(this.paidValue) > 0) {
       const settlement = {
@@ -392,7 +392,7 @@ export class CreatePaymentReceiptComponent implements OnInit {
   }
 
   filterArray(event, arrayObject: any, ColName = "FullArabicName") {
-    debugger;
+    
     this.filteredArray = [];
 
     for (let i = 0; i < arrayObject.length; i++) {

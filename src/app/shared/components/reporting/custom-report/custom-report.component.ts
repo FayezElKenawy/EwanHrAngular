@@ -41,7 +41,7 @@ export class CustomReportComponent implements OnInit {
   }
 
   showReport() {
-    debugger;
+    
     this.progressSpinner = true;
     this.Url =
       this.serviceUrl +

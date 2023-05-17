@@ -24,7 +24,7 @@ export class DynamicSearchService {
   initializeSearch() {}
 
   lazy(event, searchModel: SearchModel, func) {
-    debugger;
+    
     if(event.sortField)
     searchModel.orderBy = event.sortField;
 
@@ -43,13 +43,13 @@ export class DynamicSearchService {
   }
 
   buildSearchForm(cols: any) {
-    debugger;
+    
     const searchForm = this._formBuilder.group({
       searchFields: this._formBuilder.array([])
     });
     const formarray = searchForm.get('searchFields') as FormArray;
     cols.forEach(element => {
-      debugger;
+      
       if (element.searchType === 'select') {
         formarray.push(
           this._formBuilder.group({
@@ -85,7 +85,7 @@ export class DynamicSearchService {
   }
 
   reset(searchForm, cols, func) {
-    debugger;
+    
     const x = searchForm.get('searchFields') as FormArray;
     for (let index = 0; index < cols.length; index++) {
       if (cols[index].searchable != false) {
@@ -100,7 +100,7 @@ export class DynamicSearchService {
   }
 
   search(searchForm, searchModel, func) {
-    debugger;
+    
     searchModel.pageNumber = 1;
     searchModel.searchFields = searchForm.get('searchFields').value;
     func();

@@ -91,7 +91,7 @@ export class CreateDownpaymentReceiptComponent implements OnInit {
     this._downpaymentReceipt
       .getContract(id)
       .subscribe((result: IServiceResult) => {
-        debugger;
+        
         this.contract = result.data;
         this.form.controls["DocumentDate"].setValue(new Date());
         this.form.controls["Customer"].setValue(

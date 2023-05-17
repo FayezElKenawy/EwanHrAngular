@@ -10,8 +10,8 @@ import { catchError, map } from "rxjs/operators";
   providedIn: "root",
 })
 export class DownpaymentReceiptService {
-  serviceUrl = `${environment.individualSectorApiUrl}/Receipts/DownpaymentReceipt`;
-  contractserviceUrl = `${environment.individualSectorApiUrl}/Sales/Contract`;
+  serviceUrl = `${environment.financeSectorAPIURL}/Receipts/DownpaymentReceipt`;
+  contractserviceUrl = `${environment.financeSectorAPIURL}/Sales/Contract`;
 
   constructor(
     private _http: HttpClient,

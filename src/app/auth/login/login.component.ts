@@ -126,7 +126,7 @@ export class LoginComponent implements OnInit {
   }
 
   sendLoginVerificationCode() {
-    debugger;
+    
     this.isVerificationCodeSent = false;
     if (this.form.invalid) {
       return;
@@ -172,9 +172,9 @@ export class LoginComponent implements OnInit {
     credentials.ApplicationId = "RMS-ERP-APP";
     this.authService.login(credentials).subscribe(
       (result) => {
-        debugger;
+        
         if (result.IsSuccess === true) {
-          debugger;
+          
           this.submitted = false;
           this.loginResult = result;
           this.credintials = credentials;
@@ -194,7 +194,7 @@ export class LoginComponent implements OnInit {
   }
 
   saveUserData() {
-    debugger;
+    
     this.isVerificationCodeSent = false;
     // Save User Token
     this.authService.setToken(
@@ -224,7 +224,7 @@ export class LoginComponent implements OnInit {
     this.submitted = false;
     this.authService.getAuthUser().subscribe(
       (result) => {
-        debugger;
+        
         if (result.isSuccess && !result.data.MustChangePassword) {
           this.navigateAfterLogin();
         } else if (result.isSuccess && result.data.MustChangePassword) {

@@ -272,7 +272,7 @@ export class CreateCreditNoteComponent implements OnInit {
   }
 
   addSettlement() {
-    debugger;
+    
     this.added = true;
     if (this.selectedVoucher && this.paidValue > 0) {
       const settlement = {

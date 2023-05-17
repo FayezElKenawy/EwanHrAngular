@@ -12,6 +12,8 @@ import { AuthService } from '@shared/services/auth.service';
 })
 export class AppComponent implements OnInit {
   isSystemSettingsLoaded: boolean = false;
+  isSpinnerLoaded : boolean = false;
+
   constructor(
     private _globalService: GlobalService,
     private router: Router,
@@ -26,6 +28,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.setSpinnerStatus();
+
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
     };
@@ -41,5 +45,14 @@ export class AppComponent implements OnInit {
       () => (this.isSystemSettingsLoaded = true)
     );
     this._signalrService.initializeSignalRConnection();
+  }
+
+  setSpinnerStatus(){
+    this._globalService.isSpinnerLoaded.subscribe(value=>{
+      if(value)
+       this.isSpinnerLoaded = true;
+      else
+       this.isSpinnerLoaded = false;
+    });
   }
 }

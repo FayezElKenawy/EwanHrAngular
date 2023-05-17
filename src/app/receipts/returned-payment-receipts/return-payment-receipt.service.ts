@@ -10,8 +10,9 @@ import { SearchModel } from "@shared/interfaces/search-model";
   providedIn: "root",
 })
 export class ReturnPaymentReceiptService {
-  serviceUrl = `${environment.individualSectorApiUrl}/Receipts/ReturnPaymentReceipt`;
-  ContractUrl = `${environment.individualSectorApiUrl}/Sales/Contract`;
+  serviceUrl = `${environment.financeSectorAPIURL}/Receipts/ReturnPaymentReceipt`;
+  ContractUrl = `${environment.financeSectorAPIURL}/Sales/Contract`;
+  
   constructor(
     private _http: HttpClient,
     private _globalService: GlobalService

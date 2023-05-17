@@ -4,15 +4,14 @@ export const environment = {
   hostingFolder: "",
 
   coreApiUrl: 'http://localhost/BroaERP.Core.API',
-  individualSectorApiUrl: 'http://localhost/BroaERP.IndividualSector.API',
   reportingApiUrl: 'http://localhost/BroaERP.Reporting.API',
-  financeSector:"https://localhost:5001/api",
+  financeSectorAPIURL:"https://localhost:5001/api",
   
   coreUrl: 'http://localhost:4200',
   individualSectorURL: 'http://localhost:4300/',
   businessSectorURL: "http://localhost:4400/",
   houseLabourSectorUrl: "http://localhost:4600/",
-  financeURL:"https://localhost:5001/api",
+  financeURL:"http://localhost:4500/",
   storagePath: 'http://localhost/BroaERP.Core.API/Uploading/File/Public',
   storagePhysicalPath: "C:\\inetpub\\BroaERP\\Developing\\UploadFolder\\",
 

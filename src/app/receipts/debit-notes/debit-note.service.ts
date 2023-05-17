@@ -11,9 +11,9 @@ import { SearchModel } from "@shared/interfaces/search-model";
   providedIn: "root",
 })
 export class DebitNoteService {
-  serviceUrl = `${environment.individualSectorApiUrl}/Receipts/DebitNote`;
-  ContractUrl = `${environment.individualSectorApiUrl}/Sales/Contract`;
-  customerUrl = `${environment.coreApiUrl}/MasterData/Customer`;
+  serviceUrl = `${environment.financeSectorAPIURL}/Receipts/DebitNote`;
+  ContractUrl = `${environment.financeSectorAPIURL}/Sales/Contract`;
+  customerUrl = `${environment.financeSectorAPIURL}/MasterData/Customer`;
 
   constructor(
     private _http: HttpClient,

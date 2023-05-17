@@ -19,7 +19,7 @@
         <div class="m_datatable w-100 list ">
           <p-table #dt [value]="dataItems" [scrollable]="true" frozenWidth="6.5%" class="w-100" [paginator]="true"
             [totalRecords]="pagingMetaData?.totalCount" [first]="pagingMetaData?.pageNumber"
-            [rows]="pagingMetaData?.pageSize" [autoLayout]="true" [responsive]="true" [loading]="progressSpinner"
+            [rows]="pagingMetaData?.pageSize" [autoLayout]="true" [responsive]="true"
             [columns]="cols" [(contextMenuSelection)]="selectedItem" [lazy]="true"
             (onLazyLoad)="_dynamicSearchService.lazy($event, searchModel, getPagedList.bind(this))"
             [rowsPerPageOptions]="[10, 20, 30]">

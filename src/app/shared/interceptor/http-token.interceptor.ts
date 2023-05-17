@@ -3,9 +3,10 @@ import {
   HttpInterceptor,
   HttpRequest,
   HttpHandler,
-  HttpEvent
+  HttpEvent,
+  HttpErrorResponse
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, finalize, Observable } from 'rxjs';
 import { AuthService } from '@shared/services/auth.service';
 import { GlobalService } from '@shared/services/global.service';
 
@@ -24,6 +25,8 @@ export class HttpTokenInterceptor implements HttpInterceptor {
     const token = this._authService.getToken();
     const lang = this._globalService.languageGetCurrent;
     
+    this._globalService.isSpinnerLoaded.next(true);
+
     if (token) {
       headersConfig['Authorization'] = `${token}`;
     }
@@ -32,6 +35,14 @@ export class HttpTokenInterceptor implements HttpInterceptor {
     headersConfig['Language'] = `${lang}`;
 
     const request = req.clone({ setHeaders: headersConfig });
-    return next.handle(request);
+
+    return next.handle(request).pipe(
+      catchError((e: HttpErrorResponse) =>
+        this._globalService.errorHandler(e)
+      ),
+      finalize(() => {
+        this._globalService.isSpinnerLoaded.next(false);
+      })
+    );
   }
 }

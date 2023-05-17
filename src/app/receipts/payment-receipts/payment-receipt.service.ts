@@ -12,9 +12,9 @@ import { PagedList } from "@shared/interfaces/paged-list";
   providedIn: "root",
 })
 export class PaymentReceiptService {
-  serviceUrl = `${environment.financeSector}/v1/PaymentReceipt`;
-  ContractUrl = `${environment.individualSectorApiUrl}/Sales/Contract`;
-  customerUrl = `${environment.coreApiUrl}/MasterData/Customer`;
+  serviceUrl = `${environment.financeSectorAPIURL}/v1/PaymentReceipt`;
+  ContractUrl = `${environment.financeSectorAPIURL}/Sales/Contract`;
+  customerUrl = `${environment.financeSectorAPIURL}/MasterData/Customer`;
 
   constructor(
     private _http: HttpClient,

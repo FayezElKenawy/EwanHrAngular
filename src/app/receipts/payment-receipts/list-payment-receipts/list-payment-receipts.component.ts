@@ -41,7 +41,7 @@ export class ListPaymentReceiptsComponent implements OnInit {
 
   ngOnInit() {
     this.createCols();
-    debugger;
+    
     this.searchForm = this._dynamicSearchService.buildSearchForm(this.cols);
     this.operators = this._dynamicSearchService.operators;
   }
@@ -118,14 +118,12 @@ export class ListPaymentReceiptsComponent implements OnInit {
   }
 
   getPagedList() {
-    debugger;
-    this.progressSpinner = true;
+    
     this._paymentReceiptService
       .getPagedList(this.searchModel)
       .subscribe((result: PagedList) => {
         this.dataItems = result.entities;
         this.pagingMetaData = result.pagingData;
-        this.progressSpinner = false;
       });
   }
 

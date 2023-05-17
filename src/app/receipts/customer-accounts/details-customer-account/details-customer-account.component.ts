@@ -173,7 +173,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
     // this.contractService
     //   .getCustomerContracts(this.customerId)
     //   .subscribe((result: IServiceResult) => {
-    //     debugger;
+    //     
     //     this.progressSpinner = false;
     //     this.filteredArray = [];
     //     this.filteredArray = result.data;
@@ -185,7 +185,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
   }
 
   filterArray(event, arrayObject: any, ColName = "FullName") {
-    debugger;
+    
     this.filteredArray = [];
 
     if (arrayObject) {
@@ -242,7 +242,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
       this._customerAccountService.getDetails(customerId, contractId).subscribe(
         (result: IServiceResult) => {
           if (result.isSuccess) {
-            debugger;
+            
             this.viewModel = result.data;
 
             if (this.viewModel.IsExtentionContract)
@@ -310,7 +310,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
   }
 
   sentSms(notificationType: string) {
-    debugger;
+    
     let message = "";
     if (notificationType.toLowerCase() === "noify1") {
       message = this.getMessage1();
@@ -421,7 +421,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
   @ViewChild(CustomReportComponent) report: CustomReportComponent;
 
   showClientAccountStatementReport(contractId) {
-    debugger;
+    
     let x =this.selectedContract;
 
     this.report.filters = [

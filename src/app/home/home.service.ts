@@ -10,7 +10,7 @@ import { catchError, map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class HomeService {
-  serviceUrl = `${environment.individualSectorApiUrl}/home`;
+  serviceUrl = `${environment.financeSectorAPIURL}/home`;
   constructor(
     private _http: HttpClient,
     private _globalService: GlobalService
