@@ -98,13 +98,12 @@
                             <i class="la la-ellipsis-v"></i>
                           </a>
                           <div class="dropdown-menu dropdown-menu-right">
-                            
-                                <!-- <a *ngFor="let action of pageListConfig?.actions"
-                                   *authorization="action?.authorization" class="dropdown-item"
-                                   title="{{ action?.title | translate}}" (click)="action?.callBack(dataItem)">
-                                   {{action?.title | translate}}
-                              </a>    -->
-                                         
+                            <ng-container *ngFor="let action of pageListConfig?.actions">
+                              <a *authorization="action?.authorization" class="dropdown-item"
+                                title="{{ action?.title | translate}}" (click)="action?.callBack(dataItem)">
+                                {{action?.title | translate}}
+                             </a> 
+                            </ng-container>
                           </div>
                         </div>
                       </span>
