@@ -174,9 +174,9 @@ export class CreditNoteService {
     });
   }
 
-  getVouchers(contractId: number): Observable<any> {
-
-    return this._http.get(`${this.serviceUrl}/Voucher/GetVouchersById?entityCode=EIS020002186007`);
+  getVouchers(entityCode: any): Observable<any> {
+   entityCode='EIS020002186007'
+    return this._http.get(`${this.serviceUrl}/Voucher/GetVouchersById?entityCode=${entityCode}`);
 
   }
 

@@ -144,7 +144,7 @@
                 <div class="col-12 px-0">
                   <input [(ngModel)]="TotalTaxAmount" [ngModelOptions]="{ standalone: true }" type="number" disabled
                     readonly disabled class="form-control" id="Taxes"
-                    placeholder="  {{'Sales.Fields.TotalTaxAmount' | translate}}" />
+                    placeholder="  {{'Receipts.Fields.TotalTaxAmount' | translate}}" />
                 </div>
               </div>
             </div>
@@ -160,28 +160,28 @@
                 <div class="col-12 px-0">
                   <input readonly [(ngModel)]="NetValAfterTax" [ngModelOptions]="{ standalone: true }" type="number"
                     disabled class="form-control" id="netValAfterTax"
-                    placeholder="{{'Sales.Fields.NetValAfterTax' | translate}}" />
+                    placeholder="{{'Receipts.Fields.NetValAfterTax' | translate}}" />
                 </div>
               </div>
             </div>
 
             <!-- البنود  -->
             <div class="col-12">
-              <h6 class="m-form__heading-title mb-0">{{'Sales.Titles.CostElements' | translate}}</h6>
+              <h6 class="m-form__heading-title mb-0">{{'Receipts.Titles.CreditInvoicesItemsData' | translate}}</h6>
               <div class="m-form__seperator m-2"></div>
             </div>
             <!-- البند  -->
             <div class="col-lg-4 col-md-6 col-12">
               <div class="form-group m-form__group row mx-0 px-0">
                 <div class="col-12 px-0">
-                  <label class="form-control-label" for="">{{'Sales.Fields.CostElement' | translate}}</label>
+                  <label class="form-control-label" for="">{{'Receipts.Fields.CostElement' | translate}}</label>
                   <span class="required">*</span>
                 </div>
                 <div class="col-12 px-0">
                   <p-autoComplete (onClear)="Clear()" class="p-0 form-control" field="name"
                     [suggestions]="filteredArray" (onSelect)="onSelectItem($event)"
                     (completeMethod)="filterArray($event, AllCostElements,'name')" [forceSelection]="true" [size]="30"
-                    [minLength]="1" placeholder="{{'Sales.Fields.CostElementSelect' | translate}}" [dropdown]="true"
+                    [minLength]="1" placeholder="{{'Receipts.Fields.CostElementSelect' | translate}}" [dropdown]="true"
                     [ngClass]="{'is-invalid': selected && !selectedItem}">
                     <ng-template let-CostElements pTemplate="item">
                       <div class="ui-helper-clearfix">
@@ -201,13 +201,13 @@
             <div class="col-lg-2 col-md-6 col-12">
               <div class=" form-group m-form__group row mx-0 px-0">
                 <div class="col-12 px-0">
-                  <label for="NoInstallment" class="form-control-label">{{'Sales.Fields.CostElementAmountAfterTax' |
+                  <label for="NoInstallment" class="form-control-label">{{'Receipts.Fields.CostElementAmountAfterTax' |
                     translate}}</label>
                   <span class="required">*</span>
                 </div>
                 <div class="col-12 px-0">
                   <input [(ngModel)]="Amount" [ngModelOptions]="{ standalone: true }" type="number" min="0"
-                    class="form-control" placeholder="{{'Sales.Fields.CostElementAmountAfterTax' | translate}}" [ngClass]="{
+                    class="form-control" placeholder="{{'Receipts.Fields.CostElementAmountAfterTax' | translate}}" [ngClass]="{
                      'is-invalid' :
                      selected && (Amount <= 0 || Amount === undefined)}" />
                   <div class="invalid-feedback" *ngIf="(Amount <= 0 || Amount === undefined) && selected">
@@ -308,7 +308,7 @@
                 {{'Receipts.Messages.CostElementsRequired' | translate}}
               </div>
               <div class="p-2" style="color: #f4516c" *ngIf="NetVal == 0 && submitted && costElements.length>0">
-                {{'Sales.Fields.DebitNoteValueGreaterThanZero' | translate}}
+                {{'Receipts.Fields.DebitNoteValueGreaterThanZero' | translate}}
               </div>
             </div>
           </div>

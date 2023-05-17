@@ -207,7 +207,7 @@
             "PasswordNotMatched": "يجب ان تطابق كلمة المرور مع خانة تاكيد كلمة المرور"
         }
     },
-    
+
     "Receipts": {
         "Titles": {
             "CreditInvoicesListPage": "الفواتير",
@@ -242,6 +242,10 @@
             "Select": "اختر",
             "InvoiceId": "رقم الفاتورة",
             "SegmentsInvoiceId": "رقم الفاتورة فى سيجمنت",
+            "CostElement": "البند",
+            "CostElementSelect": "اختر البند",
+            "CostElementAmount": "قيمة البند",
+            "CostElementAmountAfterTax": "قيمة البند بعد الضريبة",
             "InvoiceDate": "تاريخ الفاتورة",
             "CustomerId": "رقم العميل",
             "SegmentsCustomerId":"رقم العميل",
@@ -253,6 +257,10 @@
             "SelectContract": "اختر العقد",
             "ِAll": "الكل",
             "ContractId": "رقم العقد",
+            "CostElementId": "رقم البند",
+            "CostElementName": "وصف البند",
+            "TaxRatio": "نسبة الضريبة",
+            "TaxAmount": "قيمة الضريبة",
             "DateValidation": "يجب ان يكون تاريخ الدفعة المقدمة بعد تاريخ التعاقد",
             "NoteNetVal": "قيمة الإشعار قبل الضريبة",
             "TotalTaxAmount": "اجمالي الضرائب",

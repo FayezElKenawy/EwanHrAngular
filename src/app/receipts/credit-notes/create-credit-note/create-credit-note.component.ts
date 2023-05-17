@@ -27,7 +27,7 @@ export class CreateCreditNoteComponent implements OnInit {
   selectedItem: any;
   costElementCols: any[] = [];
   costElements: any[] = [];
-  AllCostElements:any[]=[];
+  AllCostElements: any[] = [];
   DebitNoteCostElements: any[] = [];
   NetVal: number;
   NetValAfterTax: number;
@@ -57,44 +57,49 @@ export class CreateCreditNoteComponent implements OnInit {
     this.createForm();
     this.getCostElements();
     this.vouchersCols = [
-      { field: "id", header: "App.Fields.DocumentId", hidden: false },
+      {
+         field: "id",
+         header: "App.Fields.DocumentId"
+      },
       {
         field: "voucherTypeId",
-        header: "Receipts.Fields.DocumentType",
-        hidden: true,
+        header: "Receipts.Fields.DocumentType"
       },
       {
         field: "voucherTypeName",
-        header: "Receipts.Fields.DocumentType",
-        hidden: false,
+        header: "Receipts.Fields.DocumentType"
       },
       {
         field: "netValueAfterTax",
-        header: "Receipts.Fields.ReciptValue",
-        hidden: false,
+        header: "Receipts.Fields.ReciptValue"
       },
       {
         field: "currentBalance",
-        header: "Receipts.Fields.CurrentBalance",
-        hidden: false
+        header: "Receipts.Fields.CurrentBalance"
       },
     ];
     this.costElementCols = [
-      { field: "id", header: "Sales.Fields.CostElementId", hidden: false },
+      { field: "id", header: "Receipts.Fields.CostElementId" },
       {
         field: "name",
-        header: "Sales.Fields.CostElementName",
-        hidden: false,
+        header: "Receipts.Fields.CostElementName"
       },
       {
         field: "Amount",
-        header: "Sales.Fields.CostElementAmount",
-        hidden: false,
+        header: "Receipts.Fields.CostElementAmount"
       },
 
-      { field: "TaxRatio", header: "Sales.Fields.TaxRatio", hidden: false },
-      { field: "TaxAmount", header: "Sales.Fields.TaxAmount", hidden: false },
-      { field: "ActionButtons", header: "", hidden: false },
+      {
+        field: "TaxRatio",
+        header: "Receipts.Fields.TaxRatio"
+      },
+      {
+       field: "TaxAmount",
+       header: "Receipts.Fields.TaxAmount"
+      },
+      { field: "ActionButtons",
+       header: "",
+      },
     ];
     this.settlementCols = [
       {
@@ -133,10 +138,10 @@ export class CreateCreditNoteComponent implements OnInit {
   }
 
 
-  getCostElements(){
+  getCostElements() {
     this._creditNoteService.getCostElements().subscribe(
-      (res:any)=>{
-        this.AllCostElements=res;
+      (res: any) => {
+        this.AllCostElements = res;
       }
     )
   }
@@ -152,7 +157,7 @@ export class CreateCreditNoteComponent implements OnInit {
 
   onSelectVoucherType() {
     debugger
-    if(this.vouchers){
+    if (this.vouchers) {
       this.filteredVouchers = this.vouchers.filter(
         (v) => v.voucherTypeId === this.voucherType
       );
@@ -190,13 +195,18 @@ export class CreateCreditNoteComponent implements OnInit {
       this.progressSpinner = true;
       const postedViewModel = Object.assign({}, this.form.value);
       postedViewModel.CustomerId = 2;
+      debugger
       postedViewModel.ContractId = postedViewModel.Contract.Id;
-      postedViewModel.DocumentDate ="2023-05-14T13:25:32.213Z";
+      debugger
+      postedViewModel.DocumentDate = this._datePipe.transform(
+        postedViewModel.DocumentDate,'yyyy-MM-ddTHH:mm:ss'
+      );
       postedViewModel.PaymentsTransactions = this.settlements;
       postedViewModel.costElements = this.costElements;
       postedViewModel.NetValue = this.NetVal;
-      postedViewModel.EntityCode="10007";
-      postedViewModel.SectorTypeId="01-02"
+      debugger
+      postedViewModel.EntityCode = postedViewModel.Contract.SegmentId;
+      postedViewModel.SectorTypeId = "01-02"
 
       this._creditNoteService.create(postedViewModel).subscribe(
         (result: IServiceResult) => {
@@ -253,9 +263,9 @@ export class CreateCreditNoteComponent implements OnInit {
     this.settlements = [];
     this.vouchers = [];
     this.selectedVoucher = undefined;
-
+    debugger
     this._creditNoteService
-      .getVouchers(event.Id)
+      .getVouchers(event.SegmentId)
       .subscribe((result: any) => {
         this.progressSpinner = false;
         this.vouchers = result;
@@ -277,8 +287,7 @@ export class CreateCreditNoteComponent implements OnInit {
         CurrentBalance: this.selectedVoucher.currentBalance,
         CanBePay: this.selectedVoucher.currentBalance,
       };
-      //settlement.DebitReceivableId=Number(settlement.DebitReceivableId);
-      settlement.DebitReceivableId=44;
+      settlement.DebitReceivableId = Number(settlement.DebitReceivableId);
       if (
         this.settlements.find(
           (e) =>
@@ -382,7 +391,7 @@ export class CreateCreditNoteComponent implements OnInit {
         undefined
       ) {
         const costElement = Object.assign({}, this.selectedItem);
-        costElement.TaxRatio=this.selectedItem.tax.taxRatio;
+        costElement.TaxRatio = this.selectedItem.tax.taxRatio;
         costElement.Amount = ((this.Amount * 100) / (100 + costElement.TaxRatio)).toFixed(4);
         costElement.TaxAmount = (this.Amount - costElement.Amount).toFixed(4);
 
@@ -432,17 +441,17 @@ export class CreateCreditNoteComponent implements OnInit {
     this.costElements.find((i) => i.Id === id).TaxAmount =
       ((Number(this.costElements.find((i) => i.Id === id).TaxRatio) *
         Number(this.costElements.find((i) => i.Id === id).Amount)) /
-      100).toFixed(4);
+        100).toFixed(4);
     this.calculateCreditNote();
   }
 
   onlyTwoPrecsionDigits(event): boolean {
-    var value =event.target.value;
+    var value = event.target.value;
     const charCode = (event.which) ? event.which : event.keyCode;
     if (charCode > 31) {
-      var number =value.split('.');
-      if(number[1] &&
-         number[1].length>=2){
+      var number = value.split('.');
+      if (number[1] &&
+        number[1].length >= 2) {
         return false
       }
     }
@@ -451,7 +460,7 @@ export class CreateCreditNoteComponent implements OnInit {
 
   filterArray(event, arrayObject: any, ColName = "FullName") {
     this.filteredArray = [];
-    if(arrayObject){
+    if (arrayObject) {
       for (let i = 0; i < arrayObject.length; i++) {
         const item = arrayObject[i];
         var itemFullName = item[ColName];
