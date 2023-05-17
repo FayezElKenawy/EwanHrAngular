@@ -26,8 +26,10 @@ export enum MessageType {
 export class GlobalService {
   private loadedStylesSheet = [];
   public documentLoaded = new BehaviorSubject<boolean>(false);
+  public isSpinnerLoaded = new BehaviorSubject<boolean>(false);
 
   systemSettingsServiceUrl = `${environment.coreApiUrl}/Configuration/SystemSettings`;
+
   constructor(
     private _translatService: TranslateService,
     private _http: HttpClient
@@ -274,8 +276,15 @@ export class GlobalService {
             : `You don't have permission`,
         confirmButtonText: currentLang === "ar" ? "اغلاق" : "Close",
       });
-      document.location.href = environment.individualSectorURL + "/auth/login";
-    } else if (error.status === 0) {
+      document.location.href = environment.financeURL + "/finance/auth/login";
+    }
+    else if (error.status === 400) {
+      
+      this.messageAlert(MessageType.Error,error.error)
+    } else if (error.status === 404) {
+      
+      this.messageAlert(MessageType.Error,error.error)
+    }else if (error.status === 0) {
       Swal({
         type: "error",
         title:

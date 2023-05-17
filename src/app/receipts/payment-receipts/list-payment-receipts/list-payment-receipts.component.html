@@ -6,7 +6,7 @@
     </div>
     <div>
       <button *authorization="'receipts-payment-receipts-create'"
-        routerLink="/individual/receipts/create-payment-receipts" type="button" class="btn btn-brand btn-cons">
+        routerLink="/receipts/create-payment-receipts" type="button" class="btn btn-brand btn-cons">
         {{ 'Receipts.Buttons.PaymentReceiptCreate' | translate}}
       </button>
     </div>
@@ -19,7 +19,7 @@
         <div class="m_datatable w-100 list ">
           <p-table #dt [value]="dataItems" [scrollable]="true" frozenWidth="6.5%" class="w-100" [paginator]="true"
             [totalRecords]="pagingMetaData?.totalCount" [first]="pagingMetaData?.pageNumber"
-            [rows]="pagingMetaData?.pageSize" [autoLayout]="true" [responsive]="true" [loading]="progressSpinner"
+            [rows]="pagingMetaData?.pageSize" [autoLayout]="true" [responsive]="true"
             [columns]="cols" [(contextMenuSelection)]="selectedItem" [lazy]="true"
             (onLazyLoad)="_dynamicSearchService.lazy($event, searchModel, getPagedList.bind(this))"
             [rowsPerPageOptions]="[10, 20, 30]">
@@ -84,7 +84,7 @@
                   <ng-template #render_data_field>
                     <!--begin::Handle IsDownPayment-->
                     <ng-container *ngIf="
-                    col.field === 'IsDownPayment';
+                    col.field === 'isDownPayment';
                     then handle_isDownPayment_field;
                     else handle_other_field
                     ">
@@ -114,15 +114,15 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                           <a *authorization="'receipts-payment-receipts-edit'" class="dropdown-item"
-                            title="{{'App.Buttons.Edit' | translate}}" (click)="setId(dataItems['Id'])">
+                            title="{{'App.Buttons.Edit' | translate}}" (click)="setId(dataItems['id'])">
                             {{'App.Buttons.Edit' | translate}}
                           </a>
                           <a *authorization="'receipts-payment-receipts-edit'" class="dropdown-item"
-                          title="{{'App.Buttons.Edit' | translate}}" (click)="setId(dataItems['Id'])">
+                          title="{{'App.Buttons.Edit' | translate}}" (click)="setId(dataItems['id'])">
                           {{'App.Buttons.Edit' | translate}}
                         </a>
                         <a *authorization="'receipts-payment-receipts-edit'" class="dropdown-item"
-                          title="{{'App.Buttons.Edit' | translate}}" (click)="setId(dataItems['Id'])">
+                          title="{{'App.Buttons.Edit' | translate}}" (click)="setId(dataItems['id'])">
                           {{'App.Buttons.Edit' | translate}}
                          </a>
                         </div>

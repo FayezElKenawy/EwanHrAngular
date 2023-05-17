@@ -130,7 +130,7 @@ export class EditPaymentReceiptComponent implements OnInit {
         else {
           this.CashBoxs = this.viewModel.CashBoxs.filter(x => x.Id === this._authService.currentAuthUser.CashBoxId);
         }
-        debugger;
+        
         const paymentReceipt = this.viewModel.PaymentReceipt;
         this.form.patchValue({
           CreditReceivableId: paymentReceipt.CreditReceivableId,
@@ -269,7 +269,7 @@ export class EditPaymentReceiptComponent implements OnInit {
           if (result.isSuccess) {
             this.submitted = false;
             this.form.reset();
-            this._router.navigate(["/individual/receipts/payment-receipts"]);
+            this._router.navigate(["/receipts/payment-receipts"]);
           }
         },
         null,

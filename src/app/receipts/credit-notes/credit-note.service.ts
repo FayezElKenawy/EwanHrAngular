@@ -13,9 +13,10 @@ import { PagedList } from "@shared/interfaces/paged-list";
 })
 export class CreditNoteService {
   //?api-version=1
-  serviceUrl = `${environment.financeURL}`;
-  customerUrl = `${environment.coreApiUrl}/MasterData/Customer`;
-  ContractUrl = `${environment.individualSectorApiUrl}/Sales/Contract`;
+  serviceUrl = `${environment.financeSectorAPIURL}`;
+  customerUrl = `${environment.financeSectorAPIURL}/MasterData/Customer`;
+  ContractUrl = `${environment.financeSectorAPIURL}/MasterData/Contract`;
+
   constructor(
     private _http: HttpClient,
     private _globalService: GlobalService

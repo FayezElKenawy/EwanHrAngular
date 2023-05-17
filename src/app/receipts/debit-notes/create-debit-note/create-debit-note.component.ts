@@ -142,7 +142,7 @@ export class CreateDebitNoteComponent implements OnInit {
         (result: IServiceResult) => {
           if (result.isSuccess) {
             $("#createModal").modal("hide");
-            this._router.navigate(["/individual/receipts/debit-notes"]);
+            this._router.navigate(["/receipts/debit-notes"]);
             this.submitted = false;
             this.form.reset();
             this.refresh.emit();

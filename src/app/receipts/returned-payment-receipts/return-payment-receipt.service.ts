@@ -11,8 +11,9 @@ import { PagedList } from "@shared/interfaces/paged-list";
   providedIn: "root",
 })
 export class ReturnPaymentReceiptService {
-  serviceUrl = `${environment.financeURL}/v1/DebitPayment`;
-  ContractUrl = `${environment.individualSectorApiUrl}/Sales/Contract`;
+  serviceUrl = `${environment.financeSectorAPIURL}/Receipts/ReturnPaymentReceipt`;
+  ContractUrl = `${environment.financeSectorAPIURL}/Sales/Contract`;
+
   constructor(
     private _http: HttpClient,
     private _globalService: GlobalService

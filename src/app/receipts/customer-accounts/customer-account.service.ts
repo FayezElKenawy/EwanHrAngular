@@ -12,7 +12,7 @@ import { catchError, map } from 'rxjs/operators';
 })
 export class CustomerAccountService {
   serviceUrl = `${
-    environment.individualSectorApiUrl
+    environment.financeSectorAPIURL
   }/Receipts/CustomersAccounts`;
   constructor(
     private _http: HttpClient,

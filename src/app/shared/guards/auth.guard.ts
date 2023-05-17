@@ -41,14 +41,14 @@ export class AuthGuard implements CanActivateChild, CanActivate {
           route.data = { authUserVM: res.data };
           return true;
         }
-        this.router.navigate(["/auth/login"], {
+        this.router.navigate(["/finance/auth/login"], {
           queryParams: { returnUrl: state.url },
         });
         return false;
       }),
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
-          this.router.navigate(["/auth/login"], {
+          this.router.navigate(["/finance/auth/login"], {
             queryParams: { returnUrl: state.url },
           });
         }

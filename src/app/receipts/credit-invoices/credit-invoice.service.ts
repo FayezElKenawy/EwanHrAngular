@@ -11,7 +11,7 @@ import { SearchModel } from '@shared/interfaces/search-model';
   providedIn: 'root'
 })
 export class CreditInvoiceService {
-  serviceUrl = `${environment.individualSectorApiUrl}/Receipts/CreditInvoice`;
+  serviceUrl = `${environment.financeSectorAPIURL}/Receipts/CreditInvoice`;
   constructor(
     private _http: HttpClient,
     private _globalService: GlobalService

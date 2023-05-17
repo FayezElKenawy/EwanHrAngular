@@ -76,7 +76,7 @@ export class AuthService {
   logOut(): void {
     localStorage.removeItem(tokenKey);
     sessionStorage.removeItem(tokenKey);
-    this.router.navigateByUrl("/auth/login")
+    this.router.navigateByUrl("/finance/auth/login")
   }
 
   changePassword(ChangePasswordVM: any): Observable<IServiceResult> {

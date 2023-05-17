@@ -4,7 +4,6 @@ export const environment = {
   hostingFolder: "/ERP.IndividualSector",
 
   coreApiUrl: "https://ewanhr.com/BroaERP.Core.API",
-  individualSectorApiUrl: "https://ewanhr.com/BroaERP.IndividualSector.API",
   reportingApiUrl: "https://ewanhr.com/BroaERP.Reporting.API",
   
   coreUrl: "https://ewanhr.com/ERP.Core",

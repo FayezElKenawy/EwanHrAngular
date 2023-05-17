@@ -41,7 +41,7 @@ export class ListPaymentReceiptsComponent implements OnInit {
 
   ngOnInit() {
     this.createCols();
-    debugger;
+    
     this.searchForm = this._dynamicSearchService.buildSearchForm(this.cols);
     this.operators = this._dynamicSearchService.operators;
   }
@@ -77,7 +77,7 @@ export class ListPaymentReceiptsComponent implements OnInit {
       {
         field: 'bankName',
         header: 'Receipts.Fields.BankAccountName',
-        customSearchField:"Bank.Name",
+        customSearchField:"BankAccount.Name",
         isLocalized:true,
       },
       {
@@ -118,19 +118,17 @@ export class ListPaymentReceiptsComponent implements OnInit {
   }
 
   getPagedList() {
-    debugger;
-    this.progressSpinner = true;
+    
     this._paymentReceiptService
       .getPagedList(this.searchModel)
       .subscribe((result: PagedList) => {
         this.dataItems = result.entities;
         this.pagingMetaData = result.pagingData;
-        this.progressSpinner = false;
       });
   }
 
   setId(id: string) {
-    this._router.navigate(['/individual/receipts/edit-payment-receipts', id]);
+    this._router.navigate(['/receipts/edit-payment-receipts', id]);
   }
 
   showReport(paymentId) {
