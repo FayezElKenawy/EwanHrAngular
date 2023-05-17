@@ -5,6 +5,7 @@ import { GlobalService, MessageType } from "@shared/services/global.service";
 import { DatePipe } from "@angular/common";
 import { Router } from "@angular/router";
 import { IServiceResult } from "@shared/interfaces/results";
+import { CustomerService } from "@shared/services/customer.service";
 
 @Component({
   selector: "app-create-credit-note",
@@ -47,7 +48,8 @@ export class CreateCreditNoteComponent implements OnInit {
     private _globalService: GlobalService,
     private _datePipe: DatePipe,
     private _router: Router,
-    private _creditNoteService: CreditNoteService
+    private _creditNoteService: CreditNoteService,
+    private _customerService:CustomerService
   ) {
     this.settlements = [];
     this.voucherType = 'CR';
@@ -156,7 +158,6 @@ export class CreateCreditNoteComponent implements OnInit {
   }
 
   onSelectVoucherType() {
-    debugger
     if (this.vouchers) {
       this.filteredVouchers = this.vouchers.filter(
         (v) => v.voucherTypeId === this.voucherType
@@ -194,10 +195,9 @@ export class CreateCreditNoteComponent implements OnInit {
 
       this.progressSpinner = true;
       const postedViewModel = Object.assign({}, this.form.value);
-      postedViewModel.CustomerId = 2;
+      postedViewModel.CustomerId = this.form.value.Customer.id;
       debugger
       postedViewModel.ContractId = postedViewModel.Contract.Id;
-      debugger
       postedViewModel.DocumentDate = this._datePipe.transform(
         postedViewModel.DocumentDate,'yyyy-MM-ddTHH:mm:ss'
       );
@@ -227,11 +227,11 @@ export class CreateCreditNoteComponent implements OnInit {
 
   searchCustomers(event: any) {
     setTimeout(() => {
-      this._creditNoteService
-        .SearchCustomer(event.query)
-        .subscribe((result: IServiceResult) => {
+      this._customerService
+        .getAll(event.query)
+        .subscribe((result) => {
           this.filteredArray = [];
-          this.filteredArray = result.data;
+          this.filteredArray = result;
         });
     }, 1500);
   }

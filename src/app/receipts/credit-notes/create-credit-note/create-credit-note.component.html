@@ -66,7 +66,7 @@
                   <span class="required">*</span>
                 </div>
                 <div class="col-12 px-0">
-                  <p-autoComplete id="Customer" class="p-0 form-control" field="FullName"
+                  <p-autoComplete id="Customer" class="p-0 form-control" field="name"
                     formControlName="Customer" [suggestions]="filteredArray" (completeMethod)="searchCustomers($event)"
                     (onSelect)="onSelectCustomer($event)" (onClear)="onClear('Customer')" [forceSelection]="true"
                     [size]="30" [minLength]="1" placeholder="{{ 'Receipts.Fields.CustomerName' | translate}}"
@@ -76,7 +76,7 @@
                     <ng-template let-Customer pTemplate="item">
                       <div class="ui-helper-clearfix">
                         <div>
-                          {{ Customer.FullName }}
+                          {{ Customer.name }}
                         </div>
                       </div>
                     </ng-template>
