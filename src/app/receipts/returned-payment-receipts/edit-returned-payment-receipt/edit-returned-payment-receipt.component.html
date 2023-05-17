@@ -1,5 +1,5 @@
 <!--begin::Portlet-->
-<div class="details" *authorization="{actionName:'receipts-returned-payment-receipts-edit',pageLevel:true}">
+<div class="details">
   <div class="m-portlet m-0">
     <div class="m-portlet__head">
       <div class="m-portlet__head-caption">
@@ -28,7 +28,7 @@
                 <span class="required">*</span>
               </div>
               <div class="col-12 px-0">
-                <input class="form-control" id="id" type="text" formControlName="Id" readonly />
+                <input class="form-control" id="id" type="text" formControlName="id" readonly />
               </div>
             </div>
           </div>
@@ -42,12 +42,12 @@
               </div>
               <div class="col-12 px-0">
                 <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="{{ '1900:' + toYear }}"
-                  placeholder="{{'Receipts.Fields.ReciptDate' | translate}}" formControlName="DocumentDate"
+                  placeholder="{{'Receipts.Fields.ReciptDate' | translate}}" formControlName="documentDate"
                   dateFormat="yy-mm-dd" class="form-control calendar-form-control  p-0 " [ngClass]="{
-                    'is-invalid': submitted && form.get('DocumentDate').errors
+                    'is-invalid': submitted && form.get('documentDate').errors
                   }">
                 </p-calendar>
-                <div class="invalid-feedback" *ngIf="form.get('DocumentDate').errors?.required">
+                <div class="invalid-feedback" *ngIf="form.get('documentDate').errors?.required">
                   {{'App.Fields.RequiredField' | translate}}
                 </div>
               </div>
@@ -61,7 +61,7 @@
                 <span class="required">*</span>
               </div>
               <div class="col-12 px-0">
-                <input type="text" formControlName="SalesRepresentative" class="form-control" id="rep"
+                <input type="text" formControlName="salesRepresentative" class="form-control" id="rep"
                   placeholder="{{'Receipts.Fields.SalesRepresentive' | translate}}" [disabled]="true">
               </div>
             </div>
@@ -75,8 +75,8 @@
 
               </div>
               <div class="col-12 px-0">
-                <input class="form-control" id="RefNumber" type="text" formControlName="RefNumber" />
-                <div class="invalid-feedback " *ngIf="form.get('RefNumber').errors?.required && submitted">
+                <input class="form-control" id="RefNumber" type="text" formControlName="refNumber" />
+                <div class="invalid-feedback " *ngIf="form.get('refNumber').errors?.required && submitted">
                   {{'App.Fields.RequiredField' | translate}}
                 </div>
               </div>
@@ -91,21 +91,21 @@
                 <span class="required">*</span>
               </div>
               <div class="col-12 px-0">
-                <p-autoComplete id="Customer" class="p-0 form-control" field="FullArabicName" formControlName="Customer"
+                <p-autoComplete id="Customer" class="p-0 form-control" field="name" formControlName="customer"
                   [suggestions]="filteredArray" (onClear)="onClear('Customer')" [forceSelection]="true" [size]="30"
                   [minLength]="1" placeholder="{{'Receipts.Fields.CustomerName' | translate}}" [dropdown]="true"
                   [ngClass]="{
-                    'is-invalid': submitted && form.get('Customer').errors
+                    'is-invalid': submitted && form.get('customer').errors
                   }">
                   <ng-template let-Customer pTemplate="item">
                     <div class="ui-helper-clearfix">
                       <div>
-                        {{ Customer.FullArabicName }}
+                        {{ Customer.name }}
                       </div>
                     </div>
                   </ng-template>
                 </p-autoComplete>
-                <div class="invalid-feedback " *ngIf="form.get('Customer').errors?.required">
+                <div class="invalid-feedback " *ngIf="form.get('customer').errors?.required">
                   {{'App.Fields.RequiredField' | translate}}
                 </div>
               </div>
@@ -121,21 +121,21 @@
                 <span class="required">*</span>
               </div>
               <div class="col-12 px-0">
-                <p-autoComplete id="Contract" class="p-0 form-control" formControlName="Contract" field="SegmentId"
+                <p-autoComplete id="Contract" class="p-0 form-control" formControlName="contract" field="entityCode"
                   [suggestions]="filteredArray" (completeMethod)="filterArray($event, Contracts,'SegmentId')"
                   (onClear)="onClear('Contract')" [forceSelection]="true" [size]="30" [minLength]="1"
                   placeholder="{{'Receipts.Fields.ContractId' | translate}}" [dropdown]="true" [ngClass]="{
-                      'is-invalid': submitted && form.get('Contract').errors
+                      'is-invalid': submitted && form.get('contract').errors
                     }">
                   <ng-template let-Contract pTemplate="item">
                     <div class="ui-helper-clearfix">
                       <div>
-                        {{ Contract.SegmentId }}
+                        {{ Contract.entityCode }}
                       </div>
                     </div>
                   </ng-template>
                 </p-autoComplete>
-                <div class="invalid-feedback " *ngIf="form.get('Contract').errors?.required">
+                <div class="invalid-feedback " *ngIf="form.get('contract').errors?.required">
                   {{'App.Fields.RequiredField' | translate}}
                 </div>
               </div>
@@ -157,7 +157,7 @@
                   <div class="col-12 px-0">
                     <div class="m-checkbox-inline">
                       <label class="m-checkbox m-checkbox--bold m-checkbox--state-brand">
-                        <input formControlName="IsCashBox" type="checkbox"
+                        <input formControlName="isCashBox" type="checkbox"
                           (change)="IsCashOrWithdraw()" />{{'Receipts.Fields.Cash' | translate}}
                         <span></span>
                       </label>
@@ -175,21 +175,21 @@
                       <span class="required">*</span>
                     </div>
                     <div class="col-12 px-0">
-                      <p-autoComplete formControlName="CashBox" class="p-0 form-control" field="FullArabicName"
-                        [suggestions]="filteredArray" (completeMethod)="filterArray($event, viewModel?.CashBoxs)"
+                      <p-autoComplete formControlName="cashBox" class="p-0 form-control" field="name"
+                        [suggestions]="filteredArray" (completeMethod)="filterArray($event, cashboxs,'name')"
                         [forceSelection]="true" [size]="30" [minLength]="1"
                         placeholder="{{'Receipts.Fields.SafeNumber' | translate}}" [dropdown]="true" [ngClass]="{
-                              'is-invalid': submitted && form.get('CashBox').errors
+                              'is-invalid': submitted && form.get('cashBox').errors
                             }">
                         <ng-template let-CashBox pTemplate="item">
                           <div class="ui-helper-clearfix">
                             <div>
-                              {{ CashBox.FullArabicName }}
+                              {{ CashBox.name }}
                             </div>
                           </div>
                         </ng-template>
                       </p-autoComplete>
-                      <div class="invalid-feedback " *ngIf="form.get('CashBox').errors?.required && submitted">
+                      <div class="invalid-feedback " *ngIf="form.get('cashBox').errors?.required && submitted">
                         {{'App.Fields.RequiredField' | translate}}
                       </div>
                     </div>
@@ -204,7 +204,7 @@
                       <span class="required">*</span>
                     </div>
                     <div class="col-12 px-0">
-                      <input formControlName="CashBoxAmount" type="number" class="form-control" id="paymentValue"
+                      <input formControlName="cashBoxAmount" type="number" class="form-control" id="paymentValue"
                         placeholder="{{'Receipts.Fields.PayedCash' | translate}}" (input)="calculate()">
                     </div>
                   </div>
@@ -219,7 +219,7 @@
                   <div class="col-12 px-0">
                     <div class="m-checkbox-inline">
                       <label class="m-checkbox m-checkbox--bold m-checkbox--state-brand">
-                        <input formControlName="IsBankWithdraw" type="checkbox"
+                        <input formControlName="isBankWithdraw" type="checkbox"
                           (change)="IsCashOrWithdraw()" />{{'Receipts.Fields.BankOrTransfer' | translate}}
                         <span></span>
                       </label>
@@ -237,21 +237,21 @@
                       <span class="required">*</span>
                     </div>
                     <div class="col-12 px-0">
-                      <p-autoComplete formControlName="BankAccount" class="p-0 form-control" field="FullArabicName"
-                        [suggestions]="filteredArray" (completeMethod)="filterArray($event, viewModel?.BankAccounts)"
+                      <p-autoComplete formControlName="bankAccount" class="p-0 form-control" field="name"
+                        [suggestions]="filteredArray" (completeMethod)="filterArray($event, bankAccounts,'name')"
                         [forceSelection]="true" [size]="30" [minLength]="1"
                         placeholder="{{'Receipts.Fields.BankAccountNumber' | translate}}" [dropdown]="true" [ngClass]="{
-                              'is-invalid': submitted && form.get('BankAccount').errors
+                              'is-invalid': submitted && form.get('bankAccount').errors
                             }">
                         <ng-template let-BankAccount pTemplate="item">
                           <div class="ui-helper-clearfix">
                             <div>
-                              {{ BankAccount.FullArabicName }}
+                              {{ BankAccount.name }}
                             </div>
                           </div>
                         </ng-template>
                       </p-autoComplete>
-                      <div class="invalid-feedback " *ngIf="form.get('BankAccount').errors?.required && submitted">
+                      <div class="invalid-feedback " *ngIf="form.get('bankAccount').errors?.required && submitted">
                         {{'App.Fields.RequiredField' | translate}}
                       </div>
                     </div>
@@ -266,16 +266,11 @@
                       <span class="required">*</span>
                     </div>
                     <div class="col-12 px-0">
-                      <input type="number" formControlName="BankWithdrawAmount" class="form-control"
+                      <input type="number" formControlName="bankWithdrawAmount" class="form-control"
                         id="transferPaymentValue" placeholder="{{'Receipts.Fields.DepositValue' | translate}}"
                         (input)="calculate()"
                         >
-                        <!--TODO-->
-                        <!-- <input type="number" formControlName="BankWithdrawAmount" class="form-control"
-                        id="transferPaymentValue" placeholder="{{'Receipts.Fields.DepositValue' | translate}}"
-                        (input)="calculate()"
-                        [ngClass]="{'is-invalid': submitted && form.get('BankWithdrawAmount').errors}?.pattern"> -->
-                        <div class="invalid-feedback"  *ngIf="form.get('BankWithdrawAmount').errors?.pattern && submitted">
+                        <div class="invalid-feedback"  *ngIf="form.get('bankWithdrawAmount').errors?.pattern && submitted">
                           {{"Customers.Fields.NumberShouldBePositive" | translate}}
                         </div>
                     </div>
@@ -455,7 +450,7 @@
                 <label for="remark" class="form-control-label">{{'App.Fields.Notes' | translate}}</label>
               </div>
               <div class="col-12 px-0">
-                <textarea formControlName="ArabicRemarks" class="form-control" id="remark"></textarea>
+                <textarea formControlName="arabicRemarks" class="form-control" id="remark"></textarea>
               </div>
             </div>
           </div>

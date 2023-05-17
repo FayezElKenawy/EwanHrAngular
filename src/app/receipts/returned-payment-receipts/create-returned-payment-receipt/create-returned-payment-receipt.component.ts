@@ -272,7 +272,6 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
     if (this.selectedVoucher && this.refundValue > 0) {
       const settlement = {
         creditReceivableId: this.selectedVoucher.id,
-        //creditReceivableId: this.selectedVoucher.voucherId,
         creditReceivableVoucherTypeId: this.selectedVoucher.voucherTypeId,
         refundAmount: this.refundValue,
         netValue: this.selectedVoucher.netValue,
