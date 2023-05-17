@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SalesPeriodService {
-  serviceUrl: string = environment.financeURL + '/v1/SalesPeriod';
+  serviceUrl: string = environment.financeSectorAPIURL + '/v1/SalesPeriod';
 
   constructor(
     private _http: HttpClient

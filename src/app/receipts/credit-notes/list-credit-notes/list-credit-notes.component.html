@@ -5,7 +5,7 @@
       <h3 class="m-subheader__title p-0">{{ 'Receipts.Titles.CreditNotesListPage' | translate}}</h3>
     </div>
     <div>
-      <button *authorization="'receipts-credit-notes-create'" routerLink="/receipts/create-credit-note"
+      <button *authorization="'receipts-credit-notes-create'" routerLink="/finance/receipts/create-credit-note"
         type="button" class="btn btn-brand btn-cons">
         {{ 'Receipts.Buttons.CreditNoteCreate' | translate}}
       </button>
@@ -18,7 +18,7 @@
         <div class="m_datatable w-100 list ">
           <p-table #dt [value]="dataItems" [paginator]="true" [totalRecords]="pagingMetaData?.totalCount"
           [rows]="pagingMetaData?.pageSize" [first]="pagingMetaData?.pageNumber" [autoLayout]="true"
-          [responsive]="true" [loading]="progressSpinner" [columns]="cols" [(contextMenuSelection)]="selectedItem"
+          [responsive]="true" [columns]="cols" [(contextMenuSelection)]="selectedItem"
           [lazy]="true" (onLazyLoad)="_dynamicSearchService.lazy($event, searchModel, getData.bind(this))"
           [rowsPerPageOptions]="[10, 20, 30]" [scrollable]="true" frozenWidth="6.5%" class="w-100">
             <!-- <ng-template pTemplate="colgroup" let-columns>
@@ -129,7 +129,7 @@
                 </td>
               </tr>
             </ng-template>
-            <ng-template pTemplate="emptymessage" let-columns *ngIf="!progressSpinner">
+            <ng-template pTemplate="emptymessage" let-columns >
               <tr>
                 <td [attr.colspan]="columns?.length" class="empty-grid-table">
                   <span class="emp-msg">

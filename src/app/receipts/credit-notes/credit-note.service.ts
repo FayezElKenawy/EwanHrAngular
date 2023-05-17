@@ -23,7 +23,7 @@ export class CreditNoteService {
   ) {}
 
   getAll(searchModel: SearchModel): Observable<PagedList> {
-    return this._http.post<PagedList>(`${this.serviceUrl}/CreditNote/GetPagedList`, searchModel)
+    return this._http.post<PagedList>(`${this.serviceUrl}/v1/CreditNote/GetPagedList`, searchModel)
   }
 
   getCreate(): Observable<IServiceResult> {
@@ -52,7 +52,7 @@ export class CreditNoteService {
   }
 
   create(postedVM: any): Observable<any> {
-      return this._http.post(`${this.serviceUrl}/CreditNote/Create`, postedVM)
+      return this._http.post(`${this.serviceUrl}/v1/CreditNote/Create`, postedVM)
   }
 
   edit(postedVM: any): Observable<IServiceResult> {

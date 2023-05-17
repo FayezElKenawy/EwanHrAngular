@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class CashboxService {
 
-  serviceUrl: string = environment.financeURL + '/v1/CashBox';
+  serviceUrl: string = environment.financeSectorAPIURL + '/v1/CashBox';
 
   constructor(
     private _http: HttpClient

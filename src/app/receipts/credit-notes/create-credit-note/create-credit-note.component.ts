@@ -228,7 +228,7 @@ export class CreateCreditNoteComponent implements OnInit {
                 "Receipts.Messages.creditNoteAdded"
               )
             );
-            this._router.navigate(["/receipts/credit-notes"]);
+            this._router.navigate(["/finance/receipts/credit-notes"]);
           }
         },
         null,

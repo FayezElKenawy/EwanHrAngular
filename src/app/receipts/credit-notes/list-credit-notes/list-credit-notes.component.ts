@@ -26,7 +26,6 @@ export class ListCreditNotesComponent implements OnInit {
   cols: any;
   menuItems: MenuItem[];
   selectedItem: any;
-  progressSpinner = true;
   pagingMetaData: PagingMetaData;
   searchForm: FormGroup;
   searchModel: SearchModel = {};
@@ -111,14 +110,11 @@ export class ListCreditNotesComponent implements OnInit {
   }
 
   getData() {
-    this.progressSpinner = true;
     this._creditNotService.getAll(this.searchModel).subscribe(
       (result:PagedList) => {
           this.dataItems = result.entities;
           this.pagingMetaData = result.pagingData;
       },
-      () => (this.progressSpinner = false),
-      () => (this.progressSpinner = false)
     );
   }
 

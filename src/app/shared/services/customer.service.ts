@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CustomerService {
-  serviceUrl: string = environment.financeURL + '/v1/Customer';
+  serviceUrl: string = environment.financeSectorAPIURL + '/v1/Customer';
 
   constructor(
     private _http: HttpClient
