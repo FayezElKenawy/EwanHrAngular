@@ -48,69 +48,9 @@ export class ReturnPaymentReceiptService {
     });
   }
 
-  create(postedVM: any): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return Observable.create((observer) => {
-      this._http
-        .post(`${this.serviceUrl}/Create`, postedVM)
-        .pipe(catchError(this._globalService.errorHandler))
-        .subscribe(
-          (resultVM: IResultVM) => {
-            if (resultVM.IsSuccess) {
-              serviceResult.data = resultVM.Data;
-              this._globalService.messageAlert(
-                MessageType.Success,
-                "App.Messages.SavedSuccessfully",
-                true
-              );
-            } else {
-              if (
-                resultVM.FailedReason === "current-balance-less-than-totalpaid"
-              ) {
-
-                var translatedMessage = this._globalService
-                                        .translateWordByKey("Receipts.Messages.CurrentBalanceLessThanTotalpaid")
-                                        + resultVM.Data;
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  translatedMessage
-                );
-              } else if (resultVM.FailedReason === "failed-in-segments") {
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  "App.Messages.FailedInSegments",
-                  true
-                );
-              }else if (resultVM.FailedReason === "invalid-date") {
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  "App.Messages.DocumentDateIsInvalid",
-                  true
-                );
-              } else if (resultVM.FailedReason === "period-no-not-exist") {
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  "App.Messages.NoPeriodInSegments",
-                  true
-                );
-              }else if(resultVM.Message){
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  resultVM.Message
-                );
-              }
-            }
-            serviceResult.isSuccess = resultVM.IsSuccess;
-            observer.next(serviceResult);
-            observer.complete();
-            return observer;
-          },
-          () => {
-            observer.complete();
-            return observer;
-          }
-        );
-    });
+  create(postedVM: any): Observable<any> {
+    debugger
+    return this._http.post(`${this.serviceUrl}/Create`, postedVM);
   }
 
   edit(postedVM: any): Observable<IServiceResult> {
