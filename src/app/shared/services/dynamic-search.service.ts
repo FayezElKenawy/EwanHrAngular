@@ -14,9 +14,9 @@ export class DynamicSearchService {
     'contain',
     'notContain',
     'equal',
-    'notEqual',
-    "startsWith",
-    "endsWith"
+    'notEqual'
+    // "startsWith",
+    // "endsWith"
   ];
 
   constructor(private _formBuilder: FormBuilder) {}
@@ -88,7 +88,7 @@ export class DynamicSearchService {
     debugger;
     const x = searchForm.get('searchFields') as FormArray;
     for (let index = 0; index < cols.length; index++) {
-      if (cols[index].searchable) {
+      if (cols[index].searchable != false) {
         searchForm
           .get('searchFields')
           .get(index.toString())

@@ -207,7 +207,7 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
             this.form.reset();
             // this.Oncancel.emit();
             this._router.navigate([
-              "/individual/receipts/returned-payment-receipts",
+              "/receipts/returned-payment-receipts",
             ]);
           }
         },

@@ -5,7 +5,7 @@ import { AuthGuard } from '@shared/guards/auth.guard';
 
 const routes: Routes = [
   {
-    path: 'auth',
+    path: 'finance/auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   },
 
@@ -15,17 +15,17 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
   },
   {
-    path: 'home',
+    path: 'finance',
     canActivateChild: [AuthGuard],
     loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
   },
-  // {
-  //   // path: 'sales',
-  //   // canActivateChild: [AuthGuard],
-  //   // loadChildren: () => import('./sales/sales.module').then(m => m.SalesModule)
-  // },
   {
-    path: 'individual/receipts',
+    path: 'finance/home',
+    canActivateChild: [AuthGuard],
+    loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
+  },
+  {
+    path: 'finance/receipts',
     canActivateChild: [AuthGuard],
     loadChildren: () => import('./receipts/receipts.module').then(m => m.ReceiptsModule)
   },

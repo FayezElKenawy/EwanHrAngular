@@ -238,7 +238,7 @@ export class EditCreditNoteComponent implements OnInit {
           if (result.isSuccess) {
             this.submitted = false;
             this.form.reset();
-            this._router.navigate(["/individual/receipts/credit-notes"]);
+            this._router.navigate(["/receipts/credit-notes"]);
           }
         },
         null,

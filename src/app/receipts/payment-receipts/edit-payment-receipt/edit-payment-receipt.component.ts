@@ -269,7 +269,7 @@ export class EditPaymentReceiptComponent implements OnInit {
           if (result.isSuccess) {
             this.submitted = false;
             this.form.reset();
-            this._router.navigate(["/individual/receipts/payment-receipts"]);
+            this._router.navigate(["/receipts/payment-receipts"]);
           }
         },
         null,

@@ -211,7 +211,7 @@ export class CreateCreditNoteComponent implements OnInit {
             this.submitted = false;
             this.form.reset();
             // this.Oncancel.emit();
-            this._router.navigate(["/individual/receipts/credit-notes"]);
+            this._router.navigate(["/receipts/credit-notes"]);
           }
         },
         null,

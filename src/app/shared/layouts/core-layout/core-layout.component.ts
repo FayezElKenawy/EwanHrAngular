@@ -44,7 +44,7 @@ export class CoreLayoutComponent implements OnInit {
     this.coreUrl = environment.coreUrl;
     this.hideContent = true;
 
-    this._AuthService.getUserMenuItems(3).subscribe(
+    this._AuthService.getUserMenuItems(13).subscribe(
       (serviceResult: IServiceResult) => {
         this.menus = serviceResult.data;
         this.mainmenus = Object.assign(

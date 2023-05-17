@@ -122,7 +122,7 @@ export class ListCreditNotesComponent implements OnInit {
   }
 
   setId(id: string) {
-    this._router.navigate(["/individual/receipts/details-credit-note", id]);
+    this._router.navigate(["/receipts/details-credit-note", id]);
   }
 
   getData() {

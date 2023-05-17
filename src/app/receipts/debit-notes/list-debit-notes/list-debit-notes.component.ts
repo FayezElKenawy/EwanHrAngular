@@ -120,7 +120,7 @@ export class ListDebitNotesComponent implements OnInit {
     this.operators = this._dynamicSearchService.operators;
   }
   setId(id: string) {
-    this._router.navigate(["/individual/receipts/edit-debit-note", id]);
+    this._router.navigate(["/receipts/edit-debit-note", id]);
   }
 
   getData() {

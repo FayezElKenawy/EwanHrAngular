@@ -274,7 +274,7 @@ export class GlobalService {
             : `You don't have permission`,
         confirmButtonText: currentLang === "ar" ? "اغلاق" : "Close",
       });
-      document.location.href = environment.individualSectorURL + "/auth/login";
+      document.location.href = environment.individualSectorURL + "/finance/auth/login";
     } else if (error.status === 0) {
       Swal({
         type: "error",

@@ -77,7 +77,7 @@ export class ListPaymentReceiptsComponent implements OnInit {
       {
         field: 'bankName',
         header: 'Receipts.Fields.BankAccountName',
-        customSearchField:"Bank.Name",
+        customSearchField:"BankAccount.Name",
         isLocalized:true,
       },
       {
@@ -130,7 +130,7 @@ export class ListPaymentReceiptsComponent implements OnInit {
   }
 
   setId(id: string) {
-    this._router.navigate(['/individual/receipts/edit-payment-receipts', id]);
+    this._router.navigate(['/receipts/edit-payment-receipts', id]);
   }
 
   showReport(paymentId) {
