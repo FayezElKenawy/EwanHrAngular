@@ -349,7 +349,8 @@
             "extentionContract":"العقد الذى تم إختيارة هو ملحق لعقود أخرى",
             "TerminationConfirm":"تأكيد إنهاء العقد قبل تسديد المديونية",
             "customerCode":"رقم العميل",
-            "OrderId": "رقم طلب الخدمة"
+            "OrderId": "رقم طلب الخدمة",
+            "CostCenter": "مراكز التكلفة"
         },
         "Buttons": {
             "CreditNoteCreate": "اضف اشعار خصم",

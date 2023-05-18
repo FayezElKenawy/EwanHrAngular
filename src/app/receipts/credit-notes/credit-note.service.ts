@@ -26,10 +26,10 @@ export class CreditNoteService {
   getAll(searchModel: SearchModel): Observable<PagedList> {
 
     if(searchModel.searchFields){
-      searchModel.searchFields.push({fieldName:'sectorTypeId',operator:Operators.Equal,value:'01-02'})
+      searchModel.searchFields.push({fieldName:'sectorTypeId',operator:Operators.Equal,value:this._globalService.getSectorType()})
     }else{
       searchModel.searchFields=[];
-      searchModel.searchFields.push({fieldName:'sectorTypeId',operator:Operators.Equal,value:'01-02'})
+      searchModel.searchFields.push({fieldName:'sectorTypeId',operator:Operators.Equal,value:this._globalService.getSectorType()})
     }
 
     return this._http.post<PagedList>(`${this.serviceUrl}/v1/CreditNote/GetPagedList`, searchModel)
@@ -244,6 +244,6 @@ export class CreditNoteService {
   }
 
   getCostElements():Observable<any>{
-    return this._http.get(`${this.serviceUrl}/v1/CostElement/GetSelectList`)
+    return this._http.get(`${this.serviceUrl}/v1/CostElement/GetSelectList?sectorId=${this._globalService.getSectorType()}`)
   }
 }

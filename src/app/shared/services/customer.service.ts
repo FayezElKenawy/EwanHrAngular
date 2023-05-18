@@ -18,4 +18,10 @@ export class CustomerService {
       params: { searchTerm: searchTerm },
     });
   }
+
+  getCustomersBySectorId(sectorId:string, searchTerm:string):Observable<any>{
+    return this._http.get<any>(`${this.serviceUrl}/GetCustomersBySectorId`, {
+      params: { sectorId: sectorId , searchTerm: searchTerm },
+    });
+  }
 }
