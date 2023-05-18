@@ -325,7 +325,8 @@
             "NetValueAfterTax": "Net Value After Tax",
             "CustomerNotifications":"Customer Notifications",
             "TerminationConfirm":"Termination Confirmation Before Pay Indebtedness",
-            "OrderId": "Order Number"
+            "OrderId": "Order Number",
+            "CostCenter": "CostCenter"
         },
         "Buttons": {
             "CreditNoteCreate": "Add Credit Note",

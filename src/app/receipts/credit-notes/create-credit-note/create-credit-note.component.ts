@@ -8,6 +8,7 @@ import { IServiceResult } from "@shared/interfaces/results";
 import { CustomerService } from "@shared/services/customer.service";
 import { ContractService } from "@shared/services/contract.service";
 import { SalesPeriodService } from "src/app/master-data/services/sales-period.service";
+import { CostCenterService } from "@shared/services/cost-center.service";
 
 @Component({
   selector: "app-create-credit-note",
@@ -52,7 +53,7 @@ export class CreateCreditNoteComponent implements OnInit {
     private _router: Router,
     private _creditNoteService: CreditNoteService,
     private _customerService: CustomerService,
-    private _contractService: ContractService,
+    private _costCenterService: CostCenterService,
     private _salesPeriodService: SalesPeriodService
   ) {
     this.settlements = [];
@@ -61,7 +62,7 @@ export class CreateCreditNoteComponent implements OnInit {
 
   ngOnInit() {
 
-    this.sectorId = "01-01"
+    this.sectorId = this._globalService.getSectorType();
     this.createForm();
     this.getCostElements();
     this.defCols();
@@ -263,8 +264,7 @@ export class CreateCreditNoteComponent implements OnInit {
     this.selectedVoucher = undefined;
     switch (this.sectorId) {
       case '01-01':
-        this._contractService
-          .getOrdersByCustomerCode(event.code)
+        this._costCenterService.getAll(event.code)
           .subscribe((result) => {
             this.progressSpinner = false;
             this.filteredArray = [];
@@ -281,7 +281,7 @@ export class CreateCreditNoteComponent implements OnInit {
         break;
 
       case '01-02':
-        this._contractService
+        this._costCenterService
           .getAll(event.code)
           .subscribe((result) => {
             this.progressSpinner = false;
