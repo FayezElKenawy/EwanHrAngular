@@ -49,7 +49,7 @@
               "src/web.config",
               "src/manifest.json"
             ],
-            "styles": ["src/styles.scss"],
+            "styles": ["src/styles.css","src/styles.scss"],
             "scripts": ["./node_modules/signalr/jquery.signalR.min.js"],
             "vendorChunk": true,
             "extractLicenses": false,
@@ -121,6 +121,7 @@
               "src/assets"
             ],
             "styles": [
+              "src/styles.css",
               "src/styles.scss"
             ],
             "scripts": []

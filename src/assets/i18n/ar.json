@@ -20,7 +20,13 @@
             "DevelopingVersion": "نسخة التطوير",
             "TrialVersion": "نسخة تجريبية",
             "TestingVersion": "نسخة الإختبار",
-            "LaborerFileReplaceData": "بيانات الاستبدال"
+            "LaborerFileReplaceData": "بيانات الاستبدال",
+            "mymaidSector":"ماى ميد",
+            "mymaidSectorDesc":"النظام المالى لماى ميد",
+            "individualSector":"قطاع الأفراد",
+            "individualSectorDesc":"النظام المالى للأفراد",
+            "businessSector":"قطاع الأعمال",
+            "businessSectorDesc":"النظام المالى لقطاع الأعمال"
         },
         "Fields": {
             "SearchAllBranch": "البحث فى جميع الفروع",
