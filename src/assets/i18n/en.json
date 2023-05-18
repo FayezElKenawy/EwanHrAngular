@@ -20,7 +20,13 @@
             "DevelopingVersion": "Developing Version",
             "TrialVersion": "Trail Version",
             "TestingVersion": "Testing Version",
-            "LaborerFileReplaceData": "Replacement Data"
+            "LaborerFileReplaceData": "Replacement Data",
+            "mymaidSector":"My Maid",
+            "mymaidSectorDesc":"My Maid Financial Sector",
+            "individualSector":"Individual Sector",
+            "individualSectorDesc":"Financial System for Individual Sector",
+            "businessSector":"Business Sector",
+            "businessSectorDesc":"Financial System For Business Sector"
         },
         "Fields": {
             "SearchAllBranch": "Search in All Branches",

@@ -8,12 +8,14 @@ const routes: Routes = [
   {
     path: '',
     children: [
-      { path: 'home', component: AboutComponent },
-      { path: '', component: SectorsComponent },
+      { path: 'home', component: AboutComponent },  
       { path: 'about', component: AboutComponent },
       { path: '', redirectTo: '', pathMatch: 'full' }
     ],
     component: CoreLayoutComponent
+  },
+  {
+    path: 'financeSectors', component: SectorsComponent
   }
 ];
 
