@@ -13,6 +13,9 @@ import { PagedList } from "@shared/interfaces/paged-list";
 import { SearchType } from "@shared/enum/searchType.enum";
 import { ColumnPipeType } from "@shared/enum/column-pipe.enum";
 import { ColumnPipeFormat } from "@shared/enum/columns-pipe-format.enum";
+import { PageListConfig } from "@shared/models/page-list-config.model";
+import { environment } from "@environments/environment";
+import { GlobalService } from "@shared/services/global.service";
 
 @Component({
   selector: "app-list-credit-notes",
@@ -20,102 +23,102 @@ import { ColumnPipeFormat } from "@shared/enum/columns-pipe-format.enum";
   styleUrls: ["./list-credit-notes.component.scss"]
 })
 export class ListCreditNotesComponent implements OnInit {
+  
   @ViewChild(ReportModelViewerComponent)
   reportchild: ReportModelViewerComponent;
-  dataItems: any[];
-  cols: any;
-  menuItems: MenuItem[];
-  selectedItem: any;
-  pagingMetaData: PagingMetaData;
-  searchForm: FormGroup;
-  searchModel: SearchModel = {};
-  operators: string[];
+
+  pageListConfig: PageListConfig;
   constructor(
-    private _creditNotService: CreditNoteService,
-    private _router: Router,
     public _dynamicSearchService: DynamicSearchService,
-    private authService:AuthService
+    private authService:AuthService,
+    private globalService: GlobalService
   ) { }
 
   ngOnInit() {
-
-    this.createCols()
-
-    // build form for search
-    this.searchForm = this._dynamicSearchService.buildSearchForm(this.cols);
-    this.operators = this._dynamicSearchService.operators;
+       this.createPageListConfig()
   }
 
-  createCols(){
-    this.cols = [
-      {
-        field: "code",
-        header: "Receipts.Fields.CreditNoteId",
-      },
-      {
-        field: "documentDate",
-        header: "Receipts.Fields.CreditNoteDate",
-        searchType:SearchType.Date,
-        pipe: ColumnPipeType.Date,
-        pipeFormat: ColumnPipeFormat.DatePipeFormat,
-      },
-      {
-        field: 'customerCode',
-        header: 'Receipts.Fields.customerCode',
-        customSearchField:"Customer.Code",
-      },
-      {
-        field: "customerFullName",
-        header: "Receipts.Fields.CustomerName",
-        customSearchField:"Customer.Name",
-        isLocalized:true,
-      },
-      {
-        field: 'entityCode',
-        header: 'Receipts.Fields.ContractId',
-      },
-      // {
-      //   field: "CreatedBy",
-      //   header: "Sales.Fields.CreatedBy",
-      //   hidden: false,
-      //   searchable: true,
-      //   searchType: "text"
-      // },
-      {
-        field: "branchName",
-        header: "App.Fields.Branch",
-        customSearchField:"Bank.Name",
-        isLocalized:true,
-      },
-      {
-        field: "netValueAfterTax",
-        header: "Receipts.Fields.CreditNoteValue",
-        pipe:ColumnPipeType.Currency,
-      },
-      {
-        field: "tolalPaid",
-        header: "Receipts.Fields.InvoiceGetPaid",
-        pipe:ColumnPipeType.Currency,
-      },
-      {
-        field: "otalRefund",
-        header: "Receipts.Fields.AllRetreived",
-        pipe:ColumnPipeType.Currency,
-      }
-    ];
-  }
-
-  setId(id: string) {
-    this._router.navigate(["/receipts/details-credit-note", id]);
-  }
-
-  getData() {
-    this._creditNotService.getAll(this.searchModel).subscribe(
-      (result:PagedList) => {
-          this.dataItems = result.entities;
-          this.pagingMetaData = result.pagingData;
-      },
-    );
+  createPageListConfig() {
+    this.pageListConfig = {
+      pageAuthorization: 'receipts-credit-notes-list',
+      pageTitle: 'Receipts.Titles.CreditNotesListPage',
+      createAuthorization: 'receipts-credit-notes-create',
+      createButtonTitle: 'Receipts.Buttons.CreditNoteCreate',
+      createLink: '/finance/receipts/create-credit-note',
+      getDataAPIURL: `${environment.financeSectorAPIURL}/v1/CreditNote/GetPagedList`,
+      searchFields: [
+        {
+          fieldName: 'SectorTypeId',
+          operator: 'equal',
+          value: this.globalService.getSectorType()
+        },
+      ],
+      actions: [
+        {
+          authorization: 'receipts-payment-receipts-print',
+          title: 'App.Buttons.Print',
+          callBack: (dataItem) => {
+            this.showReport(dataItem.id);
+          },
+        },
+      ],
+       cols:[
+        {
+          field: "code",
+          header: "Receipts.Fields.CreditNoteId",
+        },
+        {
+          field: "documentDate",
+          header: "Receipts.Fields.CreditNoteDate",
+          searchType:SearchType.Date,
+          pipe: ColumnPipeType.Date,
+          pipeFormat: ColumnPipeFormat.DatePipeFormat,
+        },
+        {
+          field: 'customerCode',
+          header: 'Receipts.Fields.customerCode',
+          customSearchField:"Customer.Code",
+        },
+        {
+          field: "customerFullName",
+          header: "Receipts.Fields.CustomerName",
+          customSearchField:"Customer.Name",
+          isLocalized:true,
+        },
+        {
+          field: 'entityCode',
+          header: 'Receipts.Fields.ContractId',
+        },
+        // {
+        //   field: "CreatedBy",
+        //   header: "Sales.Fields.CreatedBy",
+        //   hidden: false,
+        //   searchable: true,
+        //   searchType: "text"
+        // },
+        {
+          field: "branchName",
+          header: "App.Fields.Branch",
+          customSearchField:"Bank.Name",
+          isLocalized:true,
+        },
+        {
+          field: "netValueAfterTax",
+          header: "Receipts.Fields.CreditNoteValue",
+          pipe:ColumnPipeType.Currency,
+        },
+        {
+          field: "tolalPaid",
+          header: "Receipts.Fields.InvoiceGetPaid",
+          pipe:ColumnPipeType.Currency,
+        },
+        {
+          field: "otalRefund",
+          header: "Receipts.Fields.AllRetreived",
+          pipe:ColumnPipeType.Currency,
+        }
+      ]
+    };
   }
 
   showReport(creditReceivableId) {

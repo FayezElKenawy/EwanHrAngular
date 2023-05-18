@@ -76,7 +76,7 @@ export class CreateCreditNoteComponent implements OnInit {
   defCols() {
     this.vouchersCols = [
       {
-        field: "id",
+        field: "voucherCode",
         header: "App.Fields.DocumentId"
       },
       {
@@ -122,7 +122,7 @@ export class CreateCreditNoteComponent implements OnInit {
     ];
     this.settlementCols = [
       {
-        field: "DebitReceivableId",
+        field: "VoucherCode",
         header: "Receipts.Fields.DocumentId",
         hidden: false,
       },
@@ -318,8 +318,10 @@ export class CreateCreditNoteComponent implements OnInit {
   addSettlement() {
     this.added = true;
     if (this.selectedVoucher && this.paidValue > 0) {
+      debugger
       const settlement = {
         Id: this.selectedVoucher.id,
+        VoucherCode:this.selectedVoucher.voucherCode,
         DebitReceivableId: this.selectedVoucher.id,
         DebitReceivableVoucherTypeId: this.selectedVoucher.voucherTypeId,
         PaidAmount: this.paidValue,
