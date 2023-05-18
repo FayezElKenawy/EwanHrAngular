@@ -51,6 +51,10 @@ export class GlobalService {
     toastr.options.hideMethod = "fadeOut";
   }
 
+  getSectorType(){
+    return sessionStorage.getItem('SectorType');
+  }
+
   //#region Messaging
   public messageAlert(
     messageType: MessageType,
