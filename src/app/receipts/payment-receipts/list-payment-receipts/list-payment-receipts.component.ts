@@ -15,6 +15,7 @@ import { ColumnPipeFormat } from '@shared/enum/columns-pipe-format.enum';
 import { SearchType } from '@shared/enum/searchType.enum';
 import { PageListConfig } from '@shared/models/page-list-config.model';
 import { environment } from '@environments/environment';
+import { GlobalService } from '@shared/services/global.service';
 
 @Component({
   selector: 'app-list-payment-receipts',
@@ -30,7 +31,8 @@ export class ListPaymentReceiptsComponent implements OnInit {
   constructor(
     public _dynamicSearchService: DynamicSearchService,
     private _router: Router,
-    private auth: AuthService
+    private auth: AuthService,
+    private globalService: GlobalService
   ) {}
 
   ngOnInit() {
@@ -45,6 +47,13 @@ export class ListPaymentReceiptsComponent implements OnInit {
       createButtonTitle: 'Receipts.Buttons.PaymentReceiptCreate',
       createLink: '/finance/receipts/create-payment-receipts',
       getDataAPIURL: `${environment.financeSectorAPIURL}/v1/PaymentReceipt/GetPagedList`,
+      searchFields: [
+        {
+          fieldName: 'SectorTypeId',
+          operator: 'equal',
+          value: this.globalService.getSectorType()
+        },
+      ],
       actions: [
         {
           authorization: 'receipts-payment-receipts-edit',
