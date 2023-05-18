@@ -11,7 +11,9 @@ declare let $;
 })
 export class SectorsComponent implements OnInit {
   env: any = {};
-  modules: any[] = [];
+  modules: any[] = [
+    {URLPath:'/house-receipts/credit-notes',IconFont:"../../../assets/images/cards/hour.png",Name:"asd",Description:"asd"}
+  ];
   CompanyLogoText: string = this._globalService.systemSettingsGetValues(
     'CompanyLogo'
   ).Value;

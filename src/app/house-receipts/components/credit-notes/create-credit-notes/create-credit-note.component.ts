@@ -13,7 +13,7 @@ import { CreditNoteService } from 'src/app/receipts/credit-notes/credit-note.ser
   templateUrl: './create-credit-notes.component.html',
   styleUrls: ['./create-credit-notes.component.scss']
 })
-export class CreateCreditNotesComponent implements OnInit {
+export class CreateCreditNoteComponent implements OnInit {
   vouchersCols: any[] = [];
   form: FormGroup;
   viewModel: any;
@@ -213,7 +213,7 @@ export class CreateCreditNotesComponent implements OnInit {
       postedViewModel.NetValue = this.NetVal;
       debugger
       postedViewModel.EntityCode = postedViewModel.Contract.entityCode;
-      postedViewModel.SectorTypeId = "01-02"
+      postedViewModel.SectorTypeId = "01-01"
 
       this._creditNoteService.create(postedViewModel).subscribe(
         (result) => {
@@ -227,7 +227,7 @@ export class CreateCreditNotesComponent implements OnInit {
                 "Receipts.Messages.creditNoteAdded"
               )
             );
-            this._router.navigate(["/finance/receipts/credit-notes"]);
+            this._router.navigate(["/finance/house-receipts/credit-notes"]);
           }
         },
         null,

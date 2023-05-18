@@ -104,11 +104,13 @@ input, select, textarea, button{
 .p-datatable {
   font-family: 'CairoRegular', serif !important;
 }
-.p-datatable .emp-msg{
-  color: #d64a4a;
-  font-size: 1.1rem !important;
-  font-weight: 400;
-}
+
+// .p-datatable .emp-msg{
+//   color: #d64a4a;
+//   font-size: 1.1rem !important;
+//   font-weight: 400;
+// }
+
 .p-datatable-scrollable-wrapper .p-datatable-scrollable-view:first-child{
   width: 7.5% !important;
 }

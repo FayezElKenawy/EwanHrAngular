@@ -318,7 +318,8 @@
             "TolalPaid": "Tolal Paid",
             "NetValueAfterTax": "Net Value After Tax",
             "CustomerNotifications":"Customer Notifications",
-            "TerminationConfirm":"Termination Confirmation Before Pay Indebtedness"
+            "TerminationConfirm":"Termination Confirmation Before Pay Indebtedness",
+            "OrderId": "Order Number"
         },
         "Buttons": {
             "CreditNoteCreate": "Add Credit Note",

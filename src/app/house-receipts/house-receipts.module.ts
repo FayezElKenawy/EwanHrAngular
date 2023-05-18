@@ -8,13 +8,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
-import { CreateCreditNotesComponent } from './components/credit-notes/create-credit-notes/create-credit-notes.component';
+import { CreateCreditNoteComponent } from './components/credit-notes/create-credit-notes/create-credit-note.component';
 import { ListCreditNotesComponent } from './components/credit-notes/list-credit-notes/list-credit-notes.component';
 
 
 @NgModule({
   declarations: [
-    CreateCreditNotesComponent,
+    CreateCreditNoteComponent,
     ListCreditNotesComponent
   ],
   imports: [

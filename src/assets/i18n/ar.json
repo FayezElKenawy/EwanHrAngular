@@ -342,7 +342,8 @@
             "NetValueAfterTax": "إجمالى المسدد",
             "extentionContract":"العقد الذى تم إختيارة هو ملحق لعقود أخرى",
             "TerminationConfirm":"تأكيد إنهاء العقد قبل تسديد المديونية",
-            "customerCode":"رقم العميل"
+            "customerCode":"رقم العميل",
+            "OrderId": "رقم طلب الخدمة"
         },
         "Buttons": {
             "CreditNoteCreate": "اضف اشعار خصم",

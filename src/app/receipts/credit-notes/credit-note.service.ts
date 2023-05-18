@@ -1,12 +1,13 @@
 import { Injectable } from "@angular/core";
 import { environment } from "@environments/environment";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { GlobalService, MessageType } from "@shared/services/global.service";
 import { Observable } from "rxjs";
 import { IServiceResult, IResultVM, IResult } from "@shared/interfaces/results";
 import { catchError } from "rxjs/operators";
-import { SearchModel } from "@shared/interfaces/search-model";
+import { SearchField, SearchModel } from "@shared/interfaces/search-model";
 import { PagedList } from "@shared/interfaces/paged-list";
+import { Operators } from "@shared/models/Operators";
 
 @Injectable({
   providedIn: "root",
@@ -23,7 +24,16 @@ export class CreditNoteService {
   ) {}
 
   getAll(searchModel: SearchModel): Observable<PagedList> {
+
+    if(searchModel.searchFields){
+      searchModel.searchFields.push({fieldName:'sectorTypeId',operator:Operators.Equal,value:'01-02'})
+    }else{
+      searchModel.searchFields=[];
+      searchModel.searchFields.push({fieldName:'sectorTypeId',operator:Operators.Equal,value:'01-02'})
+    }
+
     return this._http.post<PagedList>(`${this.serviceUrl}/v1/CreditNote/GetPagedList`, searchModel)
+
   }
 
   getCreate(): Observable<IServiceResult> {
