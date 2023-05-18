@@ -6,41 +6,22 @@ import { Observable } from "rxjs";
 import { IServiceResult, IResultVM } from "@shared/interfaces/results";
 import { catchError } from "rxjs/operators";
 import { SearchModel } from "@shared/interfaces/search-model";
+import { PagedList } from "@shared/interfaces/paged-list";
 @Injectable({
   providedIn: "root",
 })
 export class ReturnPaymentReceiptService {
   serviceUrl = `${environment.financeSectorAPIURL}/Receipts/ReturnPaymentReceipt`;
   ContractUrl = `${environment.financeSectorAPIURL}/Sales/Contract`;
-  
+
   constructor(
     private _http: HttpClient,
     private _globalService: GlobalService
   ) {}
 
-  getAll(searchModel: SearchModel): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return Observable.create((observer) => {
-      this._http
-        .post(`${this.serviceUrl}/GetListPage`, searchModel)
-        .pipe(catchError(this._globalService.errorHandler))
-        .subscribe(
-          (resultVM: IResultVM) => {
-            if (resultVM.IsSuccess) {
-              serviceResult.data = resultVM.Data;
-            } else {
-            }
-            serviceResult.isSuccess = resultVM.IsSuccess;
-            observer.next(serviceResult);
-            observer.complete();
-            return observer;
-          },
-          () => {
-            observer.complete();
-            return observer;
-          }
-        );
-    });
+  getAll(searchModel: SearchModel): Observable<PagedList> {
+
+    return this._http.post<PagedList>(`${this.serviceUrl}/GetPagedList`, searchModel)
   }
 
   getCreate(): Observable<IServiceResult> {
@@ -87,9 +68,9 @@ export class ReturnPaymentReceiptService {
               if (
                 resultVM.FailedReason === "current-balance-less-than-totalpaid"
               ) {
-                
+
                 var translatedMessage = this._globalService
-                                        .translateWordByKey("Receipts.Messages.CurrentBalanceLessThanTotalpaid") 
+                                        .translateWordByKey("Receipts.Messages.CurrentBalanceLessThanTotalpaid")
                                         + resultVM.Data;
                 this._globalService.messageAlert(
                   MessageType.Error,
@@ -153,7 +134,7 @@ export class ReturnPaymentReceiptService {
                 resultVM.FailedReason === "current-balance-less-than-totalpaid"
               ) {
               var translatedMessage = this._globalService
-                                        .translateWordByKey("Receipts.Messages.CurrentBalanceLessThanTotalpaid") 
+                                        .translateWordByKey("Receipts.Messages.CurrentBalanceLessThanTotalpaid")
                                         + resultVM.Data;
                 this._globalService.messageAlert(
                   MessageType.Error,
@@ -215,31 +196,9 @@ export class ReturnPaymentReceiptService {
     });
   }
 
-  getVouchers(contractId: number): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return Observable.create((observer) => {
-      this._http
-        .get(`${this.serviceUrl}/GetVouchers?contractId=${contractId}`)
-        .pipe(catchError(this._globalService.errorHandler))
-        .subscribe(
-          (resultVM: IResultVM) => {
-            if (resultVM.IsSuccess) {
-              serviceResult.data = resultVM.Data;
-            } else {
-            }
-            serviceResult.isSuccess = resultVM.IsSuccess;
-            observer.next(serviceResult);
-            observer.complete();
-            return observer;
-          },
-          () => {
-            observer.complete();
-            return observer;
-          }
-        );
-    });
+  getVouchers(contractId: number): Observable<any> {
+    return this._http.get<any>(`${this.serviceUrl}/GetVouchers?contractId=${contractId}`)
   }
-
   getEdit(paymentId: string): Observable<IServiceResult> {
     const serviceResult: IServiceResult = { isSuccess: null, data: null };
     return Observable.create((observer) => {

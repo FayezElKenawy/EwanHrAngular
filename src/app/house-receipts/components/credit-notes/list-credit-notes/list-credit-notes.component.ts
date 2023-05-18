@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { MenuItem } from "primeng/api";
-import { CreditNoteService } from "../credit-note.service";
 import { Router } from "@angular/router";
 import { PagingMetaData } from "@shared/interfaces/paging-meta-data";
 import { FormGroup } from "@angular/forms";
@@ -13,6 +12,7 @@ import { PagedList } from "@shared/interfaces/paged-list";
 import { SearchType } from "@shared/enum/searchType.enum";
 import { ColumnPipeType } from "@shared/enum/column-pipe.enum";
 import { ColumnPipeFormat } from "@shared/enum/columns-pipe-format.enum";
+import { CreditNoteService } from "src/app/receipts/credit-notes/credit-note.service";
 
 @Component({
   selector: "app-list-credit-notes",

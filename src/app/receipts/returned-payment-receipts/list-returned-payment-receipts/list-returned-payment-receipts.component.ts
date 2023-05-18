@@ -6,6 +6,7 @@ import { PagingMetaData } from "@shared/interfaces/paging-meta-data";
 import { FormGroup } from "@angular/forms";
 import { SearchModel } from "@shared/interfaces/search-model";
 import { DynamicSearchService } from "@shared/services/dynamic-search.service";
+import { PagedList } from "@shared/interfaces/paged-list";
 @Component({
   selector: "app-list-returned-payment-receipts",
   templateUrl: "./list-returned-payment-receipts.component.html",
@@ -30,21 +31,20 @@ export class ListReturnedPaymentReceiptsComponent implements OnInit {
 
   ngOnInit() {
     this.cols = [
-      // { field: 'ActionButtons', header: '', hidden: false, searchable: true },
       {
-        field: "Id",
+        field: "id",
         header: "Receipts.Fields.ReciptId",
         hidden: true
       },
       {
-        field: "DebitPaymentId",
+        field: "code",
         header: "Receipts.Fields.ReciptId",
         hidden: false,
         searchable: true,
         searchType: "text"
       },
       {
-        field: "DocumentDate",
+        field: "documentDate",
         header: "Receipts.Fields.ReciptDate",
         hidden: false,
         pipe: "date",
@@ -53,42 +53,35 @@ export class ListReturnedPaymentReceiptsComponent implements OnInit {
         searchType: "date"
       },
       {
-        field: "SegmentsCustomerId",
+        field: "segmentsCustomerId",
         header: "Receipts.Fields.SegmentsCustomerId",
         hidden: false,
         searchable: true,
         searchType: "text"
       },
       {
-        field: "CustomerFullName",
+        field: "customerFullName",
         header: "Receipts.Fields.CustomerName",
         hidden: false,
         searchable: true,
         searchType: "text"
       },
-      // {
-      //   field: "CreatedBy",
-      //   header: "Sales.Fields.CreatedBy",
-      //   hidden: false,
-      //   searchable: true,
-      //   searchType: "text"
-      // },
       {
-        field: "BranchName",
+        field: "branchName",
         header: "App.Fields.Branch",
         hidden: false,
         searchable: true,
         searchType: "text"
       },
       {
-        field: "SegmentContractId",
+        field: "entityCode",
         header: "Receipts.Fields.ContractId",
         hidden: false,
         searchable: true,
         searchType: "text"
       },
       {
-        field: "NetValue",
+        field: "netValue",
         header: "Receipts.Fields.ReciptValue",
         hidden: false,
         pipe: "currency",
@@ -96,7 +89,7 @@ export class ListReturnedPaymentReceiptsComponent implements OnInit {
         searchType: "text"
       },
       {
-        field: "TotalRefund",
+        field: "totalRefund",
         header: "Receipts.Fields.AllRetreived",
         hidden: false,
         pipe: "currency",
@@ -120,11 +113,9 @@ export class ListReturnedPaymentReceiptsComponent implements OnInit {
   getData() {
     this.progressSpinner = true;
     this._returnPaymentReceiptService.getAll(this.searchModel).subscribe(
-      result => {
-        if (result.isSuccess) {
-          this.dataItems = result.data.ReturnPaymentReceipts;
-          this.pagingMetaData = result.data.PagingMetaData;
-        }
+      (result:PagedList) => {
+          this.dataItems = result.entities;
+          this.pagingMetaData = result.pagingData;
       },
       () => (this.progressSpinner = false),
       () => (this.progressSpinner = false)

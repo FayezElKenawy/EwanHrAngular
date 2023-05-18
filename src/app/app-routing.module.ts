@@ -30,6 +30,11 @@ const routes: Routes = [
     loadChildren: () => import('./receipts/receipts.module').then(m => m.ReceiptsModule)
   },
   {
+    path: 'finance/house-receipts',
+    canActivateChild: [AuthGuard],
+    loadChildren: () => import('./house-receipts/house-receipts.module').then(m => m.HouseReceiptsModule)
+  },
+  {
     path: '**',
     component: PageNotFoundComponent
   }

@@ -1,18 +1,17 @@
-import { Component, OnInit } from "@angular/core";
-import { CreditNoteService } from "../credit-note.service";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { GlobalService, MessageType } from "@shared/services/global.service";
-import { DatePipe } from "@angular/common";
-import { Router } from "@angular/router";
-import { IServiceResult } from "@shared/interfaces/results";
-import { CustomerService } from "@shared/services/customer.service";
-import { ContractService } from "@shared/services/contract.service";
-import { SalesPeriodService } from "src/app/master-data/services/sales-period.service";
+import { DatePipe } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ContractService } from '@shared/services/contract.service';
+import { CustomerService } from '@shared/services/customer.service';
+import { GlobalService, MessageType } from '@shared/services/global.service';
+import { SalesPeriodService } from 'src/app/master-data/services/sales-period.service';
+import { CreditNoteService } from 'src/app/receipts/credit-notes/credit-note.service';
 
 @Component({
-  selector: "app-create-credit-note",
-  templateUrl: "./create-credit-note.component.html",
-  styleUrls: ["./create-credit-note.component.scss"],
+  selector: 'app-create-credit-notes',
+  templateUrl: './create-credit-notes.component.html',
+  styleUrls: ['./create-credit-notes.component.scss']
 })
 export class CreateCreditNoteComponent implements OnInit {
   vouchersCols: any[] = [];
@@ -214,10 +213,10 @@ export class CreateCreditNoteComponent implements OnInit {
       postedViewModel.NetValue = this.NetVal;
       debugger
       postedViewModel.EntityCode = postedViewModel.Contract.entityCode;
-      postedViewModel.SectorTypeId = "01-02"
+      postedViewModel.SectorTypeId = "01-01"
 
       this._creditNoteService.create(postedViewModel).subscribe(
-        (result: IServiceResult) => {
+        (result) => {
           if (result) {
             this.submitted = false;
             this.form.reset();
@@ -228,7 +227,7 @@ export class CreateCreditNoteComponent implements OnInit {
                 "Receipts.Messages.creditNoteAdded"
               )
             );
-            this._router.navigate(["/finance/receipts/credit-notes"]);
+            this._router.navigate(["/finance/house-receipts/credit-notes"]);
           }
         },
         null,

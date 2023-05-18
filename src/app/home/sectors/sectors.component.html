@@ -1,0 +1,61 @@
+<style>
+  .navigation-cards-col [data-toggle='collapse'] .fa:before {
+    content: '\f068';
+  }
+
+  .navigation-cards-col [data-toggle='collapse'].collapsed .fa:before {
+    content: '\f067';
+  }
+
+  /*@media (max-width: 768px) {*/
+
+  /*.home-cards-col {*/
+
+  /*margin-top: 3rem !important;*/
+
+  /*}*/
+
+  /*}*/
+  a:hover {
+    text-decoration: none;
+  }
+
+</style>
+
+
+<!-- System Cards -->
+
+<div class="container">
+  <div class="row mx-0">
+    <div class="col-12">
+      <div class="text-center company-name py-5 my-0 mx-auto">
+        <div style='font-size: 70px'>Ewan ERP Systems</div>
+      </div>
+    </div>
+  </div>
+  <div class="row mx-0 justify-content-center">
+
+    <div class="col-lg-4 col-12 mb-5" *ngFor="let module of modules">
+
+      <a [routerLink]="module.URLPath ? module.URLPath: null" *ngIf="module?.URLPath?.includes('/')">
+        <div class="media bg-white box-shadow system-card cursor-pointer">
+          <img alt="" [src]="module?.IconFont">
+          <div class="media-body pt-3 px-2">
+            <h4 class="system-title">{{module?.Name}}</h4>
+            <p class="system-text">{{module?.Description}}</p>
+          </div>
+        </div>
+      </a>
+
+      <a *ngIf="!module?.URLPath?.includes('/')" [href]="env[module.URLPath] ? env[module.URLPath]:'#'">
+        <div class="media bg-white box-shadow system-card cursor-pointer">
+          <img alt="" [src]="module?.IconFont">
+          <div class="media-body pt-3 px-2">
+            <h4 class="system-title">{{module?.Name}}</h4>
+            <p class="system-text">{{module?.Description}}</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>

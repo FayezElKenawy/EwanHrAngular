@@ -7,6 +7,9 @@ import { IServiceResult } from "@shared/interfaces/results";
 
 import { GlobalService, MessageType } from "@shared/services/global.service";
 import { AuthService } from "@shared/services/auth.service";
+import { CashboxService } from "@shared/services/cashbox.service";
+import { BankAccountService } from "@shared/services/bank-account.service";
+import { CustomerService } from "@shared/services/customer.service";
 @Component({
   selector: "app-create-returned-payment-receipt",
   templateUrl: "./create-returned-payment-receipt.component.html",
@@ -32,21 +35,26 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
   filteredVouchers: any[];
   voucherType: any;
   minDateValue: any;
-  CashBoxs:any[];
+  CashBoxs:any[]=[];
+  Customers:any[]=[];
+  BankAccount:any[]=[];
   constructor(
     private _formBuilder: FormBuilder,
     private _globalService: GlobalService,
     private _datePipe: DatePipe,
     private _router: Router,
     private _returnPaymentReceipt: ReturnPaymentReceiptService,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _cashBox:CashboxService,
+    private _bankAccount:BankAccountService,
+    private _customer:CustomerService
   ) {
     this.settlements = [];
   }
 
   ngOnInit() {
     this.createForm();
-    this.getCreatFormData();
+    //this.getCreatFormData();
     this.IsCashOrWithdraw();
 
     this.vouchersCols = [
@@ -119,30 +127,30 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
     ];
   }
 
-  getCreatFormData() {
-    this.progressSpinner = true;
+  // getCreatFormData() {
+  //   this.progressSpinner = true;
 
-    this._returnPaymentReceipt
-      .getCreate()
-      .subscribe((result: IServiceResult) => {
-        this.viewModel = result.data;
-        if (this._authService.currentAuthUser.RoleTypeId == '001') {
-          this.CashBoxs = this.viewModel.CashBoxs;
-        }
-        else {
-          this.CashBoxs = this.viewModel.CashBoxs.filter(x => x.Id === this._authService.currentAuthUser.CashBoxId);
-        }
-        this.progressSpinner = false;
+  //   this._returnPaymentReceipt
+  //     .getCreate()
+  //     .subscribe((result: IServiceResult) => {
+  //       this.viewModel = result.data;
+  //       if (this._authService.currentAuthUser.RoleTypeId == '001') {
+  //         this.CashBoxs = this.viewModel.CashBoxs;
+  //       }
+  //       else {
+  //         this.CashBoxs = this.viewModel.CashBoxs.filter(x => x.Id === this._authService.currentAuthUser.CashBoxId);
+  //       }
+  //       this.progressSpinner = false;
 
-        this.form
-          .get("DocumentDate")
-          .setValue(
-            new Date(this.viewModel.CurrentDate)
-          );
+  //       this.form
+  //         .get("DocumentDate")
+  //         .setValue(
+  //           new Date(this.viewModel.CurrentDate)
+  //         );
 
-          this.minDateValue = new Date(this.viewModel.MinSelectableDate);
-      });
-  }
+  //         this.minDateValue = new Date(this.viewModel.MinSelectableDate);
+  //     });
+  // }
 
   createForm() {
     this.form = this._formBuilder.group({
@@ -150,12 +158,12 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
       RefNumber: [""],
       Customer: ["", Validators.required],
       Contract: [{ value: "", disabled: true }, Validators.required],
-      SalesRepresentative: [""],
+      SalesRepresentative: [{value:"",disabled:true}],
       ArabicRemarks: [""],
       IsBankWithdraw: [false],
       BankWithdrawAmount: [0, Validators.required],
       BankAccount: ["", Validators.required],
-      IsCashBox: [true, Validators.required],
+      IsCashBox: [false],
       CashBox: ["", Validators.required],
       CashBoxAmount: [0, Validators.required],
     });
@@ -220,14 +228,10 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
   }
 
   searchCustomers(event: any) {
-    setTimeout(() => {
-    //   this._serviceRequestService
-    //     .SearchCustomer(event.query)
-    //     .subscribe((result: IServiceResult) => {
-    //       this.filteredArray = [];
-    //       this.filteredArray = result.data;
-    //     });
-     }, 1500);
+    this._customer.getAll(event.query)
+    .subscribe(result =>{
+      this.Customers = result;
+    });
   }
 
   onSelectCustomer(event: any) {

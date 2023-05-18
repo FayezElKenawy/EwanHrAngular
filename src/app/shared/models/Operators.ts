@@ -1,5 +1,5 @@
 export enum Operators {
-  Equal = '=',
+  Equal = 'equal',
   NotEqual = '=',
   GreaterThan = '>',
   LessThan = '<',
