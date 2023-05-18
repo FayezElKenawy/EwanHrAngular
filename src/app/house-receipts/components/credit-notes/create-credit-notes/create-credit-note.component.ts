@@ -211,7 +211,6 @@ export class CreateCreditNoteComponent implements OnInit {
       postedViewModel.PaymentsTransactions = this.settlements;
       postedViewModel.costElements = this.costElements;
       postedViewModel.NetValue = this.NetVal;
-      debugger
       postedViewModel.EntityCode = postedViewModel.Contract.entityCode;
       postedViewModel.SectorTypeId = "01-01"
 

@@ -44,28 +44,39 @@ export class CreateCreditNoteComponent implements OnInit {
   filteredVouchers: any[];
   voucherType: any;
   minDateValue: any;
-
+  sectorId: string;
   constructor(
     private _formBuilder: FormBuilder,
     private _globalService: GlobalService,
     private _datePipe: DatePipe,
     private _router: Router,
     private _creditNoteService: CreditNoteService,
-    private _customerService:CustomerService,
-    private _contractService:ContractService,
-    private _salesPeriodService:SalesPeriodService
+    private _customerService: CustomerService,
+    private _contractService: ContractService,
+    private _salesPeriodService: SalesPeriodService
   ) {
     this.settlements = [];
     this.voucherType = 'CR';
   }
 
   ngOnInit() {
+
+    this.sectorId = "01-01"
     this.createForm();
     this.getCostElements();
+    this.defCols();
+    this._salesPeriodService.getMinSelectedDate(this.sectorId).subscribe(
+      res => {
+        this.minDateValue = new Date(res);
+      }
+    )
+  }
+
+  defCols() {
     this.vouchersCols = [
       {
-         field: "id",
-         header: "App.Fields.DocumentId"
+        field: "id",
+        header: "App.Fields.DocumentId"
       },
       {
         field: "voucherTypeId",
@@ -100,11 +111,12 @@ export class CreateCreditNoteComponent implements OnInit {
         header: "Receipts.Fields.TaxRatio"
       },
       {
-       field: "TaxAmount",
-       header: "Receipts.Fields.TaxAmount"
+        field: "TaxAmount",
+        header: "Receipts.Fields.TaxAmount"
       },
-      { field: "ActionButtons",
-       header: "",
+      {
+        field: "ActionButtons",
+        header: "",
       },
     ];
     this.settlementCols = [
@@ -141,13 +153,7 @@ export class CreateCreditNoteComponent implements OnInit {
       { field: "PaidAmount", header: "Receipts.Fields.Value", hidden: false },
       { field: "ActionButtons", header: "", hidden: false },
     ];
-    this._salesPeriodService.getMinSelectedDate('01-02').subscribe(
-      res=>{
-          this.minDateValue=new Date(res);
-      }
-    )
   }
-
 
   getCostElements() {
     this._creditNoteService.getCostElements().subscribe(
@@ -207,14 +213,14 @@ export class CreateCreditNoteComponent implements OnInit {
       postedViewModel.CustomerId = this.form.value.Customer.id;
 
       postedViewModel.DocumentDate = this._datePipe.transform(
-        postedViewModel.DocumentDate,'yyyy-MM-ddTHH:mm:ss'
+        postedViewModel.DocumentDate, 'yyyy-MM-ddTHH:mm:ss'
       );
       postedViewModel.PaymentsTransactions = this.settlements;
       postedViewModel.costElements = this.costElements;
       postedViewModel.NetValue = this.NetVal;
       debugger
       postedViewModel.EntityCode = postedViewModel.Contract.entityCode;
-      postedViewModel.SectorTypeId = "01-02"
+      postedViewModel.SectorTypeId = this.sectorId;
 
       this._creditNoteService.create(postedViewModel).subscribe(
         (result: IServiceResult) => {
@@ -242,7 +248,7 @@ export class CreateCreditNoteComponent implements OnInit {
   searchCustomers(event: any) {
     setTimeout(() => {
       this._customerService
-        .getAll(event.query)
+        .getCustomersBySectorId(this.sectorId, event.query)
         .subscribe((result) => {
           this.filteredArray = [];
           this.filteredArray = result;
@@ -255,21 +261,44 @@ export class CreateCreditNoteComponent implements OnInit {
     this.settlements = [];
     this.vouchers = [];
     this.selectedVoucher = undefined;
-    this._contractService
-      .getAll(event.code)
-      .subscribe((result) => {
-        this.progressSpinner = false;
-        this.filteredArray = [];
-        this.filteredArray = result;
-        this.Contracts = result;
-        if (result.length > 0) {
-          this.form.controls.Contract.enable();
-          this.form.controls.Contract.reset();
-        } else {
-          this.form.controls.Contract.setValue("");
-          this.form.controls.Contract.disable();
-        }
-      });
+    switch (this.sectorId) {
+      case '01-01':
+        this._contractService
+          .getOrdersByCustomerCode(event.code)
+          .subscribe((result) => {
+            this.progressSpinner = false;
+            this.filteredArray = [];
+            this.filteredArray = result;
+            this.Contracts = result;
+            if (result.length > 0) {
+              this.form.controls.Contract.enable();
+              this.form.controls.Contract.reset();
+            } else {
+              this.form.controls.Contract.setValue("");
+              this.form.controls.Contract.disable();
+            }
+          });
+        break;
+
+      case '01-02':
+        this._contractService
+          .getAll(event.code)
+          .subscribe((result) => {
+            this.progressSpinner = false;
+            this.filteredArray = [];
+            this.filteredArray = result;
+            this.Contracts = result;
+            if (result.length > 0) {
+              this.form.controls.Contract.enable();
+              this.form.controls.Contract.reset();
+            } else {
+              this.form.controls.Contract.setValue("");
+              this.form.controls.Contract.disable();
+            }
+          });
+        break;
+    }
+
   }
 
   onSelectContract(event) {

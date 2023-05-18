@@ -7,14 +7,20 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ContractService {
-  serviceUrl: string = environment.financeSectorAPIURL + '/v1/Contract';
+  serviceUrl: string = environment.financeSectorAPIURL + '/v1';
 
   constructor(
     private _http: HttpClient
   ) {}
 
   getAll(searchTerm:string):Observable<any>{
-    return this._http.get<any>(`${this.serviceUrl}/GetContractByCustomerCode`, {
+    return this._http.get<any>(`${this.serviceUrl}/Contract/GetContractByCustomerCode`, {
+      params: { code: searchTerm },
+    });
+  }
+
+  getOrdersByCustomerCode(searchTerm:string):Observable<any>{
+    return this._http.get<any>(`${this.serviceUrl}/Order/GetOrdersByCustomerCode`, {
       params: { code: searchTerm },
     });
   }
