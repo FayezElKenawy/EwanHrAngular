@@ -28,7 +28,7 @@
                 <span class="required">*</span>
               </div>
               <div class="col-12 px-0">
-                <input class="form-control" id="id" type="text" formControlName="id" readonly />
+                <input class="form-control" id="id" type="text" formControlName="code" readonly />
               </div>
             </div>
           </div>
@@ -311,9 +311,9 @@
                 <span class="required">*</span>
               </div>
               <div class="col-12 px-0">
-                <p-autoComplete class="p-0 form-control" field="VoucherId" [suggestions]="filteredArray"
+                <p-autoComplete class="p-0 form-control" field="voucherId" [suggestions]="filteredArray"
                   [(ngModel)]="selectedVoucher" [ngModelOptions]="{ standalone: true }"
-                  (completeMethod)="filterArray($event, filteredVouchers,'VoucherId')" [forceSelection]="true" [size]="30"
+                  (completeMethod)="filterArray($event, filteredVouchers,'voucherId')" [forceSelection]="true" [size]="30"
                   [minLength]="1" placeholder="{{'Receipts.Fields.ReciptName' | translate}}" [dropdown]="true"
                   [ngClass]="{
                           'is-invalid': added && !selectedVoucher
@@ -321,7 +321,7 @@
                   <ng-template let-voucher pTemplate="item">
                     <div class="ui-helper-clearfix">
                       <div>
-                        {{ voucher.VoucherId }}
+                        {{ voucher.voucherId }}
                       </div>
                     </div>
                   </ng-template>

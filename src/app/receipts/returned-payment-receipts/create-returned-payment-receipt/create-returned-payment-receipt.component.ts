@@ -59,7 +59,7 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
     this.IsCashOrWithdraw();
 
     this.vouchersCols = [
-      { field: "voucherId", header: "App.Fields.DocumentId", hidden: false },
+      { field: "code", header: "App.Fields.DocumentId", hidden: false },
       {
         field: "voucherTypeId",
         header: "Receipts.Fields.DocumentType",
@@ -89,12 +89,12 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
 
     this.settlementCols = [
       {
-        field: "id",
+        field: "voucherId",
         header: "Receipts.Fields.DocumentId",
         hidden: true,
       },
       {
-        field: "creditReceivableId",
+        field: "code",
         header: "Receipts.Fields.DocumentId",
         hidden: false,
       },
@@ -118,7 +118,6 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
         header: "Receipts.Fields.CurrentBalance",
         hidden: false,
       },
-      { field: "canBePay", header: "Receipts.Fields.CanPay", hidden: false },
       {
         field: "refundAmount",
         header: "Receipts.Fields.AllRetreived",
@@ -233,7 +232,6 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
   }
 
   onSelectContract(event) {
-
     this.settlements = [];
     this.vouchers = [];
     this.selectedVoucher = undefined;
@@ -241,16 +239,15 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
       .get("salesRepresentative")
       .setValue(event.salesRepresentativeName);
     this._returnPaymentReceipt
-      .getVouchers(event.id)
+      .getVouchers(event.entityCode)
       .subscribe((result: any) => {
         this.vouchers = result;
         this.filteredVouchers = this.vouchers;
+        console.log(this.filteredVouchers)
       });
     this._cashBox.getAll('')
     .subscribe(result =>{
       this.CashBoxs = result;
-
-      console.log(result);
     });
 
     this._bankAccount.getAll('')
@@ -268,26 +265,27 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
   }
 
   addSettlement() {
+    debugger
     this.added = true;
     if (this.selectedVoucher && this.refundValue > 0) {
       const settlement = {
+        code : this.selectedVoucher.code,
         creditReceivableId: this.selectedVoucher.id,
         creditReceivableVoucherTypeId: this.selectedVoucher.voucherTypeId,
         refundAmount: this.refundValue,
         netValue: this.selectedVoucher.netValue,
         voucherTypeName: this.selectedVoucher.voucherTypeName,
-        canBePay: this.selectedVoucher.notRefund,
         currentBalance: this.selectedVoucher.notRefund,
       };
 
       if (
         this.settlements.find(
           (e) =>
-            e.CreditReceivableId === settlement.creditReceivableId &&
+            e.creditReceivableId === settlement.creditReceivableId &&
             e.creditReceivableVoucherTypeId === settlement.creditReceivableVoucherTypeId
         ) === undefined
       ) {
-        if (settlement.refundAmount > this.selectedVoucher.CanBePay) {
+        if (settlement.refundAmount > this.selectedVoucher.notRefund) {
           this._globalService.messageAlert(
             MessageType.Warning,
             "Receipts.Messages.RefuundMustMoreThanPaid",
@@ -298,7 +296,7 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
 
         let totalrefund = 0;
         this.settlements.forEach((item) => {
-          totalrefund += item.RefundAmount;
+          totalrefund += item.refundAmount;
         });
         if (totalrefund + settlement.refundAmount > this.totalVal) {
           this._globalService.messageAlert(
@@ -328,11 +326,11 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
     const settlement = event.data;
     const itemIndex = this.settlements.findIndex(
       (s) =>
-        s.CreditReceivableId === settlement.CreditReceivableId &&
-        s.CreditReceivableTypeId === settlement.CreditReceivableTypeId
+        s.creditReceivableId === settlement.creditReceivableId &&
+        s.creditReceivableTypeId === settlement.creditReceivableVoucherTypeId
     );
 
-    if (settlement.RefundAmount > settlement.CanBePay) {
+    if (settlement.refundAmount > settlement.currentBalance) {
       this.settlements[itemIndex] = this.currentSettlement;
       this._globalService.messageAlert(
         MessageType.Warning,
@@ -354,11 +352,11 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
     let totalrefund = 0;
     this.settlements.forEach((item, index) => {
       if (index !== itemIndex) {
-        totalrefund += item.RefundAmount;
+        totalrefund += item.refundAmount;
       }
     });
 
-    if (totalrefund + settlement.RefundAmount > this.totalVal) {
+    if (totalrefund + settlement.refundAmount > this.totalVal) {
       this.settlements[itemIndex] = this.currentSettlement;
 
       this._globalService.messageAlert(

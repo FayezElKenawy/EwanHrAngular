@@ -61,7 +61,8 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
     .getById(parseInt(id)).subscribe(result =>{
       this.debitPaymentObj = result;
       this.form.patchValue({
-        id:result.code,
+        id:result.id,
+        code:result.code,
         documentDate:this._datePipe.transform(result.documentDate,'yyyy-MM-dd'),
         refNumber:result.refNumber,
         customer:result.customer,
@@ -71,11 +72,20 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
         bankWithdrawAmount:result.bankWithdrawAmount,
         bankAccount:result.bankAccount,
         cashBox:result.cashBox,
-        cashBoxAmount:result.cashBoxAmount
+        cashBoxAmount:result.cashBoxAmount,
+      });
+      this.settlements = result.refundsTransactions;
+      this._returnPaymentReceiptService
+      .getVouchers(this.form.get('contract').value.entityCode)
+      .subscribe(result => {
+        console.log(result);
+        this.vouchers = result;
+        this.filteredVouchers = this.vouchers;
+        console.log(this.vouchers);
       })
     });
     this.vouchersCols = [
-      { field: "voucherId", header: "App.Fields.DocumentId", hidden: false },
+      { field: "code", header: "App.Fields.DocumentId", hidden: false },
       {
         field: "voucherTypeId",
         header: "Receipts.Fields.DocumentType",
@@ -105,7 +115,7 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
 
     this.settlementCols = [
       {
-        field: "id",
+        field: "code",
         header: "Receipts.Fields.DocumentId",
         hidden: true,
       },
@@ -134,7 +144,6 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
         header: "Receipts.Fields.CurrentBalance",
         hidden: false,
       },
-      { field: "canBePay", header: "Receipts.Fields.CanPay", hidden: false },
       {
         field: "refundAmount",
         header: "Receipts.Fields.AllRetreived",
@@ -146,7 +155,8 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
 
   createForm() {
     this.form = this._formBuilder.group({
-      id: [""],
+      id:[],
+      code: [""],
       documentDate: [{ value: "", disabled: true }, Validators.required],
       refNumber: [""],
       customer: [{value:"",disabled:true}, Validators.required],
@@ -168,10 +178,10 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
     this.submitted = true;
     let totalrefund = 0;
     this.settlements.forEach((item) => {
-      totalrefund += item.RefundAmount;
+      totalrefund += item.refundAmount;
     });
 
-    if(this.form.controls.BankWithdrawAmount.value < 0){
+    if(this.form.controls.bankWithdrawAmount.value < 0){
       this._globalService.messageAlert(
         MessageType.Error,
         "App.Fields.NumberShouldBePositive",
@@ -197,20 +207,26 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
         return;
       }
       this.progressSpinner = true;
+      debugger
       const postedViewModel = Object.assign({}, this.form.getRawValue());
-      postedViewModel.Id = this.viewModel.ReturnPaymentReceipt.Id;
-      postedViewModel.CustomerId = postedViewModel.Customer.Id;
-      postedViewModel.ContractId = postedViewModel.Contract.Id;
-      if (postedViewModel.CashBox) {
-        postedViewModel.CashBoxId = postedViewModel.CashBox.Id;
+      postedViewModel.documentDate = this._datePipe.transform(postedViewModel.documentDate,'yyyy-MM-ddTHH:mm:ss');
+      postedViewModel.customerId = postedViewModel.customer.id;
+      postedViewModel.entityCode = postedViewModel.contract.entityCode;
+      postedViewModel.sectorTypeId = '01-02';
+      postedViewModel.cashBoxId = postedViewModel.cashBox
+      ? postedViewModel.cashBox.id
+      : null;
+      if(postedViewModel.cashBoxId){
+        postedViewModel.cashBoxAmount = "0"
       }
-      postedViewModel.BankAccountId = postedViewModel.BankAccount
-        ? postedViewModel.BankAccount.Id
+
+      postedViewModel.bankAccountId = postedViewModel.bankAccount
+        ? postedViewModel.bankAccount.id
         : null;
-      postedViewModel.DocumentDate = this._datePipe.transform(
-        postedViewModel.DocumentDate
-      );
-      postedViewModel.RefundsTransactions = this.settlements;
+      if(postedViewModel.bankAccountId){
+          postedViewModel.bankWithdrawAmount = "0"
+      }
+      postedViewModel.refundsTransactions = this.settlements;
       this._returnPaymentReceiptService.edit(postedViewModel).subscribe(
         (result: any) => {
           if (result) {
@@ -227,32 +243,34 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
 
   onSelectVoucherType() {
     this.filteredVouchers = this.vouchers.filter(
-      (v) => v.VoucherTypeId === this.voucherType
+      (v) => v.voucherTypeId === this.voucherType
     );
     this.selectedVoucher = undefined;
   }
 
   addSettlement() {
     this.added = true;
+
     if (this.selectedVoucher && this.refundValue > 0) {
       const settlement = {
+        code : this.selectedVoucher.code,
         creditReceivableId: this.selectedVoucher.id,
         creditReceivableVoucherTypeId: this.selectedVoucher.voucherTypeId,
         refundAmount: this.refundValue,
         netValue: this.selectedVoucher.netValue,
         voucherTypeName: this.selectedVoucher.voucherTypeName,
-        canBePay: this.selectedVoucher.notRefund,
         currentBalance: this.selectedVoucher.notRefund,
       };
 
+      debugger
       if (
         this.settlements.find(
           (e) =>
-            e.CreditReceivableId === settlement.creditReceivableId &&
-            e.CreditReceivableTypeId === settlement.creditReceivableVoucherTypeId
+            e.creditReceivableId === settlement.creditReceivableId &&
+            e.creditReceivableTypeId === settlement.creditReceivableVoucherTypeId
         ) === undefined
       ) {
-        if (this.selectedVoucher.CanBePay < settlement.refundAmount) {
+        if (this.selectedVoucher.canBePay < settlement.refundAmount) {
           this._globalService.messageAlert(
             MessageType.Warning,
             "Receipts.Messages.PaidMoreThanCurrentBalance",
@@ -263,7 +281,7 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
 
         let totalrefund = 0;
         this.settlements.forEach((item) => {
-          totalrefund += item.RefundAmount;
+          totalrefund += item.refundAmount;
         });
         if (totalrefund + settlement.refundAmount > this.totalVal) {
           this._globalService.messageAlert(
@@ -293,11 +311,11 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
     const settlement = event.data;
     const itemIndex = this.settlements.findIndex(
       (s) =>
-        s.CreditReceivableId === settlement.CreditReceivableId &&
-        s.CreditReceivableTypeId === settlement.CreditReceivableTypeId
+        s.creditReceivableId === settlement.creditReceivableId &&
+        s.creditReceivableTypeId === settlement.creditReceivableTypeId
     );
 
-    if (settlement.RefundAmount > settlement.CanBePay) {
+    if (settlement.refundAmount > settlement.canBePay) {
       this.settlements[itemIndex] = this.currentSettlement;
       this._globalService.messageAlert(
         MessageType.Warning,
@@ -306,7 +324,7 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
       );
       return;
     }
-    if (settlement.RefundAmount <= 0) {
+    if (settlement.refundAmount <= 0) {
       this.settlements[itemIndex] = this.currentSettlement;
       this._globalService.messageAlert(
         MessageType.Warning,
@@ -322,7 +340,7 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
       }
     });
 
-    if (totalrefund + settlement.RefundAmount > this.totalVal) {
+    if (totalrefund + settlement.refundAmount > this.totalVal) {
       this.settlements[itemIndex] = this.currentSettlement;
 
       this._globalService.messageAlert(
@@ -390,17 +408,17 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
   removeSettlement(settlement: any) {
     const voucher = this.vouchers.find(
       (v) =>
-        v.VoucherId === settlement.CreditReceivableId &&
-        v.VoucherTypeId === settlement.CreditReceivableTypeId
+        v.voucherId === settlement.creditReceivableId &&
+        v.voucherTypeId === settlement.creditReceivableTypeId
     );
     if (voucher === null || voucher === undefined) {
       const deletedVoucher = {
-        VoucherId: settlement.CreditReceivableId,
-        VoucherTypeId: settlement.CreditReceivableTypeId,
-        NotRefund: settlement.RefundAmount,
-        TotalRefund: settlement.NetValue - settlement.CurrentBalance,
-        NetValue: settlement.NetValue,
-        VoucherTypeArabicName: settlement.VoucherTypeArabicName,
+        voucherId: settlement.creditReceivableId,
+        voucherTypeId: settlement.creditReceivableVoucherTypeId,
+        notRefund: settlement.refundAmount,
+        totalRefund: settlement.netValue - settlement.currentBalance,
+        netValue: settlement.netValue,
+        voucherTypeName: settlement.voucherTypeName,
       };
       this.vouchers.push(deletedVoucher);
     }

@@ -207,7 +207,7 @@
             "PasswordNotMatched": "يجب ان تطابق كلمة المرور مع خانة تاكيد كلمة المرور"
         }
     },
-    
+
     "Receipts": {
         "Titles": {
             "CreditInvoicesListPage": "الفواتير",
@@ -288,7 +288,7 @@
             "DocumentId": "رقم المستند",
             "NoteId": "رقم الاشعار",
             "DocumentType": "نوع المستند",
-            "CurrentBalance": "الرصيد الحالى",
+            "CurrentBalance": "الرصيد الحالي (ما يمكن سداده)",
             "CanPay": "ما يمكن سداده",
             "Value": "القيمة",
             "CRInvoice": "فاتورة آجلة",
