@@ -117,12 +117,12 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
       {
         field: "code",
         header: "Receipts.Fields.DocumentId",
-        hidden: true,
+        hidden: false,
       },
       {
         field: "creditReceivableId",
         header: "Receipts.Fields.DocumentId",
-        hidden: false,
+        hidden: true,
       },
       {
         field: "voucherTypeName",
@@ -216,16 +216,17 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
       postedViewModel.cashBoxId = postedViewModel.cashBox
       ? postedViewModel.cashBox.id
       : null;
-      if(postedViewModel.cashBoxId){
-        postedViewModel.cashBoxAmount = "0"
+      if(postedViewModel.cashBoxId==null){
+        postedViewModel.cashBoxAmount = 0
       }
 
       postedViewModel.bankAccountId = postedViewModel.bankAccount
-        ? postedViewModel.bankAccount.id
+        ? postedViewModel.bankAccount.code
         : null;
-      if(postedViewModel.bankAccountId){
-          postedViewModel.bankWithdrawAmount = "0"
+      if(postedViewModel.bankAccountId==null){
+          postedViewModel.bankWithdrawAmount = 0
       }
+
       postedViewModel.refundsTransactions = this.settlements;
       this._returnPaymentReceiptService.edit(postedViewModel).subscribe(
         (result: any) => {
@@ -267,7 +268,7 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
         this.settlements.find(
           (e) =>
             e.creditReceivableId === settlement.creditReceivableId &&
-            e.creditReceivableTypeId === settlement.creditReceivableVoucherTypeId
+            e.creditReceivableVoucherTypeId === settlement.creditReceivableVoucherTypeId
         ) === undefined
       ) {
         if (this.selectedVoucher.canBePay < settlement.refundAmount) {
@@ -423,8 +424,6 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
       this.vouchers.push(deletedVoucher);
     }
     this.settlements.splice(this.settlements.indexOf(settlement, 0), 1);
-    this.voucherType = "PR";
-    this.onSelectVoucherType();
   }
 
   getLookups(){
