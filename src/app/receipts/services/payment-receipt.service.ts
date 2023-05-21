@@ -15,7 +15,7 @@ export class PaymentReceiptService {
   serviceUrl = `${environment.financeSectorAPIURL}/v1/PaymentReceipt`;
   ContractUrl = `${environment.financeSectorAPIURL}/Sales/Contract`;
   customerUrl = `${environment.financeSectorAPIURL}/MasterData/Customer`;
-
+  serviceVoucherUrl = `${environment.financeSectorAPIURL}/Voucher`;
   constructor(
     private _http: HttpClient,
     private _globalService: GlobalService
@@ -279,7 +279,7 @@ export class PaymentReceiptService {
         );
     });
   }
-  
+
   getContractShortList(id: number): Observable<IServiceResult> {
     const serviceResult: IServiceResult = { isSuccess: null, data: null };
     return Observable.create((observer) => {
@@ -305,29 +305,8 @@ export class PaymentReceiptService {
     });
   }
 
-  getVouchers(contractId: number): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return Observable.create((observer) => {
-      this._http
-        .get(`${this.serviceUrl}/GetVouchers?contractId=${contractId}`)
-        .pipe(catchError(this._globalService.errorHandler))
-        .subscribe(
-          (resultVM: IResultVM) => {
-            if (resultVM.IsSuccess) {
-              serviceResult.data = resultVM.Data;
-            } else {
-            }
-            serviceResult.isSuccess = resultVM.IsSuccess;
-            observer.next(serviceResult);
-            observer.complete();
-            return observer;
-          },
-          () => {
-            observer.complete();
-            return observer;
-          }
-        );
-    });
+  getVouchers(entityCode: any): Observable<any> {
+    return this._http.get(`${this.serviceVoucherUrl}/GetVouchersById?entityCode=${entityCode}`);
   }
 
   getEdit(paymentId: string): Observable<IServiceResult> {

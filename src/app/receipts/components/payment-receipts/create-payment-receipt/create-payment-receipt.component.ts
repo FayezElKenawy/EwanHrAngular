@@ -8,6 +8,7 @@ import { GlobalService, MessageType } from "@shared/services/global.service";
 import { AuthService } from "@shared/services/auth.service";
 import { CustomerService } from "@shared/services/customer.service";
 import { PaymentReceiptService } from "src/app/receipts/services/payment-receipt.service";
+import { CostCenterService } from "@shared/services/cost-center.service";
 
 @Component({
   selector: "app-create-payment-receipt",
@@ -35,6 +36,7 @@ export class CreatePaymentReceiptComponent implements OnInit {
   filteredVouchers: any[];
   minDateValue: any;
   CashBoxs: any[];
+  sectorId: string;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -43,14 +45,16 @@ export class CreatePaymentReceiptComponent implements OnInit {
     private _router: Router,
     private _paymentReceipt: PaymentReceiptService,
     private _authService: AuthService,
-    private _customerService : CustomerService
+    private _customerService : CustomerService,
+    private _costCenterService: CostCenterService,
   ) {
     this.settlements = [];
   }
 
   ngOnInit() {
+    this.sectorId = this._globalService.getSectorType();
+
     this.createForm();
-    //this.getCreatFormData();
     this.IsCashOrDeposit();
     this.getVoucherCols();
     this.getSettleCols();
@@ -119,28 +123,6 @@ export class CreatePaymentReceiptComponent implements OnInit {
     ];
   }
 
-  // getCreatFormData() {
-  //   this.progressSpinner = true;
-
-  //   this._paymentReceipt.getCreate().subscribe((result: IServiceResult) => {
-  //     this.viewModel = result.data;
-  //     if (this._authService.currentAuthUser.RoleTypeId == '001') {
-  //       this.CashBoxs = this.viewModel.CashBoxs;
-  //     }
-  //     else {
-  //       this.CashBoxs = this.viewModel.CashBoxs.filter(x => x.Id === this._authService.currentAuthUser.CashBoxId);
-  //     }
-  //     this.progressSpinner = false;
-
-  //     this.form
-  //       .get("DocumentDate")
-  //       .setValue(
-  //         new Date(this.viewModel.CurrentDate)
-  //       );
-
-  //     this.minDateValue = new Date(this.viewModel.MinSelectableDate);
-  //   });
-  // }
 
   createForm() {
     this.form = this._formBuilder.group({
@@ -222,9 +204,15 @@ export class CreatePaymentReceiptComponent implements OnInit {
     }
   }
 
-  getCustomers(event: any) {
-   this._customerService.getAll(event.query)
-   .subscribe()
+  searchCustomers(event: any) {
+    setTimeout(() => {
+      this._customerService
+        .getCustomersBySectorId(this.sectorId, event.query)
+        .subscribe((result) => {
+          this.filteredArray = [];
+          this.filteredArray = result;
+        });
+    }, 1500);
   }
 
   onSelectCustomer(event: any) {
@@ -232,25 +220,27 @@ export class CreatePaymentReceiptComponent implements OnInit {
     this.settlements = [];
     this.vouchers = [];
     this.selectedVoucher = undefined;
-    this._paymentReceipt
-      .getContractShortList(event.Id)
-      .subscribe((result: IServiceResult) => {
-        this.progressSpinner = false;
-        this.filteredArray = [];
-        this.filteredArray = result.data;
-        this.Contracts = result.data;
-        if (result.data.length > 0) {
-          this.form.controls.Contract.enable();
-          this.form.controls.Contract.reset();
-          this.form.get("SalesRepresentative").reset();
-        } else {
-          this.form.controls.Contract.setValue("");
-          this.form.controls.Contract.disable();
-        }
-      });
+
+    this._costCenterService.getAll(event.code)
+    .subscribe((result) => {
+      this.progressSpinner = false;
+      this.filteredArray = [];
+      this.filteredArray = result;
+      this.Contracts = result;
+      if (result.length > 0) {
+        this.form.controls.Contract.enable();
+        this.form.controls.Contract.reset();
+      } else {
+        this.form.controls.Contract.setValue("");
+        this.form.controls.Contract.disable();
+      }
+    });
+
   }
 
+
   onSelectContract(event) {
+    debugger
     this.progressSpinner = true;
     this.settlements = [];
     this.vouchers = [];
@@ -258,16 +248,12 @@ export class CreatePaymentReceiptComponent implements OnInit {
     this.form
       .get("SalesRepresentative")
       .setValue(event.SalesRepresentativeArabicName);
-    this._paymentReceipt
-      .getVouchers(event.Id)
-      .subscribe((result: IServiceResult) => {
-
+      this._paymentReceipt
+      .getVouchers(event.entityCode)
+      .subscribe((result: any) => {
         this.progressSpinner = false;
-        this.vouchers = result.data;
-        //////////// me
-        this.voucherType = "CR";
+        this.vouchers = result;
         this.onSelectVoucherType();
-        ////////////////////
       });
   }
 

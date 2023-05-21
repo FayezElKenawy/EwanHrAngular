@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { MenuItem } from "primeng/api";
-import { CreditNoteService } from "../credit-note.service";
+import { CreditNoteService } from "../../../services/credit-note.service";
 import { Router } from "@angular/router";
 import { PagingMetaData } from "@shared/interfaces/paging-meta-data";
 import { FormGroup } from "@angular/forms";
@@ -23,7 +23,7 @@ import { GlobalService } from "@shared/services/global.service";
   styleUrls: ["./list-credit-notes.component.scss"]
 })
 export class ListCreditNotesComponent implements OnInit {
-  
+
   @ViewChild(ReportModelViewerComponent)
   reportchild: ReportModelViewerComponent;
 

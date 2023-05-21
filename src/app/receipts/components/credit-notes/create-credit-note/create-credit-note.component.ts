@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { CreditNoteService } from "../credit-note.service";
+import { CreditNoteService } from "../../../services/credit-note.service";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { GlobalService, MessageType } from "@shared/services/global.service";
 import { DatePipe } from "@angular/common";
@@ -220,7 +220,6 @@ export class CreateCreditNoteComponent implements OnInit {
       postedViewModel.PaymentsTransactions = this.settlements;
       postedViewModel.costElements = this.costElements;
       postedViewModel.NetValue = this.NetVal;
-      debugger
       postedViewModel.EntityCode = postedViewModel.Contract.entityCode;
       postedViewModel.SectorTypeId = this.sectorId;
 
@@ -263,42 +262,21 @@ export class CreateCreditNoteComponent implements OnInit {
     this.settlements = [];
     this.vouchers = [];
     this.selectedVoucher = undefined;
-    switch (this.sectorId) {
-      case '01-01':
-        this._costCenterService.getAll(event.code)
-          .subscribe((result) => {
-            this.progressSpinner = false;
-            this.filteredArray = [];
-            this.filteredArray = result;
-            this.Contracts = result;
-            if (result.length > 0) {
-              this.form.controls.Contract.enable();
-              this.form.controls.Contract.reset();
-            } else {
-              this.form.controls.Contract.setValue("");
-              this.form.controls.Contract.disable();
-            }
-          });
-        break;
 
-      case '01-02':
-        this._costCenterService
-          .getAll(event.code)
-          .subscribe((result) => {
-            this.progressSpinner = false;
-            this.filteredArray = [];
-            this.filteredArray = result;
-            this.Contracts = result;
-            if (result.length > 0) {
-              this.form.controls.Contract.enable();
-              this.form.controls.Contract.reset();
-            } else {
-              this.form.controls.Contract.setValue("");
-              this.form.controls.Contract.disable();
-            }
-          });
-        break;
-    }
+    this._costCenterService.getAll(event.code)
+    .subscribe((result) => {
+      this.progressSpinner = false;
+      this.filteredArray = [];
+      this.filteredArray = result;
+      this.Contracts = result;
+      if (result.length > 0) {
+        this.form.controls.Contract.enable();
+        this.form.controls.Contract.reset();
+      } else {
+        this.form.controls.Contract.setValue("");
+        this.form.controls.Contract.disable();
+      }
+    });
 
   }
 
