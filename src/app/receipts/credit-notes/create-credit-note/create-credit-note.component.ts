@@ -38,7 +38,6 @@ export class CreateCreditNoteComponent implements OnInit {
   TotalTaxAmount: number;
   Amount: number;
   selected: Boolean;
-
   paidValue: number;
   added: boolean;
   currentSettlement: any;
@@ -46,6 +45,7 @@ export class CreateCreditNoteComponent implements OnInit {
   voucherType: any;
   minDateValue: any;
   sectorId: string;
+  
   constructor(
     private _formBuilder: FormBuilder,
     private _globalService: GlobalService,
@@ -61,7 +61,6 @@ export class CreateCreditNoteComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.sectorId = this._globalService.getSectorType();
     this.createForm();
     this.getCostElements();
@@ -163,6 +162,7 @@ export class CreateCreditNoteComponent implements OnInit {
       }
     )
   }
+
   createForm() {
     this.form = this._formBuilder.group({
       DocumentDate: ["", Validators.required],
