@@ -221,7 +221,7 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
       }
 
       postedViewModel.bankAccountId = postedViewModel.bankAccount
-        ? postedViewModel.bankAccount.code
+        ? postedViewModel.bankAccount.id
         : null;
       if(postedViewModel.bankAccountId==null){
           postedViewModel.bankWithdrawAmount = 0
