@@ -20,156 +20,18 @@ export class ReturnPaymentReceiptService {
   ) {}
 
   getAll(searchModel: SearchModel): Observable<PagedList> {
-
     return this._http.post<PagedList>(`${this.serviceUrl}/GetPagedList`, searchModel)
   }
-
-  getCreate(): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return Observable.create((observer) => {
-      this._http
-        .get(`${this.serviceUrl}/GetCreatePage`)
-        .pipe(catchError(this._globalService.errorHandler))
-        .subscribe(
-          (resultVM: IResultVM) => {
-            if (resultVM.IsSuccess) {
-              serviceResult.data = resultVM.Data;
-            } else {
-            }
-            serviceResult.isSuccess = resultVM.IsSuccess;
-            observer.next(serviceResult);
-            observer.complete();
-            return observer;
-          },
-          () => {
-            observer.complete();
-            return observer;
-          }
-        );
-    });
+  getById(id:number):Observable<any>{
+    return this._http.get<any>(`${this.serviceUrl}/GetById?id=${id}`);
+  }
+  create(postedVM: any): Observable<any> {
+    return this._http.post(`${this.serviceUrl}/Create`, postedVM);
   }
 
-  create(postedVM: any): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return Observable.create((observer) => {
-      this._http
-        .post(`${this.serviceUrl}/Create`, postedVM)
-        .pipe(catchError(this._globalService.errorHandler))
-        .subscribe(
-          (resultVM: IResultVM) => {
-            if (resultVM.IsSuccess) {
-              serviceResult.data = resultVM.Data;
-              this._globalService.messageAlert(
-                MessageType.Success,
-                "App.Messages.SavedSuccessfully",
-                true
-              );
-            } else {
-              if (
-                resultVM.FailedReason === "current-balance-less-than-totalpaid"
-              ) {
-
-                var translatedMessage = this._globalService
-                                        .translateWordByKey("Receipts.Messages.CurrentBalanceLessThanTotalpaid")
-                                        + resultVM.Data;
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  translatedMessage
-                );
-              } else if (resultVM.FailedReason === "failed-in-segments") {
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  "App.Messages.FailedInSegments",
-                  true
-                );
-              }else if (resultVM.FailedReason === "invalid-date") {
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  "App.Messages.DocumentDateIsInvalid",
-                  true
-                );
-              } else if (resultVM.FailedReason === "period-no-not-exist") {
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  "App.Messages.NoPeriodInSegments",
-                  true
-                );
-              }else if(resultVM.Message){
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  resultVM.Message
-                );
-              }
-            }
-            serviceResult.isSuccess = resultVM.IsSuccess;
-            observer.next(serviceResult);
-            observer.complete();
-            return observer;
-          },
-          () => {
-            observer.complete();
-            return observer;
-          }
-        );
-    });
-  }
-
-  edit(postedVM: any): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return Observable.create((observer) => {
-      this._http
-        .put(`${this.serviceUrl}/Edit`, postedVM)
-        .pipe(catchError(this._globalService.errorHandler))
-        .subscribe(
-          (resultVM: IResultVM) => {
-            if (resultVM.IsSuccess) {
-              serviceResult.data = resultVM.Data;
-              this._globalService.messageAlert(
-                MessageType.Success,
-                "App.Messages.UpdatedSuccessfully",
-                true
-              );
-            } else {
-              if (
-                resultVM.FailedReason === "current-balance-less-than-totalpaid"
-              ) {
-              var translatedMessage = this._globalService
-                                        .translateWordByKey("Receipts.Messages.CurrentBalanceLessThanTotalpaid")
-                                        + resultVM.Data;
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  translatedMessage
-                );
-              } else if (resultVM.FailedReason === "failed-in-segments") {
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  "App.Messages.FailedInSegments",
-                  true
-                );
-              } else if (resultVM.FailedReason === "period-no-not-exist") {
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  "App.Messages.NoPeriodInSegments",
-                  true
-                );
-              }else if(resultVM.Message){
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  resultVM.Message
-                );
-              }
-            }
-            serviceResult.isSuccess = resultVM.IsSuccess;
-            observer.next(serviceResult);
-            observer.complete();
-            return observer;
-          },
-          () => {
-            observer.complete();
-            return observer;
-          }
-        );
-    });
+  edit(postedVM: any): Observable<any> {
+    debugger
+    return this._http.post<any>(`${this.serviceUrl}/Update`,postedVM);
   }
   getContractShortList(id: number): Observable<IServiceResult> {
     const serviceResult: IServiceResult = { isSuccess: null, data: null };
@@ -196,33 +58,8 @@ export class ReturnPaymentReceiptService {
     });
   }
 
-  getVouchers(contractId: number): Observable<any> {
-    return this._http.get<any>(`${this.serviceUrl}/GetVouchers?contractId=${contractId}`)
+  getVouchers(code: string): Observable<any> {
+    return this._http.get<any>(`${this.serviceUrl}/GetVouchers?code=${code}`)
   }
-  getEdit(paymentId: string): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return Observable.create((observer) => {
-      this._http
-        .get(`${this.serviceUrl}/GetEditPage`, {
-          params: { id: paymentId },
-        })
-        .pipe(catchError(this._globalService.errorHandler))
-        .subscribe(
-          (resultVM: IResultVM) => {
-            if (resultVM.IsSuccess) {
-              serviceResult.data = resultVM.Data;
-            } else {
-            }
-            serviceResult.isSuccess = resultVM.IsSuccess;
-            observer.next(serviceResult);
-            observer.complete();
-            return observer;
-          },
-          () => {
-            observer.complete();
-            return observer;
-          }
-        );
-    });
-  }
+
 }
