@@ -23,7 +23,7 @@
               [columns]="pageListConfig?.cols" [(contextMenuSelection)]="selectedItem" [lazy]="true"
               (onLazyLoad)="_dynamicSearchService.lazy($event, searchModel, getPagedList.bind(this))"
               [rowsPerPageOptions]="[10, 20, 30]">
-              
+
               <ng-template pTemplate="header" let-columns>
                 <tr>
                   <th *ngFor="let col of pageListConfig?.cols" [pSortableColumn]="col.field" [hidden]="col.hidden">
@@ -79,7 +79,7 @@
                       else render_data_field
                    "></ng-container>
                     <ng-template #render_action_buttons>
-  
+
                     </ng-template>
                     <ng-template #render_data_field>
                       <!--begin::Handle IsDownPayment-->
@@ -102,7 +102,11 @@
                               <a *authorization="action?.authorization" class="dropdown-item"
                                 title="{{ action?.title | translate}}" (click)="action?.callBack(dataItem)">
                                 {{action?.title | translate}}
-                             </a> 
+                             </a>
+                             <a class="dropdown-item" data-toggle="modal" data-target="#reportModal"
+                             title="{{ action?.title | translate}}" (click)="action?.callBack(dataItem)">
+                             {{action?.title | translate}}
+                          </a>
                             </ng-container>
                           </div>
                         </div>

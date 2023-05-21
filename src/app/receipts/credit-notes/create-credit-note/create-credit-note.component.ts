@@ -9,6 +9,7 @@ import { CustomerService } from "@shared/services/customer.service";
 import { ContractService } from "@shared/services/contract.service";
 import { SalesPeriodService } from "src/app/master-data/services/sales-period.service";
 import { CostCenterService } from "@shared/services/cost-center.service";
+import { Settlement } from "../../models/credit-notes/settlement.model";
 
 @Component({
   selector: "app-create-credit-note",
@@ -122,36 +123,36 @@ export class CreateCreditNoteComponent implements OnInit {
     ];
     this.settlementCols = [
       {
-        field: "VoucherCode",
+        field: "voucherCode",
         header: "Receipts.Fields.DocumentId",
         hidden: false,
       },
       {
-        field: "VoucherTypeArabicName",
+        field: "voucherTypeArabicName",
         header: "Receipts.Fields.DocumentType",
         hidden: false,
       },
       {
-        field: "DebitReceivableTypeId",
+        field: "debitReceivableTypeId",
         header: "رقم نوع المستند",
         hidden: true,
       },
       {
-        field: "CurrentBalance",
+        field: "currentBalance",
         header: "Receipts.Fields.CurrentBalance",
         hidden: false
       },
       {
-        field: "NetValueAfterTax",
+        field: "netValueAfterTax",
         header: "Receipts.Fields.ReciptValue",
         hidden: false,
       },
       {
-        field: "CanBePay",
+        field: "canBePay",
         header: "Receipts.Fields.CanPay",
         hidden: false
       },
-      { field: "PaidAmount", header: "Receipts.Fields.Value", hidden: false },
+      { field: "paidAmount", header: "Receipts.Fields.Value", hidden: false },
       { field: "ActionButtons", header: "", hidden: false },
     ];
   }
@@ -186,7 +187,7 @@ export class CreateCreditNoteComponent implements OnInit {
     this.submitted = true;
     let totalSetteled = 0;
     this.settlements.forEach((item) => {
-      totalSetteled += item.PaidAmount;
+      totalSetteled += item.paidAmount;
     });
 
     if (this.form.valid && this.settlements.length > 0 && this.costElements.length > 0) {
@@ -319,26 +320,26 @@ export class CreateCreditNoteComponent implements OnInit {
     this.added = true;
     if (this.selectedVoucher && this.paidValue > 0) {
       debugger
-      const settlement = {
-        Id: this.selectedVoucher.id,
-        VoucherCode:this.selectedVoucher.voucherCode,
-        DebitReceivableId: this.selectedVoucher.id,
-        DebitReceivableVoucherTypeId: this.selectedVoucher.voucherTypeId,
-        PaidAmount: this.paidValue,
-        NetValueAfterTax: this.selectedVoucher.netValueAfterTax,
-        VoucherTypeArabicName: this.selectedVoucher.voucherTypeName,
-        CurrentBalance: Number(this.selectedVoucher.currentBalance),
-        CanBePay: Number(this.selectedVoucher.currentBalance),
+      const settlement:Settlement = {
+        id: this.selectedVoucher.id,
+        voucherCode:this.selectedVoucher.voucherCode,
+        debitReceivableId: this.selectedVoucher.id,
+        debitReceivableVoucherTypeId: this.selectedVoucher.voucherTypeId,
+        paidAmount: this.paidValue,
+        netValueAfterTax: this.selectedVoucher.netValueAfterTax,
+        voucherTypeArabicName: this.selectedVoucher.voucherTypeName,
+        currentBalance: Number(this.selectedVoucher.currentBalance),
+        canBePay: Number(this.selectedVoucher.currentBalance),
       };
       if (
         this.settlements.find(
-          (e) =>
-            e.Id === settlement.Id &&
-            e.DebitReceivableTypeId === settlement.DebitReceivableVoucherTypeId
+          (e:Settlement) =>
+            e.id === settlement.id &&
+            e.debitReceivableVoucherTypeId === settlement.debitReceivableVoucherTypeId
         ) === undefined
       ) {
 
-        if (settlement.CurrentBalance < settlement.PaidAmount) {
+        if (settlement.currentBalance < settlement.paidAmount) {
           this._globalService.messageAlert(
             MessageType.Warning,
             this._globalService.translateWordByKey(
@@ -353,7 +354,7 @@ export class CreateCreditNoteComponent implements OnInit {
           totalSetteled += item.PaidAmount;
         });
 
-        if (totalSetteled + settlement.PaidAmount > this.NetValAfterTax) {
+        if (totalSetteled + settlement.paidAmount > this.NetValAfterTax) {
           this._globalService.messageAlert(
             MessageType.Warning,
             this._globalService.translateWordByKey(
@@ -383,10 +384,10 @@ export class CreateCreditNoteComponent implements OnInit {
     const settlement = event.data;
     const itemIndex = this.settlements.findIndex(
       (s) =>
-        s.Id === settlement.Id &&
-        s.DebitReceivableTypeId === settlement.DebitReceivableTypeId
+        s.id === settlement.id &&
+        s.debitReceivableTypeId === settlement.debitReceivableTypeId
     );
-    if (settlement.PaidAmount > settlement.CanBePay) {
+    if (settlement.paidAmount > settlement.canBePay) {
       this.settlements[itemIndex] = this.currentSettlement;
       this._globalService.messageAlert(
         MessageType.Warning,
@@ -396,7 +397,7 @@ export class CreateCreditNoteComponent implements OnInit {
       );
       return;
     }
-    if (settlement.PaidAmount <= 0) {
+    if (settlement.paidAmount <= 0) {
       this.settlements[itemIndex] = this.currentSettlement;
       this._globalService.messageAlert(
         MessageType.Warning,
@@ -409,10 +410,10 @@ export class CreateCreditNoteComponent implements OnInit {
     let totalSetteled = 0;
     this.settlements.forEach((item, index) => {
       if (index !== itemIndex) {
-        totalSetteled += item.PaidAmount;
+        totalSetteled += item.paidAmount;
       }
     });
-    if (totalSetteled + settlement.PaidAmount != this.NetValAfterTax) {
+    if (totalSetteled + settlement.paidAmount != this.NetValAfterTax) {
       this.settlements[itemIndex] = this.currentSettlement;
 
       this._globalService.messageAlert(
