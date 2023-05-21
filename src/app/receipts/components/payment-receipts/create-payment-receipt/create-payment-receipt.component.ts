@@ -6,6 +6,7 @@ import { PaymentReceiptService } from "../payment-receipt.service";
 import { IServiceResult } from "@shared/interfaces/results";
 import { GlobalService, MessageType } from "@shared/services/global.service";
 import { AuthService } from "@shared/services/auth.service";
+import { CustomerService } from "@shared/services/customer.service";
 
 @Component({
   selector: "app-create-payment-receipt",
@@ -40,42 +41,21 @@ export class CreatePaymentReceiptComponent implements OnInit {
     private _datePipe: DatePipe,
     private _router: Router,
     private _paymentReceipt: PaymentReceiptService,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _customerService : CustomerService
   ) {
     this.settlements = [];
   }
 
   ngOnInit() {
     this.createForm();
-    this.getCreatFormData();
+    //this.getCreatFormData();
     this.IsCashOrDeposit();
+    this.getVoucherCols();
+    this.getSettleCols();
+  }
 
-    this.vouchersCols = [
-      { field: "VoucherId", header: "App.Fields.DocumentId", hidden: false },
-      {
-        field: "VoucherTypeId",
-        header: "Receipts.Fields.DocumentType",
-        hidden: true,
-      },
-      {
-        field: "VoucherTypeArabicName",
-        header: "Receipts.Fields.DocumentType",
-        hidden: false,
-      },
-      {
-        field: "NetValueAfterTax",
-        header: "Receipts.Fields.ReciptValue",
-        hidden: false,
-      },
-      {
-        field: "CurrentBalance",
-        header: "Receipts.Fields.CurrentBalance",
-        hidden: false,
-        pipe: "number",
-        pipeFormat: "3.1-4",
-      },
-    ];
-
+  getSettleCols(){
     this.settlementCols = [
       {
         field: "DebitReceivableId",
@@ -110,28 +90,56 @@ export class CreatePaymentReceiptComponent implements OnInit {
     ];
   }
 
-  getCreatFormData() {
-    this.progressSpinner = true;
-
-    this._paymentReceipt.getCreate().subscribe((result: IServiceResult) => {
-      this.viewModel = result.data;
-      if (this._authService.currentAuthUser.RoleTypeId == '001') {
-        this.CashBoxs = this.viewModel.CashBoxs;
-      }
-      else {
-        this.CashBoxs = this.viewModel.CashBoxs.filter(x => x.Id === this._authService.currentAuthUser.CashBoxId);
-      }
-      this.progressSpinner = false;
-
-      this.form
-        .get("DocumentDate")
-        .setValue(
-          new Date(this.viewModel.CurrentDate)
-        );
-
-      this.minDateValue = new Date(this.viewModel.MinSelectableDate);
-    });
+  getVoucherCols(){
+    this.vouchersCols = [
+      { field: "VoucherId", header: "App.Fields.DocumentId", hidden: false },
+      {
+        field: "VoucherTypeId",
+        header: "Receipts.Fields.DocumentType",
+        hidden: true,
+      },
+      {
+        field: "VoucherTypeArabicName",
+        header: "Receipts.Fields.DocumentType",
+        hidden: false,
+      },
+      {
+        field: "NetValueAfterTax",
+        header: "Receipts.Fields.ReciptValue",
+        hidden: false,
+      },
+      {
+        field: "CurrentBalance",
+        header: "Receipts.Fields.CurrentBalance",
+        hidden: false,
+        pipe: "number",
+        pipeFormat: "3.1-4",
+      },
+    ];
   }
+
+  // getCreatFormData() {
+  //   this.progressSpinner = true;
+
+  //   this._paymentReceipt.getCreate().subscribe((result: IServiceResult) => {
+  //     this.viewModel = result.data;
+  //     if (this._authService.currentAuthUser.RoleTypeId == '001') {
+  //       this.CashBoxs = this.viewModel.CashBoxs;
+  //     }
+  //     else {
+  //       this.CashBoxs = this.viewModel.CashBoxs.filter(x => x.Id === this._authService.currentAuthUser.CashBoxId);
+  //     }
+  //     this.progressSpinner = false;
+
+  //     this.form
+  //       .get("DocumentDate")
+  //       .setValue(
+  //         new Date(this.viewModel.CurrentDate)
+  //       );
+
+  //     this.minDateValue = new Date(this.viewModel.MinSelectableDate);
+  //   });
+  // }
 
   createForm() {
     this.form = this._formBuilder.group({
@@ -213,15 +221,9 @@ export class CreatePaymentReceiptComponent implements OnInit {
     }
   }
 
-  searchCustomers(event: any) {
-    setTimeout(() => {
-      // this._serviceRequestService
-      //   .SearchCustomer(event.query)
-      //   .subscribe((result: IServiceResult) => {
-      //     this.filteredArray = [];
-      //     this.filteredArray = result.data;
-      //   });
-    }, 1500);
+  getCustomers(event: any) {
+   this._customerService.getAll(event.query)
+   .subscribe()
   }
 
   onSelectCustomer(event: any) {
@@ -277,7 +279,6 @@ export class CreatePaymentReceiptComponent implements OnInit {
   }
 
   addSettlement() {
-    
     this.added = true;
     if (this.selectedVoucher && Number(this.paidValue) > 0) {
       const settlement = {

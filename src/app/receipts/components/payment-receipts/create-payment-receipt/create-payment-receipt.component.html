@@ -54,7 +54,7 @@
               </div>
               <div class="col-12 px-0">
                 <p-autoComplete id="Customer" class="p-0 form-control" field="FullArabicName" formControlName="Customer"
-                  [suggestions]="filteredArray" (completeMethod)="searchCustomers($event)"
+                  [suggestions]="filteredArray" (completeMethod)="getCustomers($event)"
                   (onSelect)="onSelectCustomer($event)" (onClear)="onClear('Customer')" [forceSelection]="true"
                   [size]="30" [minLength]="1" placeholder="{{'Receipts.Fields.CustomerName' | translate}}"
                   [dropdown]="true" [ngClass]="{
