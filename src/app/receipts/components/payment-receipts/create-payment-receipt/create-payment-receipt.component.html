@@ -53,8 +53,8 @@
                 <span class="required">*</span>
               </div>
               <div class="col-12 px-0">
-                <p-autoComplete id="Customer" class="p-0 form-control" field="FullArabicName" formControlName="Customer"
-                  [suggestions]="filteredArray" (completeMethod)="getCustomers($event)"
+                <p-autoComplete id="Customer" class="p-0 form-control" field="name" formControlName="Customer"
+                  [suggestions]="filteredArray" (completeMethod)="searchCustomers($event)"
                   (onSelect)="onSelectCustomer($event)" (onClear)="onClear('Customer')" [forceSelection]="true"
                   [size]="30" [minLength]="1" placeholder="{{'Receipts.Fields.CustomerName' | translate}}"
                   [dropdown]="true" [ngClass]="{
@@ -63,7 +63,7 @@
                   <ng-template let-Customer pTemplate="item">
                     <div class="ui-helper-clearfix">
                       <div>
-                        {{ Customer.FullArabicName }}
+                        {{ Customer.name }}
                       </div>
                     </div>
                   </ng-template>
@@ -79,21 +79,21 @@
           <div class="col-lg-3 col-md-6 col-12">
             <div class="form-group m-form__group row mx-0 px-0">
               <div class="col-12 px-0">
-                <label class="form-control-label" for="Contract"> {{'Receipts.Fields.ContractName' | translate}}</label>
+                <label class="form-control-label" for="Contract"> {{ 'Receipts.Fields.CostCenter' | translate}}</label>
                 <span class="required">*</span>
               </div>
               <div class="col-12 px-0">
-                <p-autoComplete id="Contract" class="p-0 form-control" formControlName="Contract" field="SegmentId"
-                  [suggestions]="filteredArray" (completeMethod)="filterArray($event, Contracts,'SegmentId')"
+                <p-autoComplete id="Contract" class="p-0 form-control" formControlName="Contract" field="entityCode"
+                  [suggestions]="filteredArray" (completeMethod)="filterArray($event, Contracts,'entityCode')"
                   (onSelect)="onSelectContract($event)" (onClear)="onClear('Contract')" [forceSelection]="true"
-                  [size]="30" [minLength]="1" placeholder="{{'Receipts.Fields.ContractName' | translate}}"
+                  [size]="30" [minLength]="1" placeholder="{{ 'Receipts.Fields.CostCenter' | translate}}"
                   [dropdown]="true" [ngClass]="{
                       'is-invalid': submitted && form.get('Contract').errors
                     }">
                   <ng-template let-Contract pTemplate="item">
                     <div class="ui-helper-clearfix">
                       <div>
-                        {{ Contract.SegmentId }}
+                        {{ Contract.entityCode }}
                       </div>
                     </div>
                   </ng-template>

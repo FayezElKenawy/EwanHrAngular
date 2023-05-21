@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { GlobalService, MessageType } from "@shared/services/global.service";
 import { DatePipe } from "@angular/common";
 import { Router, ActivatedRoute } from "@angular/router";
-import { CreditNoteService } from "../credit-note.service";
+import { CreditNoteService } from "../../../services/credit-note.service";
 import { IServiceResult } from "@shared/interfaces/results";
 
 @Component({
@@ -159,7 +159,7 @@ export class EditCreditNoteComponent implements OnInit {
       });
 
       this.minDateValue = new Date(this.viewModel.MinSelectableDate);
-      
+
       this.form.get("Customer").disable();
       this.form.get("Contract").disable();
       this.settlements = creditNote.PaymentsTransactions
@@ -388,13 +388,13 @@ export class EditCreditNoteComponent implements OnInit {
     this.NetVal = +Number(
       this.costElements.reduce((sum, current) => sum + Number(current.Amount), 0)
     ).toFixed(2);
-    
+
     this.TotalTaxAmount = +Number(
       this.costElements.reduce((sum, current) => sum + Number(current.TaxAmount), 0)
       ).toFixed(2);
 
-    this.NetValAfterTax = 
-      +(Number(this.NetVal) 
+    this.NetValAfterTax =
+      +(Number(this.NetVal)
       + Number(this.TotalTaxAmount))
       .toFixed(2);
   }
@@ -419,29 +419,29 @@ export class EditCreditNoteComponent implements OnInit {
       100;
     this.calculateCreditNote();
   }
- 
+
   onlyTwoPrecsionDigits(event): boolean {
     var value =event.target.value;
     const charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode > 31) { 
+    if (charCode > 31) {
       var number =value.split('.');
       if(number[1] &&
          number[1].length>=2){
         return false
       }
-    } 
+    }
     return true;
   }
-  
+
   filterArray(event, arrayObject: any, ColName = "FullArabicName") {
-    
+
     this.filteredArray = [];
 
     if(arrayObject){
       for (let i = 0; i < arrayObject.length; i++) {
         const item = arrayObject[i];
         var itemFullName = item[ColName];
-  
+
         itemFullName = itemFullName.replace(/\s/g, "").toLowerCase();
         var queryString = event.query.replace(/\s/g, "").toLowerCase();
         if (itemFullName.indexOf(queryString) >= 0) {
