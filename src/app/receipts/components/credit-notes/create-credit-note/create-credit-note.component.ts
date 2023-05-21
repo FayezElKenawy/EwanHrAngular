@@ -9,7 +9,7 @@ import { CustomerService } from "@shared/services/customer.service";
 import { ContractService } from "@shared/services/contract.service";
 import { SalesPeriodService } from "src/app/master-data/services/sales-period.service";
 import { CostCenterService } from "@shared/services/cost-center.service";
-import { Settlement } from "../../models/credit-notes/settlement.model";
+import { Settlement } from "src/app/receipts/models/credit-notes/settlement.model";
 
 @Component({
   selector: "app-create-credit-note",
@@ -46,7 +46,7 @@ export class CreateCreditNoteComponent implements OnInit {
   voucherType: any;
   minDateValue: any;
   sectorId: string;
-  
+
   constructor(
     private _formBuilder: FormBuilder,
     private _globalService: GlobalService,

@@ -1,15 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { PaymentReceiptService } from '../payment-receipt.service';
 import { Router } from '@angular/router';
-import { PagingMetaData } from '@shared/interfaces/paging-meta-data';
-import { FormGroup } from '@angular/forms';
-import { SearchModel } from '@shared/interfaces/search-model';
 import { DynamicSearchService } from '@shared/services/dynamic-search.service';
 import { ReportModelViewerComponent } from '@shared/components/report-model-viewer/report-model-viewer.component';
 import { AuthService } from '@shared/services/auth.service';
-import { PagedList } from '@shared/interfaces/paged-list';
-import { ColumnType } from '@shared/models/column-type.model';
 import { ColumnPipeType } from '@shared/enum/column-pipe.enum';
 import { ColumnPipeFormat } from '@shared/enum/columns-pipe-format.enum';
 import { SearchType } from '@shared/enum/searchType.enum';

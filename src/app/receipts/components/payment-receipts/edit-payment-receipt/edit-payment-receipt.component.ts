@@ -3,9 +3,9 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { GlobalService, MessageType } from "@shared/services/global.service";
 import { DatePipe } from "@angular/common";
 import { Router, ActivatedRoute } from "@angular/router";
-import { PaymentReceiptService } from "../payment-receipt.service";
 import { IServiceResult } from "@shared/interfaces/results";
 import { AuthService } from "@shared/services/auth.service";
+import { PaymentReceiptService } from "src/app/receipts/services/payment-receipt.service";
 
 @Component({
   selector: "app-edit-payment-receipt",
@@ -130,7 +130,7 @@ export class EditPaymentReceiptComponent implements OnInit {
         else {
           this.CashBoxs = this.viewModel.CashBoxs.filter(x => x.Id === this._authService.currentAuthUser.CashBoxId);
         }
-        
+
         const paymentReceipt = this.viewModel.PaymentReceipt;
         this.form.patchValue({
           CreditReceivableId: paymentReceipt.CreditReceivableId,

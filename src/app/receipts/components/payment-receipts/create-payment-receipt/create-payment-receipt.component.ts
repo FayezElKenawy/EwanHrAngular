@@ -2,11 +2,12 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { DatePipe } from "@angular/common";
 import { Router } from "@angular/router";
-import { PaymentReceiptService } from "../payment-receipt.service";
+
 import { IServiceResult } from "@shared/interfaces/results";
 import { GlobalService, MessageType } from "@shared/services/global.service";
 import { AuthService } from "@shared/services/auth.service";
 import { CustomerService } from "@shared/services/customer.service";
+import { PaymentReceiptService } from "src/app/receipts/services/payment-receipt.service";
 
 @Component({
   selector: "app-create-payment-receipt",
@@ -260,7 +261,7 @@ export class CreatePaymentReceiptComponent implements OnInit {
     this._paymentReceipt
       .getVouchers(event.Id)
       .subscribe((result: IServiceResult) => {
-        
+
         this.progressSpinner = false;
         this.vouchers = result.data;
         //////////// me
@@ -271,7 +272,7 @@ export class CreatePaymentReceiptComponent implements OnInit {
   }
 
   onSelectVoucherType() {
-    
+
     this.filteredVouchers = this.vouchers.filter(
       (v) => v.VoucherTypeId === this.voucherType
     );
@@ -393,7 +394,7 @@ export class CreatePaymentReceiptComponent implements OnInit {
   }
 
   filterArray(event, arrayObject: any, ColName = "FullArabicName") {
-    
+
     this.filteredArray = [];
 
     for (let i = 0; i < arrayObject.length; i++) {
