@@ -212,7 +212,7 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
       postedViewModel.documentDate = this._datePipe.transform(postedViewModel.documentDate,'yyyy-MM-ddTHH:mm:ss');
       postedViewModel.customerId = postedViewModel.customer.id;
       postedViewModel.entityCode = postedViewModel.contract.entityCode;
-      postedViewModel.sectorTypeId = '01-02';
+      postedViewModel.sectorTypeId =this._globalService.getSectorType();
       postedViewModel.cashBoxId = postedViewModel.cashBox
       ? postedViewModel.cashBox.id
       : null;

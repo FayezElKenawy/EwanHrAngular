@@ -49,11 +49,11 @@ export class ListPaymentReceiptsComponent implements OnInit {
       ],
       actions: [
         {
-          authorization: 'receipts-payment-receipts-edit',
+          authorization: 'receipts-payment-receipts-print',
           title: 'App.Buttons.Edit',
           callBack: (dataItem) => {
             this._router.navigate([
-              '/receipts/edit-payment-receipts',
+              '/finance/receipts/edit-payment-receipts',
               dataItem.id,
             ]);
           },
@@ -122,7 +122,7 @@ export class ListPaymentReceiptsComponent implements OnInit {
           header: 'Receipts.Fields.ReciptValue',
         },
         {
-          field: 'isDownPayment',
+          field: 'voucherTypeName',
           header: 'Receipts.Fields.ReciptType',
         },
         {

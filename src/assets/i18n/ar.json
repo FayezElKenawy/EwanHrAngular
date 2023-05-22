@@ -350,7 +350,7 @@
             "TerminationConfirm":"تأكيد إنهاء العقد قبل تسديد المديونية",
             "customerCode":"رقم العميل",
             "OrderId": "رقم طلب الخدمة",
-            "CostCenter": "مراكز التكلفة"
+            "CostCenter": "مركز التكلفة"
         },
         "Buttons": {
             "CreditNoteCreate": "اضف اشعار خصم",
@@ -360,6 +360,7 @@
             "Select": "اختر"
         },
         "Messages": {
+            "EditSuccessFully":"تم الحفظ بنجاح",
             "NetValLessThanPaid": "لا يمكن ان تكون قيمة الاشعار اقل من قيمة المسدد",
             "NetValMoreThanPaid": "قيمة الاشعار يجب ان تكون اكبر من قيمة المسدد",
             "TotalPaidMoreThanBalance": "القيمة المدفوعة اكبر من الرصيد الحالي للسند",

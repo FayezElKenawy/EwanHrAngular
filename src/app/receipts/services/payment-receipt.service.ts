@@ -169,7 +169,7 @@ export class PaymentReceiptService {
     const serviceResult: IServiceResult = { isSuccess: null, data: null };
     return Observable.create((observer) => {
       this._http
-        .put(`${this.serviceUrl}/Edit`, postedVM)
+        .post(`${this.serviceUrl}/Update`, postedVM)
         .pipe(catchError(this._globalService.errorHandler))
         .subscribe(
           (resultVM: IResultVM) => {
@@ -309,31 +309,10 @@ export class PaymentReceiptService {
     return this._http.get(`${this.serviceVoucherUrl}/GetVouchersById?entityCode=${entityCode}`);
   }
 
-  getEdit(paymentId: string): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return Observable.create((observer) => {
-      this._http
-        .get(`${this.serviceUrl}/GetEditPage`, {
-          params: { id: paymentId },
-        })
-        .pipe(catchError(this._globalService.errorHandler))
-        .subscribe(
-          (resultVM: IResultVM) => {
-            if (resultVM.IsSuccess) {
-              serviceResult.data = resultVM.Data;
-            } else {
-            }
-            serviceResult.isSuccess = resultVM.IsSuccess;
-            observer.next(serviceResult);
-            observer.complete();
-            return observer;
-          },
-          () => {
-            observer.complete();
-            return observer;
-          }
-        );
-    });
+  getEdit(paymentId: string): Observable<any>  {
+
+    return this._http
+        .get(`${this.serviceUrl}/GetById/${paymentId}`)
   }
 
   // customer

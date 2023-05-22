@@ -146,11 +146,6 @@ export class CreateCreditNoteComponent implements OnInit {
         header: "Receipts.Fields.ReciptValue",
         hidden: false,
       },
-      {
-        field: "canBePay",
-        header: "Receipts.Fields.CanPay",
-        hidden: false
-      },
       { field: "paidAmount", header: "Receipts.Fields.Value", hidden: false },
       { field: "ActionButtons", header: "", hidden: false },
     ];
@@ -210,7 +205,6 @@ export class CreateCreditNoteComponent implements OnInit {
         return;
       }
 
-      this.progressSpinner = true;
       const postedViewModel = Object.assign({}, this.form.value);
       postedViewModel.CustomerId = this.form.value.Customer.id;
 
@@ -222,9 +216,10 @@ export class CreateCreditNoteComponent implements OnInit {
       postedViewModel.NetValue = this.NetVal;
       postedViewModel.EntityCode = postedViewModel.Contract.entityCode;
       postedViewModel.SectorTypeId = this.sectorId;
+      postedViewModel.TotalTaxAmount=this.TotalTaxAmount;
 
       this._creditNoteService.create(postedViewModel).subscribe(
-        (result: IServiceResult) => {
+        (result) => {
           if (result) {
             this.submitted = false;
             this.form.reset();
@@ -239,9 +234,7 @@ export class CreateCreditNoteComponent implements OnInit {
           }
         },
         null,
-        () => {
-          this.progressSpinner = false;
-        }
+
       );
     }
   }
@@ -264,19 +257,19 @@ export class CreateCreditNoteComponent implements OnInit {
     this.selectedVoucher = undefined;
 
     this._costCenterService.getAll(event.code)
-    .subscribe((result) => {
-      this.progressSpinner = false;
-      this.filteredArray = [];
-      this.filteredArray = result;
-      this.Contracts = result;
-      if (result.length > 0) {
-        this.form.controls.Contract.enable();
-        this.form.controls.Contract.reset();
-      } else {
-        this.form.controls.Contract.setValue("");
-        this.form.controls.Contract.disable();
-      }
-    });
+      .subscribe((result) => {
+        this.progressSpinner = false;
+        this.filteredArray = [];
+        this.filteredArray = result;
+        this.Contracts = result;
+        if (result.length > 0) {
+          this.form.controls.Contract.enable();
+          this.form.controls.Contract.reset();
+        } else {
+          this.form.controls.Contract.setValue("");
+          this.form.controls.Contract.disable();
+        }
+      });
 
   }
 
@@ -297,10 +290,9 @@ export class CreateCreditNoteComponent implements OnInit {
   addSettlement() {
     this.added = true;
     if (this.selectedVoucher && this.paidValue > 0) {
-      debugger
-      const settlement:Settlement = {
+      const settlement: Settlement = {
         id: this.selectedVoucher.id,
-        voucherCode:this.selectedVoucher.voucherCode,
+        voucherCode: this.selectedVoucher.voucherCode,
         debitReceivableId: this.selectedVoucher.id,
         debitReceivableVoucherTypeId: this.selectedVoucher.voucherTypeId,
         paidAmount: this.paidValue,
@@ -311,7 +303,7 @@ export class CreateCreditNoteComponent implements OnInit {
       };
       if (
         this.settlements.find(
-          (e:Settlement) =>
+          (e: Settlement) =>
             e.id === settlement.id &&
             e.debitReceivableVoucherTypeId === settlement.debitReceivableVoucherTypeId
         ) === undefined

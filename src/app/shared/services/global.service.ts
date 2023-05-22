@@ -267,6 +267,7 @@ export class GlobalService {
 
   //#region  ErrorHandler
   public errorHandler(error: HttpErrorResponse) {
+    debugger
     let currentLang =
       localStorage.getItem("lang") !== null
         ? localStorage.getItem("lang")
@@ -286,7 +287,7 @@ export class GlobalService {
       
       this.messageAlert(MessageType.Error,error.error)
     } else if (error.status === 404) {
-      
+
       this.messageAlert(MessageType.Error,error.error)
     }else if (error.status === 0) {
       Swal({
