@@ -174,6 +174,7 @@ export class CreatePaymentReceiptComponent implements OnInit {
       CashBoxAmount: [0, Validators.required],
     });
   }
+  
   setCreditCardTypes(){
     this._creditCardTypeService.getAll().subscribe(
       result=>{
@@ -182,6 +183,7 @@ export class CreatePaymentReceiptComponent implements OnInit {
       }
     )
   }
+
   createPaymentReciept() {
     this.submitted = true;
     let totalpaid = 0;
@@ -213,7 +215,7 @@ export class CreatePaymentReceiptComponent implements OnInit {
       postedViewModel.CustomerId =this.form.value.Customer.id;
       postedViewModel.EntityCode = postedViewModel.Contract.entityCode;
       postedViewModel.SectorTypeId = this.sectorId;
-      debugger
+
       if (postedViewModel.CreditCardType) {
         postedViewModel.CreditCardTypeId = postedViewModel.CreditCardType.code;
       }

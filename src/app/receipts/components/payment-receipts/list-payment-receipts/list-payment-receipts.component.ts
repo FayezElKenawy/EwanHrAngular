@@ -62,7 +62,7 @@ export class ListPaymentReceiptsComponent implements OnInit {
           authorization: 'receipts-payment-receipts-print',
           title: 'App.Buttons.Print',
           callBack: (dataItem) => {
-            this.showReport(dataItem.id);
+            this.showReport(dataItem.code);
           },
         },
       ],

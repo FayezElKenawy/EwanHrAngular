@@ -36,30 +36,6 @@ export class CreditNoteService {
 
   }
 
-  getCreate(): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return Observable.create((observer) => {
-      this._http
-        .get(`${this.serviceUrl}/GetCreatePage`)
-        .pipe(catchError(this._globalService.errorHandler))
-        .subscribe(
-          (resultVM: IResultVM) => {
-            if (resultVM.IsSuccess) {
-              serviceResult.data = resultVM.Data;
-            } else {
-            }
-            serviceResult.isSuccess = resultVM.IsSuccess;
-            observer.next(serviceResult);
-            observer.complete();
-            return observer;
-          },
-          () => {
-            observer.complete();
-            return observer;
-          }
-        );
-    });
-  }
 
   create(postedVM: any): Observable<any> {
       return this._http.post(`${this.serviceUrl}/v1/CreditNote/Create`, postedVM)
@@ -160,88 +136,10 @@ export class CreditNoteService {
     });
   }
 
-  getContractShortList(id: number): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return Observable.create((observer) => {
-      this._http
-        .get(`${this.ContractUrl}/GetCustomrContracts?customerId=${id}`)
-        .pipe(catchError(this._globalService.errorHandler))
-        .subscribe(
-          (resultVM: IResultVM) => {
-            if (resultVM.IsSuccess) {
-              serviceResult.data = resultVM.Data;
-            } else {
-            }
-            serviceResult.isSuccess = resultVM.IsSuccess;
-            observer.next(serviceResult);
-            observer.complete();
-            return observer;
-          },
-          () => {
-            observer.complete();
-            return observer;
-          }
-        );
-    });
-  }
-
   getVouchers(entityCode: any): Observable<any> {
-    return this._http.get(`${this.serviceUrl}/Voucher/GetVouchersById?entityCode=${entityCode}`);
+    return this._http.get(`${this.serviceUrl}/v1/Voucher/GetVouchersById?entityCode=${entityCode}`);
   }
 
-  getEdit(paymentId: string): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return Observable.create((observer) => {
-      this._http
-        .get(`${this.serviceUrl}/GetEditPage`, {
-          params: { id: paymentId },
-        })
-        .pipe(catchError(this._globalService.errorHandler))
-        .subscribe(
-          (resultVM: IResultVM) => {
-            if (resultVM.IsSuccess) {
-              serviceResult.data = resultVM.Data;
-            } else {
-            }
-            serviceResult.isSuccess = resultVM.IsSuccess;
-            observer.next(serviceResult);
-            observer.complete();
-            return observer;
-          },
-          () => {
-            observer.complete();
-            return observer;
-          }
-        );
-    });
-  }
-
-  // customer
-  SearchCustomer(searchTerm: string) {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return Observable.create((observer) => {
-      this._http
-        .get(`${this.customerUrl}/GetShortList`, {
-          params: { searchTerm: searchTerm },
-        })
-        .pipe(catchError(this._globalService.errorHandler))
-        .subscribe(
-          (resultVM: IResultVM) => {
-            if (resultVM.IsSuccess) {
-              serviceResult.data = resultVM.Data;
-            }
-            serviceResult.isSuccess = resultVM.IsSuccess;
-            observer.next(serviceResult);
-            observer.complete();
-            return observer;
-          },
-          () => {
-            observer.complete();
-            return observer;
-          }
-        );
-    });
-  }
 
   getCostElements():Observable<any>{
     return this._http.get(`${this.serviceUrl}/v1/CostElement/GetSelectList?sectorId=${this._globalService.getSectorType()}`)
