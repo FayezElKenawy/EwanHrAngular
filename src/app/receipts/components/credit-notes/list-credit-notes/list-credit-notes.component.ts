@@ -96,12 +96,12 @@ export class ListCreditNotesComponent implements OnInit {
         //   searchable: true,
         //   searchType: "text"
         // },
-        {
-          field: "branchName",
-          header: "App.Fields.Branch",
-          customSearchField:"Bank.Name",
-          isLocalized:true,
-        },
+        // {
+        //   field: "branchName",
+        //   header: "App.Fields.Branch",
+        //   customSearchField:"Bank.Name",
+        //   isLocalized:true,
+        // },
         {
           field: "netValueAfterTax",
           header: "Receipts.Fields.CreditNoteValue",
@@ -117,7 +117,9 @@ export class ListCreditNotesComponent implements OnInit {
           header: "Receipts.Fields.AllRetreived",
           pipe:ColumnPipeType.Currency,
         }
-      ]
+      ],
+      defaultOrder:'documentDate',
+      defaultOrderType:'desc'
     };
   }
 

@@ -40,6 +40,11 @@ export class PageListComponent implements OnInit {
 
   getPagedList() {
     debugger;
+    if(this.pageListConfig.defaultOrder && !this.searchModel.orderBy){
+      this.searchModel.orderBy=this.pageListConfig.defaultOrder;
+      this.searchModel.orderType=this.pageListConfig.defaultOrderType;
+    }
+    
     this.pageListConfig.searchFields.forEach((field) => {
       this.searchModel.searchFields.push({
         fieldName: field.fieldName,

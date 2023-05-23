@@ -99,7 +99,7 @@
                           </a>
                           <div class="dropdown-menu dropdown-menu-right">
                             <ng-container *ngFor="let action of pageListConfig?.actions">
-                              <a *authorization="action?.authorization" class="dropdown-item"
+                              <a *authorization="action?.authorization" class="dropdown-item" 
                                 title="{{ action?.title | translate}}" (click)="action?.callBack(dataItem)">
                                 {{action?.title | translate}}
                              </a>

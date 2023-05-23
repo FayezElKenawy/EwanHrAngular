@@ -10,6 +10,8 @@ export class PageListConfig {
   createButtonTitle: string;
   getDataAPIURL: string;
   searchFields?: SearchField[] = []; // for static Search
+  defaultOrder?:string;
+  defaultOrderType?:string;
   cols: ColumnType[] = [];
   actions: ListAction[] = [];
 }
