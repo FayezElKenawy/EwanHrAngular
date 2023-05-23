@@ -267,6 +267,8 @@ export class GlobalService {
 
   //#region  ErrorHandler
   public errorHandler(error: HttpErrorResponse) {
+    this.isSpinnerLoaded.next(false);
+
     let currentLang =
       localStorage.getItem("lang") !== null
         ? localStorage.getItem("lang")
