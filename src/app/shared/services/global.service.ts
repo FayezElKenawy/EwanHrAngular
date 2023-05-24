@@ -285,10 +285,10 @@ export class GlobalService {
       document.location.href = environment.financeURL + "/finance/auth/login";
     }
     else if (error.status === 400) {
-      
+
       this.messageAlert(MessageType.Error,error.error)
     } else if (error.status === 404) {
-      
+
       this.messageAlert(MessageType.Error,error.error)
     }else if (error.status === 0) {
       Swal({

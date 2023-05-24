@@ -24,7 +24,6 @@ import { EditPaymentReceiptComponent } from './components/payment-receipts/edit-
 import { ListPaymentReceiptsComponent } from './components/payment-receipts/list-payment-receipts/list-payment-receipts.component';
 import { ListCreditNotesComponent } from './components/credit-notes/list-credit-notes/list-credit-notes.component';
 import { CreateCreditNoteComponent } from './components/credit-notes/create-credit-note/create-credit-note.component';
-import { EditCreditNoteComponent } from './components/credit-notes/edit-credit-note/edit-credit-note.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +40,6 @@ import { EditCreditNoteComponent } from './components/credit-notes/edit-credit-n
 
     ListCreditNotesComponent,
     CreateCreditNoteComponent,
-    EditCreditNoteComponent,
 
     ListCreditInvoicesComponent,
     CreateDownpaymentReceiptComponent,

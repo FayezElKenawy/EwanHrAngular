@@ -16,7 +16,6 @@ import { CreatePaymentReceiptComponent } from './components/payment-receipts/cre
 import { EditPaymentReceiptComponent } from './components/payment-receipts/edit-payment-receipt/edit-payment-receipt.component';
 import { ListCreditNotesComponent } from './components/credit-notes/list-credit-notes/list-credit-notes.component';
 import { CreateCreditNoteComponent } from './components/credit-notes/create-credit-note/create-credit-note.component';
-import { EditCreditNoteComponent } from './components/credit-notes/edit-credit-note/edit-credit-note.component';
 
 const routes: Routes = [
   {
@@ -35,10 +34,6 @@ const routes: Routes = [
       {
         path: 'create-credit-note',
         component: CreateCreditNoteComponent,
-      },
-      {
-        path: 'details-credit-note/:id',
-        component: EditCreditNoteComponent,
       },
       {
         path: 'debit-notes',

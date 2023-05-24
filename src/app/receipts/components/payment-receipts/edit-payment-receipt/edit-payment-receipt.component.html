@@ -1,5 +1,5 @@
 <!--begin::Portlet-->
-<div class="details" *authorization="{actionName:'receipts-payment-receipts-edit',pageLevel:true}">
+<div class="details">
   <div class="m-portlet m-0">
     <div class="m-portlet__head">
       <div class="m-portlet__head-caption">
@@ -58,23 +58,25 @@
             </div>
           </div>
 
-          <!-- Customer -->
-          <div class="col-lg-3 col-md-6 col-12">
+           <!-- اسم العميل* -->
+           <div class="col-lg-3 col-md-6 col-12">
             <div class="form-group m-form__group row mx-0 px-0">
-              <div class="col-12 px-0">
-                <label class="form-control-label" for="Customer">{{'Receipts.Fields.CustomerName' | translate}}</label>
+              <div class="col-12 mx-auto px-0">
+                <label for="customerNumber" class="form-control-label">{{'Receipts.Fields.CustomerName' |
+                  translate}}</label>
                 <span class="required">*</span>
               </div>
               <div class="col-12 px-0">
-                <p-autoComplete id="Customer" class="p-0 form-control" field="FullName" formControlName="Customer"
-                  [suggestions]="filteredArray" (onClear)="onClear('Customer')" [dropdown]="true" [forceSelection]="true"
-                  [size]="30" [minLength]="1" placeholder="{{'Receipts.Fields.CustomerName' | translate}}" [ngClass]="{
-                'is-invalid': submitted && form.get('Customer').errors
-              }">
+                <p-autoComplete id="Customer" class="p-0 form-control" field="fullName" formControlName="Customer"
+                  [suggestions]="filteredArray" (onClear)="onClear('Customer')" [forceSelection]="true" [size]="30"
+                  [minLength]="1" placeholder="{{'Receipts.Fields.CustomerName' | translate}}" [dropdown]="true"
+                  [ngClass]="{
+                    'is-invalid': submitted && form.get('Customer').errors
+                  }">
                   <ng-template let-Customer pTemplate="item">
                     <div class="ui-helper-clearfix">
                       <div>
-                        {{ Customer.FullName }}
+                        {{ Customer.fullName }}
                       </div>
                     </div>
                   </ng-template>
@@ -91,20 +93,20 @@
             <div class="form-group m-form__group row mx-0 px-0">
               <div class="col-12 px-0">
                 <label class="form-control-label" for="Contract">
-                  {{'Receipts.Fields.ContractName' | translate}}</label>
+                  {{'Receipts.Fields.CostCenter' | translate}}</label>
                 <span class="required">*</span>
               </div>
               <div class="col-12 px-0">
-                <p-autoComplete id="Contract" class="p-0 form-control" formControlName="Contract" field="SegmentId"
-                  [suggestions]="filteredArray" (onClear)="onClear('Contract')" [forceSelection]="true" [size]="30"
-                  [minLength]="1" placeholder="{{'Receipts.Fields.ContractName' | translate}}" [dropdown]="true"
+                <p-autoComplete id="Contract" class="p-0 form-control" formControlName="Contract" field="entityCode"
+                  [suggestions]="filteredArray" (completeMethod)="filterArray($event, Contracts,'entityCode')" (onClear)="onClear('Contract')" [forceSelection]="true" [size]="30"
+                  [minLength]="1" placeholder="{{'Receipts.Fields.CostCenter' | translate}}" [dropdown]="true"
                   [ngClass]="{
                         'is-invalid': submitted && form.get('Contract').errors
                       }">
                   <ng-template let-Contract pTemplate="item">
                     <div class="ui-helper-clearfix">
                       <div>
-                        {{ Contract.SegmentId }}
+                        {{ Contract.entityCode }}
                       </div>
                     </div>
                   </ng-template>
@@ -175,8 +177,8 @@
                       <span class="required">*</span>
                     </div>
                     <div class="col-12 px-0">
-                      <p-autoComplete formControlName="CashBox" class="p-0 form-control" field="FullName"
-                        [suggestions]="filteredArray" (completeMethod)="filterArray($event, CashBoxs)"
+                      <p-autoComplete formControlName="CashBox" class="p-0 form-control" field="name"
+                        [suggestions]="filteredArray" (completeMethod)="filterArray($event, CashBoxs,'name')"
                         [forceSelection]="true" [size]="30" [minLength]="1"
                         placeholder="{{'Receipts.Fields.SafeNumber' | translate}}" [dropdown]="true" [ngClass]="{
                               'is-invalid': submitted && form.get('CashBox').errors
@@ -184,7 +186,7 @@
                         <ng-template let-CashBox pTemplate="item">
                           <div class="ui-helper-clearfix">
                             <div>
-                              {{ CashBox.FullName }}
+                              {{ CashBox.name }}
                             </div>
                           </div>
                         </ng-template>
@@ -204,15 +206,15 @@
                       <!-- <span class="required">*</span> -->
                     </div>
                     <div class="col-12 px-0">
-                      <p-autoComplete formControlName="CreditCardType" class="p-0 form-control" field="FullName"
-                        [suggestions]="filteredArray" (completeMethod)="filterArray($event, viewModel?.CreditCardTypes)"
+                      <p-autoComplete formControlName="CreditCardType" class="p-0 form-control" field="name"
+                        [suggestions]="filteredArray" (completeMethod)="filterArray($event, creditCardTypes,'name')"
                         [forceSelection]="true" [size]="30" [minLength]="1"
                         placeholder="{{'Receipts.Fields.CreditCardType' | translate}}" [dropdown]="true"
                         [ngClass]="{'is-invalid': submitted && form.get('CreditCardType').errors}">
                         <ng-template let-CreditCardType pTemplate="item">
                           <div class="ui-helper-clearfix">
                             <div>
-                              {{ CreditCardType.FullName }}
+                              {{ CreditCardType.name }}
                             </div>
                           </div>
                         </ng-template>
@@ -314,8 +316,8 @@
                       <span class="required">*</span>
                     </div>
                     <div class="col-12 px-0">
-                      <p-autoComplete formControlName="BankAccount" class="p-0 form-control" field="FullName"
-                        [suggestions]="filteredArray" (completeMethod)="filterArray($event, viewModel?.BankAccounts)"
+                      <p-autoComplete formControlName="BankAccount" class="p-0 form-control" field="name"
+                        [suggestions]="filteredArray" (completeMethod)="filterArray($event, bankAccounts,'name')"
                         [forceSelection]="true" [size]="30" [minLength]="1"
                         placeholder="{{'Receipts.Fields.BankAccountNumber' | translate}}" [dropdown]="true" [ngClass]="{
                                 'is-invalid': submitted && form.get('BankAccount').errors
@@ -323,7 +325,7 @@
                         <ng-template let-BankAccount pTemplate="item">
                           <div class="ui-helper-clearfix">
                             <div>
-                              {{ BankAccount.FullName }}
+                              {{ BankAccount.name }}
                             </div>
                           </div>
                         </ng-template>
@@ -400,9 +402,9 @@
                 <span class="required">*</span>
               </div>
               <div class="col-12 px-0">
-                <p-autoComplete class="p-0 form-control" field="VoucherId" [suggestions]="filteredArray"
+                <p-autoComplete class="p-0 form-control" field="voucherCode" [suggestions]="filteredArray"
                   [(ngModel)]="selectedVoucher" [ngModelOptions]="{ standalone: true }"
-                  (completeMethod)="filterArray($event, filteredVouchers,'VoucherId')" [forceSelection]="true" [size]="30"
+                  (completeMethod)="filterArray($event, filteredVouchers,'voucherCode')" [forceSelection]="true" [size]="30"
                   [minLength]="1" placeholder="{{'Receipts.Fields.ReciptName' | translate}}" [dropdown]="true"
                   [ngClass]="{
                           'is-invalid': added && !selectedVoucher
@@ -410,7 +412,7 @@
                   <ng-template let-voucher pTemplate="item">
                     <div class="ui-helper-clearfix">
                       <div>
-                        {{ voucher.VoucherId }}
+                        {{ voucher.voucherCode }}
                       </div>
                     </div>
                   </ng-template>
@@ -588,7 +590,7 @@
           <div class="col-12" *ngIf="filteredVouchers">
             <div class="box-shadow">
               <p-table [columns]="vouchersCols" [value]="filteredVouchers" [(selection)]="selectedVoucher"
-                dataKey="VoucherId" [paginator]="true" [rows]="4">
+                dataKey="id" [paginator]="true" [rows]="4">
                 <ng-template pTemplate="header" let-columns>
                   <tr>
                     <th style="width: 3em"></th>

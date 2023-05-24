@@ -58,7 +58,7 @@ export class ListCreditNotesComponent implements OnInit {
           authorization: 'receipts-payment-receipts-print',
           title: 'App.Buttons.Print',
           callBack: (dataItem) => {
-            this.showReport(dataItem.id);
+            this.showReport(dataItem.code);
           },
         },
       ],
@@ -96,12 +96,12 @@ export class ListCreditNotesComponent implements OnInit {
         //   searchable: true,
         //   searchType: "text"
         // },
-        {
-          field: "branchName",
-          header: "App.Fields.Branch",
-          customSearchField:"Bank.Name",
-          isLocalized:true,
-        },
+        // {
+        //   field: "branchName",
+        //   header: "App.Fields.Branch",
+        //   customSearchField:"Bank.Name",
+        //   isLocalized:true,
+        // },
         {
           field: "netValueAfterTax",
           header: "Receipts.Fields.CreditNoteValue",
@@ -117,17 +117,19 @@ export class ListCreditNotesComponent implements OnInit {
           header: "Receipts.Fields.AllRetreived",
           pipe:ColumnPipeType.Currency,
         }
-      ]
+      ],
+      defaultOrder:'documentDate',
+      defaultOrderType:'desc'
     };
   }
 
-  showReport(creditReceivableId) {
+  showReport(code) {
     this.reportchild.reportName = "Receipts.Titles.CreditNotesInvoice";
     this.authService.getAuthUser().subscribe(result => {
       const user = result.data;
       this.reportchild.showReprot(
         70,
-        `&Ds1_Filter1=And,CreditReceivableId,=,${creditReceivableId}&UserName=${user.ArabicFullName}`,
+        `&Ds1_Filter1=And,CreditReceivableId,=,${code}&UserName=${user.ArabicFullName}`,
         false
       );
     });
