@@ -267,7 +267,8 @@ export class GlobalService {
 
   //#region  ErrorHandler
   public errorHandler(error: HttpErrorResponse) {
-    debugger
+    this.isSpinnerLoaded.next(false);
+
     let currentLang =
       localStorage.getItem("lang") !== null
         ? localStorage.getItem("lang")
@@ -284,7 +285,7 @@ export class GlobalService {
       document.location.href = environment.financeURL + "/finance/auth/login";
     }
     else if (error.status === 400) {
-      
+
       this.messageAlert(MessageType.Error,error.error)
     } else if (error.status === 404) {
 
