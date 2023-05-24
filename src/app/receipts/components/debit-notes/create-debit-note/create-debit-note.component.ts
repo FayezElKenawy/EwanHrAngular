@@ -1,10 +1,14 @@
 import { Component, OnInit, EventEmitter, Output } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { IServiceResult } from "@shared/interfaces/results";
-import { DebitNoteService } from "../debit-note.service";
 import { DatePipe } from "@angular/common";
 import { Router } from "@angular/router";
 import { GlobalService, MessageType } from "@shared/services/global.service";
+import { DebitNoteService } from "src/app/receipts/services/debit-note.service";
+import { CustomerService } from "@shared/services/customer.service";
+import { CostCenterService } from "@shared/services/cost-center.service";
+import { SalesPeriodService } from "src/app/master-data/services/sales-period.service";
+import { CostElementService } from "src/app/receipts/services/cose-element.service";
 
 declare let $: any;
 
@@ -36,69 +40,67 @@ export class CreateDebitNoteComponent implements OnInit {
   ValidFromMaxDate: Date;
   ValidToMinDate: Date;
   minDateValue: any;
-
+  sectorId:string;
+  allCostElements:any[]=[];
   constructor(
-    private _debitNoteService: DebitNoteService,
     private _formBuilder: FormBuilder,
     private _router: Router,
     private _datePipe: DatePipe,
-    private _globalService: GlobalService
-  ) {}
+    private _globalService: GlobalService,
+    private _debitNoteService: DebitNoteService,
+    private _customerService: CustomerService,
+    private _costCenterService: CostCenterService,
+    private _salesPeriodService: SalesPeriodService,
+    private _costElementService:CostElementService
+  ) { }
 
   ngOnInit() {
+
+    this.sectorId=this._globalService.getSectorType();
     this.createForm();
-    this.getCreatFormData();
+    this.defCols();
+    this.getCostElements();
+  }
+
+  defCols() {
     this.costElementCols = [
-      { field: "Id", header: "Sales.Fields.CostElementId", hidden: false },
+      { field: "id", header: "Receipts.Fields.CostElementId" },
       {
-        field: "Name",
-        header: "Sales.Fields.CostElementName",
-        hidden: false,
+        field: "name",
+        header: "Receipts.Fields.CostElementName"
       },
       {
         field: "Amount",
-        header: "Sales.Fields.CostElementAmount",
-        hidden: false,
+        header: "Receipts.Fields.CostElementAmount"
       },
 
-      { field: "TaxRatio", header: "Sales.Fields.TaxRatio", hidden: false },
-      { field: "TaxAmount", header: "Sales.Fields.TaxAmount", hidden: false },
-      { field: "ActionButtons", header: "", hidden: false },
+      {
+        field: "TaxRatio",
+        header: "Receipts.Fields.TaxRatio"
+      },
+      {
+        field: "TaxAmount",
+        header: "Receipts.Fields.TaxAmount"
+      },
+      {
+        field: "ActionButtons",
+        header: "",
+      },
     ];
   }
 
-  getCreatFormData() {
-    this.progressSpinner = true;
-
-    this._debitNoteService
-      .getCreatePage()
-      .subscribe((result: IServiceResult) => {
-        this.viewModel = result.data;
-        this.progressSpinner = false;
-        this.form
-          .get("DocumentDate")
-          .setValue(
-            new Date(this.viewModel.CurrentDate)
-          );
-
-          this.minDateValue = new Date(this.viewModel.MinSelectableDate);
-      });
-  }
 
   searchCustomers(event: any) {
-    setTimeout(() => {
-      this._debitNoteService
-        .SearchCustomer(event.query)
-        .subscribe((result: IServiceResult) => {
+      this._customerService
+        .getCustomersBySectorId(this.sectorId,event.query)
+        .subscribe((result) => {
           this.filteredArray = [];
-          this.filteredArray = result.data;
+          this.filteredArray = result;
         });
-    }, 1500);
   }
 
   createForm() {
     this.form = this._formBuilder.group({
-      Id: [""],
       DocumentDate: ["", Validators.required],
       RefNumber: [""],
       Customer: ["", Validators.required],
@@ -106,6 +108,15 @@ export class CreateDebitNoteComponent implements OnInit {
       ArabicRemarks: [""],
     });
   }
+
+  getCostElements() {
+    this._costElementService.getCostElements().subscribe(
+      (res: any) => {
+        this.allCostElements = res;
+      }
+    )
+  }
+
 
   createDebitNote() {
     this.submitted = true;
@@ -128,28 +139,38 @@ export class CreateDebitNoteComponent implements OnInit {
         );
         return;
       }
-      this.progressSpinner = true;
       const debitNote = Object.assign({}, this.form.value);
-      debitNote.DocumentDate = this._datePipe.transform(debitNote.DocumentDate);
-      debitNote.CustomerId = debitNote.Customer.Id;
-      debitNote.ContractId = debitNote.Contract.Id;
+      debitNote.DocumentDate = this._datePipe.transform(
+        debitNote.DocumentDate, 'yyyy-MM-ddTHH:mm:ss'
+      );
+
+      debitNote.CustomerId = this.form.value.Customer.id;
       debitNote.TotalTaxAmount = this.TotalTaxAmount;
       debitNote.NetValAfterTax = this.NetValAfterTax;
       debitNote.NetValue = this.NetVal;
       debitNote.CostElements = this.costElements;
-      
+      debitNote.EntityCode = debitNote.Contract.entityCode;
+      debitNote.SectorTypeId = this.sectorId;
+
+
       this._debitNoteService.create(debitNote).subscribe(
-        (result: IServiceResult) => {
-          if (result.isSuccess) {
+        (result) => {
+          if (result) {
             $("#createModal").modal("hide");
-            this._router.navigate(["/receipts/debit-notes"]);
+
+            this._globalService.messageAlert(
+              MessageType.Success,
+              this._globalService.translateWordByKey(
+                "Receipts.Messages.EditSuccessFully"
+              )
+            );
+            this._router.navigate(["/finance/receipts/debit-notes"]);
             this.submitted = false;
             this.form.reset();
             this.refresh.emit();
           }
         },
         null,
-        () => (this.progressSpinner = false)
       );
     }
   }
@@ -163,12 +184,14 @@ export class CreateDebitNoteComponent implements OnInit {
     this.selected = true;
     if (this.Amount > 0 && this.selectedItem) {
       if (
-        this.costElements.find((e) => e.Id === this.selectedItem.Id) ===
+        this.costElements.find((e) => e.id === this.selectedItem.id) ===
         undefined
       ) {
         const costElement = Object.assign({}, this.selectedItem);
-        costElement.Amount = this.Amount;
-        costElement.TaxAmount = (this.Amount * costElement.TaxRatio) / 100;
+        costElement.TaxRatio = this.selectedItem.tax.taxRatio;
+        costElement.Amount = ((this.Amount * 100) / (100 + costElement.TaxRatio)).toFixed(4);
+        costElement.TaxAmount = (this.Amount - costElement.Amount).toFixed(4);
+
         this.costElements.push(costElement);
         this.selected = false;
         this.calculateDebitNote();
@@ -188,13 +211,14 @@ export class CreateDebitNoteComponent implements OnInit {
   }
 
   calculateDebitNote() {
+
     this.NetVal = Number(
-      this.costElements.reduce((sum, current) => sum + current.Amount, 0)
+      Number(this.costElements.reduce((sum, current) => sum + Number(current.Amount), 0)).toFixed(4)
     );
-    this.TotalTaxAmount = Number(
-      this.costElements.reduce((sum, current) => sum + current.TaxAmount, 0)
+    this.TotalTaxAmount =  Number(
+      Number(this.costElements.reduce((sum, current) => sum + Number(current.TaxAmount), 0)).toFixed(4)
     );
-    this.NetValAfterTax = Number(this.NetVal) + Number(this.TotalTaxAmount);
+    this.NetValAfterTax = Number((this.NetVal + this.TotalTaxAmount).toFixed(4));
   }
 
   removeItem(item) {
@@ -213,18 +237,19 @@ export class CreateDebitNoteComponent implements OnInit {
       100;
     this.calculateDebitNote();
   }
-  
+
   onSelectCustomer(event: any) {
     this.progressSpinner = true;
-    this._debitNoteService
-      .getContractShortList(event.Id)
-      .subscribe((result: IServiceResult) => {
+
+    this._costCenterService
+      .getAll(event.code)
+      .subscribe((result) => {
         this.progressSpinner = false;
         this.filteredArray = [];
-        this.filteredArray = result.data;
+        this.filteredArray = result;
 
-        this.Contracts = result.data;
-        if (result.data.length > 0) {
+        this.Contracts = result;
+        if (result.length > 0) {
           this.form.controls.Contract.enable();
         } else {
           this.form.controls.Contract.setValue("");

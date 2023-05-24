@@ -174,7 +174,7 @@ export class CreatePaymentReceiptComponent implements OnInit {
       CashBoxAmount: [0, Validators.required],
     });
   }
-  
+
   setCreditCardTypes(){
     this._creditCardTypeService.getAll().subscribe(
       result=>{
@@ -239,7 +239,7 @@ export class CreatePaymentReceiptComponent implements OnInit {
             this._globalService.messageAlert(
               MessageType.Success,
               this._globalService.translateWordByKey(
-                "Receipts.Messages.creditNoteAdded"
+                "Receipts.Messages.EditSuccessFully"
               )
             );
             this._router.navigate(["/finance/receipts/payment-receipts"]);
@@ -301,7 +301,6 @@ export class CreatePaymentReceiptComponent implements OnInit {
     this._paymentReceipt
       .getVouchers(event.entityCode)
       .subscribe((result: any) => {
-        this.progressSpinner = false;
         this.vouchers = result;
         this.onSelectVoucherType();
       });
@@ -319,9 +318,8 @@ export class CreatePaymentReceiptComponent implements OnInit {
   }
 
   onSelectVoucherType() {
-
     this.filteredVouchers = this.vouchers.filter(
-      (v) => v.VoucherTypeId === this.voucherType
+      (v) => v.voucherTypeId === this.voucherType
     );
     this.selectedVoucher = undefined;
   }

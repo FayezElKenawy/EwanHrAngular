@@ -3,12 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { AboutComponent } from '../home/dashboard/dashboard.component';
 import { CoreLayoutComponent } from '@shared/layouts/core-layout/core-layout.component';
 import { ListCreditInvoicesComponent } from './credit-invoices/list-credit-invoices/list-credit-invoices.component';
-import { ListDebitNotesComponent } from './debit-notes/list-debit-notes/list-debit-notes.component';
 import { ListReturnedPaymentReceiptsComponent } from './returned-payment-receipts/list-returned-payment-receipts/list-returned-payment-receipts.component';
 import { CreateReturnedPaymentReceiptComponent } from './returned-payment-receipts/create-returned-payment-receipt/create-returned-payment-receipt.component';
 import { EditReturnedPaymentReceiptComponent } from './returned-payment-receipts/edit-returned-payment-receipt/edit-returned-payment-receipt.component';
 import { DetailCreditInvoiceComponent } from './credit-invoices/detail-credit-invoice/detail-credit-invoice.component';
-import { CreateDebitNoteComponent } from './debit-notes/create-debit-note/create-debit-note.component';
 import { ListCustomerAccountComponent } from './customer-accounts/list-customer-account/list-customer-account.component';
 import { DetailsCustomerAccountComponent } from './customer-accounts/details-customer-account/details-customer-account.component';
 import { ListPaymentReceiptsComponent } from './components/payment-receipts/list-payment-receipts/list-payment-receipts.component';
@@ -16,6 +14,8 @@ import { CreatePaymentReceiptComponent } from './components/payment-receipts/cre
 import { EditPaymentReceiptComponent } from './components/payment-receipts/edit-payment-receipt/edit-payment-receipt.component';
 import { ListCreditNotesComponent } from './components/credit-notes/list-credit-notes/list-credit-notes.component';
 import { CreateCreditNoteComponent } from './components/credit-notes/create-credit-note/create-credit-note.component';
+import { ListDebitNotesComponent } from './components/debit-notes/list-debit-notes/list-debit-notes.component';
+import { CreateDebitNoteComponent } from './components/debit-notes/create-debit-note/create-debit-note.component';
 
 const routes: Routes = [
   {
