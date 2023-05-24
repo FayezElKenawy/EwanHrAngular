@@ -32,7 +32,7 @@ export class CreateCreditNoteComponent implements OnInit {
   selectedItem: any;
   costElementCols: any[] = [];
   costElements: any[] = [];
-  AllCostElements: any[] = [];
+  allCostElements: any[] = [];
   DebitNoteCostElements: any[] = [];
   NetVal: number;
   NetValAfterTax: number;
@@ -154,7 +154,7 @@ export class CreateCreditNoteComponent implements OnInit {
   getCostElements() {
     this._creditNoteService.getCostElements().subscribe(
       (res: any) => {
-        this.AllCostElements = res;
+        this.allCostElements = res;
       }
     )
   }
@@ -227,7 +227,7 @@ export class CreateCreditNoteComponent implements OnInit {
             this._globalService.messageAlert(
               MessageType.Success,
               this._globalService.translateWordByKey(
-                "Receipts.Messages.creditNoteAdded"
+                "Receipts.Messages.EditSuccessFully"
               )
             );
             this._router.navigate(["/finance/receipts/credit-notes"]);
@@ -240,14 +240,12 @@ export class CreateCreditNoteComponent implements OnInit {
   }
 
   searchCustomers(event: any) {
-    setTimeout(() => {
       this._customerService
         .getCustomersBySectorId(this.sectorId, event.query)
         .subscribe((result) => {
           this.filteredArray = [];
           this.filteredArray = result;
         });
-    }, 1500);
   }
 
   onSelectCustomer(event: any) {
@@ -255,7 +253,6 @@ export class CreateCreditNoteComponent implements OnInit {
     this.settlements = [];
     this.vouchers = [];
     this.selectedVoucher = undefined;
-
     this._costCenterService.getAll(event.code)
       .subscribe((result) => {
         this.progressSpinner = false;

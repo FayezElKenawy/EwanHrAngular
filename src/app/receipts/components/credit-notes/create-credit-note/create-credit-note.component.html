@@ -180,7 +180,7 @@
                 <div class="col-12 px-0">
                   <p-autoComplete (onClear)="Clear()" class="p-0 form-control" field="name"
                     [suggestions]="filteredArray" (onSelect)="onSelectItem($event)"
-                    (completeMethod)="filterArray($event, AllCostElements,'name')" [forceSelection]="true" [size]="30"
+                    (completeMethod)="filterArray($event, allCostElements,'name')" [forceSelection]="true" [size]="30"
                     [minLength]="1" placeholder="{{'Receipts.Fields.CostElementSelect' | translate}}" [dropdown]="true"
                     [ngClass]="{'is-invalid': selected && !selectedItem}">
                     <ng-template let-CostElements pTemplate="item">
@@ -523,7 +523,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h6 class="modal-title" id="exampleModalLabel">المستندات</h6>
+        <h6 class="modal-title" id="exampleModalLabel">{{'App.Titles.Documents' | translate}}</h6>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -578,7 +578,7 @@
             <div class="row">
               <div class="col-lg-12 ml-lg-auto text-center">
                 <button type="button" data-dismiss="modal"
-                  class="btn   btn-save-cancel mb-1 btn-brand  ">اختار</button>&nbsp;&nbsp;
+                  class="btn   btn-save-cancel mb-1 btn-brand  ">{{'App.Buttons.Choose' | translate}}</button>&nbsp;&nbsp;
 
                 <button type="button" data-dismiss="modal" class="btn    btn-save-cancel mb-1 btn-secondary  "
                   (click)="selectedVoucher= undefined;">{{'App.Buttons.Cancel' | translate}}</button>

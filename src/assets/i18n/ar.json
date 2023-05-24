@@ -249,6 +249,7 @@
             "InvoiceId": "رقم الفاتورة",
             "SegmentsInvoiceId": "رقم الفاتورة فى سيجمنت",
             "CostElement": "البند",
+            "CostElements": "البنود",
             "CostElementSelect": "اختر البند",
             "CostElementAmount": "قيمة البند",
             "CostElementAmountAfterTax": "قيمة البند بعد الضريبة",

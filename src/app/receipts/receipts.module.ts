@@ -5,8 +5,6 @@ import { ReceiptsRoutingModule } from './receipts-routing.module';
 import { ListReturnedPaymentReceiptsComponent } from './returned-payment-receipts/list-returned-payment-receipts/list-returned-payment-receipts.component';
 import { CreateReturnedPaymentReceiptComponent } from './returned-payment-receipts/create-returned-payment-receipt/create-returned-payment-receipt.component';
 import { EditReturnedPaymentReceiptComponent } from './returned-payment-receipts/edit-returned-payment-receipt/edit-returned-payment-receipt.component';
-import { CreateDebitNoteComponent } from './debit-notes/create-debit-note/create-debit-note.component';
-import { ListDebitNotesComponent } from './debit-notes/list-debit-notes/list-debit-notes.component';
 import { ListCreditInvoicesComponent } from './credit-invoices/list-credit-invoices/list-credit-invoices.component';
 import { HomeModule } from '../home/home.module';
 import { SharedModule } from '@shared/shared.module';
@@ -24,6 +22,8 @@ import { EditPaymentReceiptComponent } from './components/payment-receipts/edit-
 import { ListPaymentReceiptsComponent } from './components/payment-receipts/list-payment-receipts/list-payment-receipts.component';
 import { ListCreditNotesComponent } from './components/credit-notes/list-credit-notes/list-credit-notes.component';
 import { CreateCreditNoteComponent } from './components/credit-notes/create-credit-note/create-credit-note.component';
+import { CreateDebitNoteComponent } from './components/debit-notes/create-debit-note/create-debit-note.component';
+import { ListDebitNotesComponent } from './components/debit-notes/list-debit-notes/list-debit-notes.component';
 
 @NgModule({
   declarations: [

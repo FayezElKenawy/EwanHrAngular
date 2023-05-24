@@ -122,42 +122,42 @@ input, select, textarea, button{
     border: none !important;
 }
 /* DDL Searchable Table */
-select.form-control{
-  -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    position: relative;
+// select.form-control{
+//   -webkit-appearance: none;
+//     -moz-appearance: none;
+//     appearance: none;
+//     position: relative;
 
-}
-.p-datatable select.form-control{
-  height: 28px;
-    background-size: 28px !important;
-    padding: 0 !important;
-    width: 28px;
-    border-radius: 0px !important;
-}
-table .grid-search{
-  background: #fff !important;
-}
-table select.form-control{
-  background-size: 27px;
-  margin: 0 !important;
-  padding: 0 8px !important;
-  color: #65245b;
-  text-indent: -9999px;
-  font-size: 1rem !important;
-  box-sizing: content-box;
-  border-radius: 5px;
-}
-table input.form-control{
-  padding: 0 5px;
-  width: 100%;
-  min-width: initial;
-}
-table .form-control{
-  border: 0;
-    box-shadow: 0 0 5px -3px #888 !important;
-}
+// }
+// .p-datatable select.form-control{
+//   height: 28px;
+//     background-size: 28px !important;
+//     padding: 0 !important;
+//     width: 28px;
+//     border-radius: 0px !important;
+// }
+// table .grid-search{
+//   background: #fff !important;
+// }
+// table select.form-control{
+//   background-size: 27px;
+//   margin: 0 !important;
+//   padding: 0 8px !important;
+//   color: #65245b;
+//   text-indent: -9999px;
+//   font-size: 1rem !important;
+//   box-sizing: content-box;
+//   border-radius: 5px;
+// }
+// table input.form-control{
+//   padding: 0 5px;
+//   width: 100%;
+//   min-width: initial;
+// }
+// table .form-control{
+//   border: 0;
+//     box-shadow: 0 0 5px -3px #888 !important;
+// }
 .ui-multiselect .ui-multiselect-trigger{
   background: #521949 !important;
   border:0 !important;
@@ -212,6 +212,9 @@ text-align: center;
 }
 .p-paginator .p-dropdown .p-dropdown-label{
   padding-right: 15px;
+}
+.p-paginator{
+  direction: initial;
 }
 
 /* Calendar */

@@ -2,3 +2,17 @@
 {
     left: 0px !important;
 }
+
+
+
+:host ::ng-deep  .p-frozen-column {
+  font-weight: bold;
+  left: 0.1px !important;
+  overflow: visible !important;
+}
+:host ::ng-deep .p-datatable-frozen-tbody {
+  font-weight: bold;
+  left: 0.1px !important;
+  overflow: visible !important;
+}
+

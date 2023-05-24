@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { LangChangeEvent } from '@ngx-translate/core';
 import { PagedList } from '@shared/interfaces/paged-list';
 import { PagingMetaData } from '@shared/interfaces/paging-meta-data';
 import { SearchModel } from '@shared/interfaces/search-model';
 import { PageListConfig } from '@shared/models/page-list-config.model';
 import { DynamicSearchService } from '@shared/services/dynamic-search.service';
+import { GlobalService } from '@shared/services/global.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -26,10 +28,17 @@ export class PageListComponent implements OnInit {
 
   constructor(
     public _dynamicSearchService: DynamicSearchService,
-    private _http: HttpClient
-  ) {}
+    private _http: HttpClient,
+    private _globalService: GlobalService
+  ) { }
 
   ngOnInit() {
+    this._globalService
+      .languageOnChange()
+      .subscribe((event: LangChangeEvent) => {
+        this.getPagedList()
+      });
+
     this.searchForm = this._dynamicSearchService.buildSearchForm(
       this.pageListConfig?.cols
     );
@@ -39,12 +48,12 @@ export class PageListComponent implements OnInit {
   }
 
   getPagedList() {
-    debugger;
-    if(this.pageListConfig.defaultOrder && !this.searchModel.orderBy){
-      this.searchModel.orderBy=this.pageListConfig.defaultOrder;
-      this.searchModel.orderType=this.pageListConfig.defaultOrderType;
+
+    if (this.pageListConfig.defaultOrder && !this.searchModel.orderBy) {
+      this.searchModel.orderBy = this.pageListConfig.defaultOrder;
+      this.searchModel.orderType = this.pageListConfig.defaultOrderType;
     }
-    
+
     this.pageListConfig.searchFields.forEach((field) => {
       this.searchModel.searchFields.push({
         fieldName: field.fieldName,
