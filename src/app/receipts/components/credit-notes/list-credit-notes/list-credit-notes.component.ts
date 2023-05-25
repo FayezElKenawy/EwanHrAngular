@@ -41,9 +41,9 @@ export class ListCreditNotesComponent implements OnInit {
 
   createPageListConfig() {
     this.pageListConfig = {
-      pageAuthorization: 'receipts-credit-notes-list',
+      pageAuthorization: 'Finance-CreditNote-GetPagedList',
       pageTitle: 'Receipts.Titles.CreditNotesListPage',
-      createAuthorization: 'receipts-credit-notes-create',
+      createAuthorization: 'Finance-CreditNote-Create',
       createButtonTitle: 'Receipts.Buttons.CreditNoteCreate',
       createLink: '/finance/receipts/create-credit-note',
       getDataAPIURL: `${environment.financeSectorAPIURL}/v1/CreditNote/GetPagedList`,
