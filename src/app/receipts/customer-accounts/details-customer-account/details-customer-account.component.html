@@ -1,7 +1,7 @@
 <div
   class="details py-0"
   *authorization="{
-    actionName: 'receipts-customers-accounts-details',
+    actionName: 'Finance-CustomerAccount-Details',
     pageLevel: true
   }"
 >
@@ -11,10 +11,7 @@
       <div class="m-portlet__head-caption">
         <div class="m-portlet__head-title">
           <h6 class="m-portlet__head-text">
-            <a
-              routerLink="/receipts/customers-accounts"
-              class="back-icon"
-            >
+            <a routerLink="/receipts/customers-accounts" class="back-icon">
               <i class="fa fa-arrow-alt-circle-right"></i>
             </a>
             {{ "Receipts.Titles.CustomerAccountDetails" | translate }}
@@ -38,7 +35,9 @@
             role="group"
             aria-label="Basic example"
           >
-            <ng-container *authorization="'show-customer-message'">
+            <ng-container
+              *authorization="'Finance-CustomerAccount-ShowMessages'"
+            >
               <button
                 type="button"
                 class="btn btn-secondary m-1"
@@ -49,7 +48,9 @@
                 {{ "App.Buttons.Logger" | translate }}
               </button>
             </ng-container>
-            <ng-container *authorization="'send-first-notification'">
+            <ng-container
+              *authorization="'Finance-CustomerAccount-FirstNotification'"
+            >
               <button
                 type="button"
                 *ngIf="showNotification"
@@ -59,7 +60,9 @@
                 {{ "App.Buttons.Ntification1" | translate }}
               </button>
             </ng-container>
-            <ng-container *authorization="'send-second-notification'">
+            <ng-container
+              *authorization="'Finance-CustomerAccount-SecondNotification'"
+            >
               <button
                 type="button"
                 *ngIf="showNotification"
@@ -69,7 +72,9 @@
                 {{ "App.Buttons.Ntification2" | translate }}
               </button>
             </ng-container>
-            <ng-container *authorization="'send-third-notification'">
+            <ng-container
+              *authorization="'Finance-CustomerAccount-ThirdNotification'"
+            >
               <button
                 type="button"
                 *ngIf="showNotification"
@@ -86,7 +91,9 @@
           <div class="row mx-0 details-card">
             <!-- رقم العميل -->
             <div class="details-label">
-              <span>{{ "Receipts.Fields.SegmentsCustomerId" | translate }}</span>
+              <span>{{
+                "Receipts.Fields.SegmentsCustomerId" | translate
+              }}</span>
             </div>
             <div class="details-value">
               <span>{{ customerData?.SegmentsCustomerId }}</span>
@@ -176,8 +183,16 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-2">
-            <div *ngIf="selectedContract?.SegmentId && !selectedContract?.SegmentId.includes('--') && customerData?.SegmentsCustomerId && !customerData?.SegmentsCustomerId.includes('--')" class="form-group m-form__group row mx-0 px-0">
+          <div class="col-lg-2" authorization="'Finance-CustomerAccount-Print'">
+            <div
+              *ngIf="
+                selectedContract?.SegmentId &&
+                !selectedContract?.SegmentId.includes('--') &&
+                customerData?.SegmentsCustomerId &&
+                !customerData?.SegmentsCustomerId.includes('--')
+              "
+              class="form-group m-form__group row mx-0 px-0"
+            >
               <div class="col-12 px-0">
                 <label class="form-control-label"> </label>
               </div>
@@ -186,7 +201,9 @@
                 type="button"
                 data-toggle="modal"
                 data-target="#reportModal"
-                (click)="showClientAccountStatementReport(selectedContract?.SegmentId)"
+                (click)="
+                  showClientAccountStatementReport(selectedContract?.SegmentId)
+                "
               >
                 {{ "Sales.Buttons.PrintClientAccountStatement" | translate }}
               </button>
@@ -248,7 +265,7 @@
                     <ng-template #render_data_field>
                       {{
                         !col.pipe
-                          ? rowData[col.field] || '---'
+                          ? rowData[col.field] || "---"
                           : col.pipe === "date"
                           ? (rowData[col.field] | date : col.pipeFormat)
                           : rowData[col.field]
@@ -364,8 +381,6 @@
   </div>
 </div>
 
-
-
 <div
   *ngIf="customerId && showModal"
   class="custom-bottom-aside-modal modal fade"
@@ -396,5 +411,3 @@
 <app-shared-progress-spinner
   *ngIf="progressSpinner || isLoading"
 ></app-shared-progress-spinner>
-
-

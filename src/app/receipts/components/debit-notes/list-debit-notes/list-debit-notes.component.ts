@@ -43,9 +43,9 @@ export class ListDebitNotesComponent implements OnInit {
 
   createPageListConfig() {
     this.pageListConfig = {
-      pageAuthorization: 'receipts-debit-notes-list',
+      pageAuthorization: 'Finance-DebitNote-GetPagedList',
       pageTitle: 'Receipts.Titles.DebitNotesListPage',
-      createAuthorization: 'receipts-debit-notes-create',
+      createAuthorization: 'Finance-DebitNote-Create',
       createButtonTitle: 'Receipts.Buttons.DebitNoteCreate',
       createLink: '/finance/receipts/create-debit-note',
       getDataAPIURL: `${environment.financeSectorAPIURL}/v1/DebitNote/GetPagedList`,

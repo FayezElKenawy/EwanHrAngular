@@ -1,4 +1,4 @@
-<div class="m-portlet m-portlet--mobile" *authorization="{actionName:'receipts-customers-accounts',pageLevel:true}">
+<div class="m-portlet m-portlet--mobile" *authorization="{actionName:'Finance-CustomerAccount-GetPagedList',pageLevel:true}">
   <!-- BEGIN: Subheader -->
   <div class="m-portlet__head m-subheader d-flex align-items-center">
     <div class="mr-auto">
@@ -31,7 +31,7 @@
                         <i class="la la-ellipsis-v"></i>
                       </a>
                       <div class="dropdown-menu dropdown-menu-right">
-                        <a *authorization="'receipts-customers-accounts-details'" class="dropdown-item"
+                        <a *authorization="'Finance-CustomerAccount-Details'" class="dropdown-item"
                           routerLink="/receipts/details-customer-account"
                           [queryParams]="{id:dataItems['Id']}" title="{{'App.Buttons.Details' | translate}}">
                           {{'App.Buttons.Details' | translate}}
