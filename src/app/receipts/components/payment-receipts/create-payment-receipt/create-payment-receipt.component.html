@@ -53,7 +53,7 @@
                 <span class="required">*</span>
               </div>
               <div class="col-12 px-0">
-                <p-autoComplete id="Customer" class="p-0 form-control" field="name" formControlName="Customer"
+                <p-autoComplete id="Customer" class="p-0 form-control" field="fullName" formControlName="Customer"
                   [suggestions]="filteredArray" (completeMethod)="searchCustomers($event)"
                   (onSelect)="onSelectCustomer($event)" (onClear)="onClear('Customer')" [forceSelection]="true"
                   [size]="30" [minLength]="1" placeholder="{{'Receipts.Fields.CustomerName' | translate}}"
@@ -63,7 +63,7 @@
                   <ng-template let-Customer pTemplate="item">
                     <div class="ui-helper-clearfix">
                       <div>
-                        {{ Customer.name }}
+                        {{ Customer.fullName }}
                       </div>
                     </div>
                   </ng-template>
@@ -106,7 +106,7 @@
           </div>
 
           <!-- SalesRepresentative -->
-          <div class="col-lg-2 col-md-6 col-12">
+          <!-- <div class="col-lg-2 col-md-6 col-12">
             <div class="form-group m-form__group row mx-0 px-0">
               <div class="col-12 mx-auto px-0 text-nowrap">
                 <label for="rep" class="form-control-label">{{'Receipts.Fields.SalesRepresentive' | translate}}</label>
@@ -116,7 +116,7 @@
                   placeholder="{{'Receipts.Fields.SalesRepresentive' | translate}}" [disabled]="true">
               </div>
             </div>
-          </div>
+          </div> -->
 
           <!-- RefNumber -->
           <div class="col-lg-2 col-md-6 col-12">
@@ -165,8 +165,8 @@
                       <span class="required">*</span>
                     </div>
                     <div class="col-12 px-0">
-                      <p-autoComplete formControlName="CashBox" class="p-0 form-control" field="FullArabicName"
-                        [suggestions]="filteredArray" (completeMethod)="filterArray($event,CashBoxs)"
+                      <p-autoComplete formControlName="CashBox" class="p-0 form-control" field="name"
+                        [suggestions]="filteredArray" (completeMethod)="filterArray($event,CashBoxs,'name')"
                         [forceSelection]="true" [size]="30" [minLength]="1"
                         placeholder="{{'Receipts.Fields.SafeNumber' | translate}}" [dropdown]="true" [ngClass]="{
                               'is-invalid': submitted && form.get('CashBox').errors
@@ -174,7 +174,7 @@
                         <ng-template let-CashBox pTemplate="item">
                           <div class="ui-helper-clearfix">
                             <div>
-                              {{ CashBox.FullArabicName }}
+                              {{ CashBox.name }}
                             </div>
                           </div>
                         </ng-template>
@@ -195,8 +195,8 @@
                       <span class="required">*</span>
                     </div>
                     <div class="col-12 px-0">
-                      <p-autoComplete formControlName="CreditCardType" class="p-0 form-control" field="FullArabicName"
-                        [suggestions]="filteredArray" (completeMethod)="filterArray($event, viewModel?.CreditCardTypes)"
+                      <p-autoComplete formControlName="CreditCardType" class="p-0 form-control" field="name"
+                        [suggestions]="filteredArray" (completeMethod)="filterArray($event, creditCardTypes,'name')"
                         [forceSelection]="true" [size]="30" [minLength]="1"
                         placeholder="{{'Receipts.Fields.CreditCardType' | translate}}" [dropdown]="true" [ngClass]="{
                         'is-invalid': submitted && form.get('CreditCardType').errors
@@ -204,7 +204,7 @@
                         <ng-template let-CreditCardType pTemplate="item">
                           <div class="ui-helper-clearfix">
                             <div>
-                              {{ CreditCardType.FullArabicName }}
+                              {{ CreditCardType.name }}
                             </div>
                           </div>
                         </ng-template>
@@ -264,16 +264,16 @@
                       <span class="required">*</span>
                     </div>
                     <div class="col-12 px-0">
-                      <p-autoComplete formControlName="BankAccount" class="p-0 form-control" field="FullArabicName"
-                        [suggestions]="filteredArray" (completeMethod)="filterArray($event, viewModel?.BankAccounts)"
+                      <p-autoComplete formControlName="BankAccount" class="p-0 form-control" field="name"
+                        [suggestions]="filteredArray" (completeMethod)="filterArray($event,bankAccounts,'name')"
                         [forceSelection]="true" [size]="30" [minLength]="1"
                         placeholder="{{'Receipts.Fields.BankAccountNumber' | translate}}" [dropdown]="true" [ngClass]="{
                                 'is-invalid': submitted && form.get('BankAccount').errors
                               }">
-                        <ng-template let-BankAccount pTemplate="item">
+                        <ng-template let-bankAccount pTemplate="item">
                           <div class="ui-helper-clearfix">
                             <div>
-                              {{ BankAccount.FullArabicName }}
+                              {{ bankAccount.name }}
                             </div>
                           </div>
                         </ng-template>
@@ -335,9 +335,9 @@
                 <span class="required">*</span>
               </div>
               <div class="col-12 px-0">
-                <p-autoComplete class="p-0 form-control" field="VoucherId" [suggestions]="filteredArray"
+                <p-autoComplete class="p-0 form-control" field="voucherCode" [suggestions]="filteredArray"
                   [(ngModel)]="selectedVoucher" [ngModelOptions]="{ standalone: true }"
-                  (completeMethod)="filterArray($event, filteredVouchers,'VoucherId')" [forceSelection]="true" [size]="30"
+                  (completeMethod)="filterArray($event, filteredVouchers,'voucherCode')" [forceSelection]="true" [size]="30"
                   [minLength]="1" placeholder="{{'Receipts.Fields.ReciptName' | translate}}" [dropdown]="true"
                   [ngClass]="{
                         'is-invalid': added && !selectedVoucher
@@ -345,7 +345,7 @@
                   <ng-template let-voucher pTemplate="item">
                     <div class="ui-helper-clearfix">
                       <div>
-                        {{ voucher.VoucherId || voucher.Id + '---' }}
+                        {{ voucher.voucherCode || voucher.voucherCode + '---' }}
                       </div>
                     </div>
                   </ng-template>
@@ -502,7 +502,6 @@
   </div>
 </div>
 
-<app-shared-progress-spinner *ngIf="progressSpinner"></app-shared-progress-spinner>
 
 
 <!--begin::Modal for vouchers-->
@@ -511,17 +510,18 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h6 class="modal-title" id="exampleModalLabel">السندات</h6>
+        <h6 class="modal-title" id="exampleModalLabel">{{'App.Titles.Documents' | translate}}</h6>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <div class="m-form m-form--fit m-form--label-align-right">
       <div class="modal-body">
         <div class="row p-2">
           <div class="col-12" *ngIf="filteredVouchers">
             <div class="m-portlet__body box-shadow">
               <p-table [columns]="vouchersCols" [value]="filteredVouchers" [(selection)]="selectedVoucher"
-                dataKey="VoucherId" [paginator]="true" [rows]="4">
+                dataKey="id" [paginator]="true" [rows]="4">
                 <ng-template pTemplate="header" let-columns>
                   <tr>
                     <th style="width: 3em"></th>
@@ -559,7 +559,7 @@
           </div>
         </div>
       </div>
-
+     </div>
       <div class="modal-footer">
         <div class="m-auto">
           <button type="button" data-dismiss="modal"

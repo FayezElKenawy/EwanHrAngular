@@ -326,7 +326,16 @@
             "CustomerNotifications":"Customer Notifications",
             "TerminationConfirm":"Termination Confirmation Before Pay Indebtedness",
             "OrderId": "Order Number",
-            "CostCenter": "CostCenter"
+            "CostCenter": "CostCenter",
+            "CostElement": "CostElement",
+            "CostElements": "CostElements",
+            "CostElementSelect": "Select CostElementS",
+            "CostElementAmount": "CostElement Amount",
+            "CostElementAmountAfterTax": "CostElement Amount After Tax",
+            "CostElementId": "CostElementNo",
+            "CostElementName": "CostElement Name",
+            "TaxRatio": "Tax Ratio",
+            "TaxAmount": "Tax Amount"
         },
         "Buttons": {
             "CreditNoteCreate": "Add Credit Note",
@@ -336,6 +345,7 @@
             "Select": "Select"
         },
         "Messages": {
+            "EditSuccessFully":"Edited Successfully",
             "NetValLessThanPaid": "The value of the notice cannot be less than the amount paid",
             "NetValMoreThanPaid": "The value of the notice must be greater than the value of the payment",
             "TotalPaidMoreThanBalance": "The value paid is greater than the current balance of the document",
@@ -385,7 +395,8 @@
             "CreditNoteMustSettleOneInvoice": "Credit note cannot be linked to more than one invoice.",
             "invalidCredit": "Credit Balance Value has been changed",
             "invalidDebit": "Debit Balance Value has been changed",
-            "creditNoteAdded":"Credit Note Added Successfully"
+            "creditNoteAdded":"Credit Note Added Successfully",
+            "CostElements": "CostElements"
         }
     },
     "Auth": {

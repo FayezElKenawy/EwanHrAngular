@@ -1,51 +1,54 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { MenuItem } from "primeng/api";
-import { CreditNoteService } from "../../../services/credit-note.service";
-import { Router } from "@angular/router";
 import { PagingMetaData } from "@shared/interfaces/paging-meta-data";
 import { FormGroup } from "@angular/forms";
 import { SearchModel } from "@shared/interfaces/search-model";
 import { DynamicSearchService } from "@shared/services/dynamic-search.service";
+import { Router } from "@angular/router";
+import { DebitNoteService } from "src/app/receipts/services/debit-note.service";
+import { PageListConfig } from "@shared/models/page-list-config.model";
 import { ReportModelViewerComponent } from "@shared/components/report-model-viewer/report-model-viewer.component";
-import { AuthService } from "@shared/services/auth.service";
-import { IResult } from "@shared/interfaces/results";
-import { PagedList } from "@shared/interfaces/paged-list";
-import { SearchType } from "@shared/enum/searchType.enum";
 import { ColumnPipeType } from "@shared/enum/column-pipe.enum";
 import { ColumnPipeFormat } from "@shared/enum/columns-pipe-format.enum";
-import { PageListConfig } from "@shared/models/page-list-config.model";
-import { environment } from "@environments/environment";
+import { SearchType } from "@shared/enum/searchType.enum";
+import { AuthService } from "@shared/services/auth.service";
 import { GlobalService } from "@shared/services/global.service";
+import { environment } from "@environments/environment";
+declare let $: any;
 
 @Component({
-  selector: "app-list-credit-notes",
-  templateUrl: "./list-credit-notes.component.html",
-  styleUrls: ["./list-credit-notes.component.scss"]
+  selector: "app-list-debit-notes",
+  templateUrl: "./list-debit-notes.component.html",
+  styleUrls: ["./list-debit-notes.component.scss"]
 })
-export class ListCreditNotesComponent implements OnInit {
+export class ListDebitNotesComponent implements OnInit {
 
   @ViewChild(ReportModelViewerComponent)
   reportchild: ReportModelViewerComponent;
 
   pageListConfig: PageListConfig;
+
   constructor(
     public _dynamicSearchService: DynamicSearchService,
-    private authService:AuthService,
+    private authService: AuthService,
     private globalService: GlobalService
   ) { }
 
   ngOnInit() {
-       this.createPageListConfig()
+
+    this.createPageListConfig();
+
   }
+
 
   createPageListConfig() {
     this.pageListConfig = {
-      pageAuthorization: 'Finance-CreditNote-GetPagedList',
-      pageTitle: 'Receipts.Titles.CreditNotesListPage',
-      createAuthorization: 'Finance-CreditNote-Create',
-      createButtonTitle: 'Receipts.Buttons.CreditNoteCreate',
-      createLink: '/finance/receipts/create-credit-note',
-      getDataAPIURL: `${environment.financeSectorAPIURL}/v1/CreditNote/GetPagedList`,
+      pageAuthorization: 'receipts-debit-notes-list',
+      pageTitle: 'Receipts.Titles.DebitNotesListPage',
+      createAuthorization: 'receipts-debit-notes-create',
+      createButtonTitle: 'Receipts.Buttons.DebitNoteCreate',
+      createLink: '/finance/receipts/create-debit-note',
+      getDataAPIURL: `${environment.financeSectorAPIURL}/v1/DebitNote/GetPagedList`,
       searchFields: [
         {
           fieldName: 'SectorTypeId',
@@ -55,14 +58,14 @@ export class ListCreditNotesComponent implements OnInit {
       ],
       actions: [
         {
-          authorization: 'Finance-CreditNote-Print',
+          authorization: 'receipts-payment-receipts-print',
           title: 'App.Buttons.Print',
           callBack: (dataItem) => {
-            this.showReport(dataItem.code);
+
           },
         },
       ],
-       cols:[
+      cols: [
         {
           field: "code",
           header: "Receipts.Fields.CreditNoteId",
@@ -70,20 +73,20 @@ export class ListCreditNotesComponent implements OnInit {
         {
           field: "documentDate",
           header: "Receipts.Fields.CreditNoteDate",
-          searchType:SearchType.Date,
+          searchType: SearchType.Date,
           pipe: ColumnPipeType.Date,
           pipeFormat: ColumnPipeFormat.DatePipeFormat,
         },
         {
           field: 'customerCode',
           header: 'Receipts.Fields.customerCode',
-          customSearchField:"Customer.Code",
+          customSearchField: "Customer.Code",
         },
         {
           field: "customerFullName",
           header: "Receipts.Fields.CustomerName",
-          customSearchField:"Customer.Name",
-          isLocalized:true,
+          customSearchField: "Customer.Name",
+          isLocalized: true,
         },
         {
           field: 'entityCode',
@@ -96,42 +99,27 @@ export class ListCreditNotesComponent implements OnInit {
         //   searchable: true,
         //   searchType: "text"
         // },
-        // {
-        //   field: "branchName",
-        //   header: "App.Fields.Branch",
-        //   customSearchField:"Bank.Name",
-        //   isLocalized:true,
-        // },
         {
-          field: "netValueAfterTax",
+          field: "netValue",
           header: "Receipts.Fields.CreditNoteValue",
-          pipe:ColumnPipeType.Currency,
+          pipe: ColumnPipeType.Currency,
         },
         {
-          field: "tolalPaid",
+          field: "totalPaid",
           header: "Receipts.Fields.InvoiceGetPaid",
-          pipe:ColumnPipeType.Currency,
+          pipe: ColumnPipeType.Currency,
         },
         {
-          field: "totalRefund",
-          header: "Receipts.Fields.AllRetreived",
-          pipe:ColumnPipeType.Currency,
+          field: "totalReceivable",
+          header: "Receipts.Fields.TotalReceivable",
+          pipe: ColumnPipeType.Currency,
+
         }
       ],
-      defaultOrder:'documentDate',
-      defaultOrderType:'desc'
+      defaultOrder: 'documentDate',
+      defaultOrderType: 'desc'
     };
   }
 
-  showReport(code) {
-    this.reportchild.reportName = "Receipts.Titles.CreditNotesInvoice";
-    this.authService.getAuthUser().subscribe(result => {
-      const user = result.data;
-      this.reportchild.showReprot(
-        70,
-        `&Ds1_Filter1=And,CreditReceivableId,=,${code}&UserName=${user.ArabicFullName}`,
-        false
-      );
-    });
-  }
+
 }

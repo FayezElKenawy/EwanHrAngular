@@ -6,6 +6,12 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { IServiceResult } from "@shared/interfaces/results";
 import { AuthService } from "@shared/services/auth.service";
 import { PaymentReceiptService } from "src/app/receipts/services/payment-receipt.service";
+import { CustomerService } from "@shared/services/customer.service";
+import { CostCenterService } from "@shared/services/cost-center.service";
+import { CashboxService } from "@shared/services/cashbox.service";
+import { CreditCardTypeService } from "src/app/master-data/services/credit-card-type.service";
+import { BankAccountService } from "@shared/services/bank-account.service";
+import { Settlement } from "src/app/receipts/models/credit-notes/settlement.model";
 
 @Component({
   selector: "app-edit-payment-receipt",
@@ -34,7 +40,10 @@ export class EditPaymentReceiptComponent implements OnInit {
   disabled: boolean;
   voucherType: any = "CR";
   filteredVouchers: any[] = [];
-  CashBoxs:any[];
+  CashBoxs: any[];
+  creditCardTypes: any[];
+  bankAccounts: any[] = [];
+
   constructor(
     private _formBuilder: FormBuilder,
     private _globalService: GlobalService,
@@ -42,7 +51,12 @@ export class EditPaymentReceiptComponent implements OnInit {
     private _router: Router,
     private _route: ActivatedRoute,
     private _paymentReceiptService: PaymentReceiptService,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _customerService: CustomerService,
+    private _costCenterService: CostCenterService,
+    private _cashBox: CashboxService,
+    private _creditCardTypeService: CreditCardTypeService,
+    private _bankAccount: BankAccountService,
   ) {
     this.settlements = [];
   }
@@ -52,132 +66,150 @@ export class EditPaymentReceiptComponent implements OnInit {
     const id = this._route.snapshot.paramMap.get("id");
     this.getEditFormData(id);
 
+    this.defCols();
+
+    this._cashBox.getAll('')
+      .subscribe(result => {
+        this.CashBoxs = result;
+      });
+
+    this._bankAccount.getAll('')
+      .subscribe(result => {
+        this.bankAccounts = result;
+      })
+
+    this._creditCardTypeService.getAll().subscribe(
+      result => {
+        this.filteredArray = [];
+        this.creditCardTypes = result;
+      }
+    )
+
+  }
+
+  defCols() {
     this.vouchersCols = [
-      { field: "VoucherId", header: "App.Fields.DocumentId", hidden: false },
       {
-        field: "VoucherTypeId",
-        header: "Receipts.Fields.DocumentType",
-        hidden: true,
+        field: "voucherCode",
+        header: "App.Fields.DocumentId"
       },
       {
-        field: "VoucherTypeArabicName",
-        header: "Receipts.Fields.DocumentType",
-        hidden: false,
+        field: "voucherTypeId",
+        header: "Receipts.Fields.DocumentType"
       },
       {
-        field: "NetValueAfterTax",
-        header: "Receipts.Fields.ReciptValue",
-        hidden: false,
+        field: "voucherTypeName",
+        header: "Receipts.Fields.DocumentType"
       },
       {
-        field: "CurrentBalance",
-        header: "Receipts.Fields.CurrentBalance",
-        hidden: false,
-        pipe: "number",
-        pipeFormat: "1.1-4",
+        field: "netValueAfterTax",
+        header: "Receipts.Fields.ReciptValue"
+      },
+      {
+        field: "currentBalance",
+        header: "Receipts.Fields.CurrentBalance"
       },
     ];
 
     this.settlementCols = [
       {
-        field: "DebitReceivableId",
+        field: "debitReceivableCode",
         header: "Receipts.Fields.DocumentId",
         hidden: false,
       },
       {
-        field: "VoucherTypeArabicName",
+        field: "voucherTypeName",
         header: "Receipts.Fields.DocumentType",
         hidden: false,
       },
       {
-        field: "DebitReceivableTypeId",
+        field: "debitReceivableTypeId",
         header: "رقم نوع المستند",
         hidden: true,
       },
       {
-        field: "NetValueAfterTax",
+        field: "currentBalance",
+        header: "Receipts.Fields.CurrentBalance",
+        hidden: false
+      },
+      {
+        field: "netValueAfterTax",
         header: "Receipts.Fields.ReciptValue",
         hidden: false,
       },
-      {
-        field: "CurrentBalance",
-        header: "Receipts.Fields.CurrentBalance",
-        hidden: false,
-        pipe: "number",
-        pipeFormat: "1.1-3",
-      },
-      {
-        field: "CanBePay",
-        header: "Receipts.Fields.CanPay",
-        hidden: false,
-        pipe: "number",
-        pipeFormat: "1.1-3",
-      },
-      { field: "PaidAmount", header: "Receipts.Fields.Value", hidden: false },
+      { field: "paidAmount", header: "Receipts.Fields.Value", hidden: false },
       { field: "ActionButtons", header: "", hidden: false },
     ];
   }
+
+  searchCustomers(event: any) {
+    setTimeout(() => {
+      this._customerService
+        .getCustomersBySectorId(this._globalService.getSectorType(), event.query)
+        .subscribe((result) => {
+          this.filteredArray = [];
+          this.filteredArray = result;
+        });
+    }, 1500);
+  }
+
+
 
   getEditFormData(id: string) {
     this.progressSpinner = true;
     this._paymentReceiptService
       .getEdit(id)
-      .subscribe((result: IServiceResult) => {
-        this.viewModel = result.data;
-        if (this._authService.currentAuthUser.RoleTypeId == '001') {
-          this.CashBoxs = this.viewModel.CashBoxs;
-        }
-        else {
-          this.CashBoxs = this.viewModel.CashBoxs.filter(x => x.Id === this._authService.currentAuthUser.CashBoxId);
-        }
+      .subscribe((result) => {
+        debugger
+        this.viewModel = result;
+        const paymentReceipt = this.viewModel;
 
-        const paymentReceipt = this.viewModel.PaymentReceipt;
         this.form.patchValue({
-          CreditReceivableId: paymentReceipt.CreditReceivableId,
-          CreditReceivableTypeId: paymentReceipt.CreditReceivableTypeId,
-          DocumentDate: new Date(paymentReceipt.DocumentDate),
-          RefNumber: paymentReceipt.RefNumber,
-          Customer: paymentReceipt.Customer,
-          Contract: paymentReceipt.Contract,
+          CreditReceivableId: paymentReceipt.id,
+          CreditReceivableTypeId: paymentReceipt.voucherTypeId,
+          DocumentDate: new Date(paymentReceipt.documentDate),
+          RefNumber: paymentReceipt.refNumber,
+          Customer: paymentReceipt.customer,
+          Contract: { entityCode: paymentReceipt.entityCode },
           SalesRepresentative:
-            paymentReceipt.Contract.SalesRepresentativeArabicName,
+            paymentReceipt.salesRepresentativeName,
           ArabicRemarks: paymentReceipt.ArabicRemarks,
-          CreditCardType: this.getSelectedItem(
-            this.viewModel.CreditCardTypes,
-            paymentReceipt.CreditCardTypeId
-          ),
-          IsBankDeposit: paymentReceipt.IsBankDeposit,
-          BankDepositAmount: paymentReceipt.IsBankDeposit
-            ? paymentReceipt.BankDepositAmount
+          CreditCardType: paymentReceipt.creditCardType,
+          IsBankDeposit: paymentReceipt.isBankDeposit,
+          BankDepositAmount: paymentReceipt.isBankDeposit
+            ? paymentReceipt.bankDepositAmount
             : 0,
-          BankAccount: paymentReceipt.BankAccount,
-          IsCashBox: paymentReceipt.IsCashBox,
-          CashBox: paymentReceipt.CashBox,
-          CashBoxAmount: paymentReceipt.IsCashBox
-            ? paymentReceipt.CashBoxAmount
+          BankAccount: paymentReceipt.bankAccount,
+          IsCashBox: paymentReceipt.isCashBox,
+          CashBox: paymentReceipt.cashBox,
+          CashBoxAmount: paymentReceipt.isCashBox
+            ? paymentReceipt.cashBoxAmount
             : 0,
-          IsPaidOnline: paymentReceipt.IsPaidOnline,
+          IsPaidOnline: paymentReceipt.isPaidOnline,
           OnlinePaidCreditCard: paymentReceipt.CreditCardType
             ? paymentReceipt.CreditCardType.ArabicName
             : "",
-          PaymentOnlineRef: paymentReceipt.PaymentOnlineRef,
+          PaymentOnlineRef: paymentReceipt.paymentOnlineRef,
         });
-        this.isDownPayment = paymentReceipt.IsDownPayment;
-        this.showPaidOnlineSection = paymentReceipt.IsPaidOnline;
+
+        this.isDownPayment = paymentReceipt.isDownPayment;
+        this.showPaidOnlineSection = paymentReceipt.isPaidOnline;
         this.form.get("Customer").disable();
         this.form.get("Contract").disable();
         this.IsCashOrDeposit();
-        this.settlements = paymentReceipt.PaymentsTransactions
-          ? paymentReceipt.PaymentsTransactions
+
+        this.settlements = paymentReceipt.paymentsTransactions
+          ? paymentReceipt.paymentsTransactions
           : [];
-        if (paymentReceipt.IsDownPayment) {
+        if (paymentReceipt.isDownPayment) {
           this.form.disable();
           this.disabled = true;
         }
+
         this._paymentReceiptService
-          .getVouchers(paymentReceipt.Contract.Id)
-          .subscribe((res: IServiceResult) => {
-            this.vouchers = res.data;
+          .getVouchers(paymentReceipt.entityCode)
+          .subscribe((res) => {
+            this.vouchers = res;
             this.progressSpinner = false;
             //////////// me
             this.onSelectVoucherType();
@@ -210,7 +242,6 @@ export class EditPaymentReceiptComponent implements OnInit {
     });
   }
 
-  setFormValues(id: string) { }
 
   EditPaymentReciept() {
     this.submitted = true;
@@ -225,7 +256,7 @@ export class EditPaymentReceiptComponent implements OnInit {
 
     let totalpaid = 0;
     this.settlements.forEach((item) => {
-      totalpaid += item.PaidAmount;
+      totalpaid += item.paidAmount;
     });
     if (this.form.valid) {
       if (this.totalVal < totalpaid) {
@@ -246,30 +277,42 @@ export class EditPaymentReceiptComponent implements OnInit {
       }
       this.progressSpinner = true;
       const postedViewModel = Object.assign({}, this.form.getRawValue());
-      postedViewModel.Id = this.viewModel.PaymentReceipt.Id;
-      postedViewModel.CustomerId = postedViewModel.Customer.Id;
-      postedViewModel.ContractId = postedViewModel.Contract.Id;
+
+      if (postedViewModel.BankDepositAmount == null) {
+        postedViewModel.BankDepositAmount = 0;
+      }
+      postedViewModel.Id = this.viewModel.id;
+      postedViewModel.CustomerId = postedViewModel.Customer.id;
+      postedViewModel.EntityCode = postedViewModel.Contract.entityCode;
+      postedViewModel.SectorTypeId = this._globalService.getSectorType();
+
 
       if (postedViewModel.CreditCardType) {
-        postedViewModel.CreditCardTypeId = postedViewModel.CreditCardType.Id;
+        postedViewModel.CreditCardTypeId = postedViewModel.CreditCardType.code;
       }
       if (postedViewModel.CashBox) {
-        postedViewModel.CashBoxId = postedViewModel.CashBox.Id;
+        postedViewModel.CashBoxId = postedViewModel.CashBox.id;
       }
       postedViewModel.BankAccountId = postedViewModel.BankAccount
-        ? postedViewModel.BankAccount.Id
+        ? postedViewModel.BankAccount.code
         : null;
       postedViewModel.DocumentDate = this._datePipe.transform(
-        postedViewModel.DocumentDate
+        postedViewModel.DocumentDate, 'yyyy-MM-ddTHH:mm:ss'
       );
-      ;
       postedViewModel.PaymentsTransactions = this.settlements;
+
       this._paymentReceiptService.edit(postedViewModel).subscribe(
-        (result: IServiceResult) => {
-          if (result.isSuccess) {
+        (result) => {
+          if (result) {
             this.submitted = false;
             this.form.reset();
-            this._router.navigate(["/receipts/payment-receipts"]);
+            this._globalService.messageAlert(
+              MessageType.Success,
+              this._globalService.translateWordByKey(
+                "Receipts.Messages.EditSuccessFully"
+              )
+            );
+            this._router.navigate(["/finance/receipts/payment-receipts"]);
           }
         },
         null,
@@ -281,9 +324,8 @@ export class EditPaymentReceiptComponent implements OnInit {
   }
 
   onSelectVoucherType() {
-    ;
     this.filteredVouchers = this.vouchers.filter(
-      (v) => v.VoucherTypeId === this.voucherType
+      (v) => v.voucherTypeId === this.voucherType
     );
     this.selectedVoucher = undefined;
   }
@@ -291,38 +333,43 @@ export class EditPaymentReceiptComponent implements OnInit {
   addSettlement() {
     this.added = true;
     if (this.selectedVoucher && Number(this.paidValue) > 0) {
-      const settlement = {
-        DebitReceivableIdFK:  this.selectedVoucher.Id,
-        DebitReceivableId: this.selectedVoucher.VoucherId,
-        DebitReceivableTypeId: this.selectedVoucher.VoucherTypeId,
-        PaidAmount: Number(this.paidValue),
-        NetValueAfterTax: this.selectedVoucher.NetValueAfterTax,
-        VoucherTypeArabicName: this.selectedVoucher.VoucherTypeArabicName,
-        CurrentBalance: this.selectedVoucher.CurrentBalance,
-        CanBePay: this.selectedVoucher.CurrentBalance,
+      debugger
+      const settlement: any = {
+        id: this.selectedVoucher.id,
+        voucherCode: this.selectedVoucher.voucherCode,
+        debitReceivableCode: this.selectedVoucher.voucherCode,
+        debitReceivableId: this.selectedVoucher.id,
+        debitReceivableVoucherTypeId: this.selectedVoucher.voucherTypeId,
+        paidAmount: this.paidValue,
+        netValueAfterTax: this.selectedVoucher.netValueAfterTax,
+        voucherTypeName: this.selectedVoucher.voucherTypeName,
+        currentBalance: Number(this.selectedVoucher.currentBalance),
+        canBePay: Number(this.selectedVoucher.currentBalance),
       };
 
       if (
         this.settlements.find(
-          (e) =>
-            e.DebitReceivableId === settlement.DebitReceivableId &&
-            e.DebitReceivableTypeId === settlement.DebitReceivableTypeId
+          (e: Settlement) =>
+            e.id === settlement.id &&
+            e.debitReceivableVoucherTypeId === settlement.debitReceivableVoucherTypeId
         ) === undefined
       ) {
-        if (settlement.CurrentBalance < settlement.PaidAmount) {
+
+        if (settlement.currentBalance < settlement.paidAmount) {
           this._globalService.messageAlert(
             MessageType.Warning,
-            "Receipts.Messages.PaidMoreThanCurrentBalance",
-            true
+            this._globalService.translateWordByKey(
+              "Receipts.Messages.TotalPaidMoreThanBalance"
+            )
           );
           return;
         }
 
         let totalpaid = 0;
         this.settlements.forEach((item) => {
-          totalpaid += item.PaidAmount;
+          totalpaid += item.paidAmount;
         });
-        if (totalpaid + settlement.PaidAmount > this.totalVal) {
+        if (totalpaid + settlement.paidAmount > this.totalVal) {
           this._globalService.messageAlert(
             MessageType.Warning,
             "Receipts.Messages.PaidMoreThanPaymentReceipt",
@@ -350,11 +397,11 @@ export class EditPaymentReceiptComponent implements OnInit {
   onEdit(event: any) {
     const settlement = event.data;
     const itemIndex = this.settlements.findIndex(
-      (s) =>
-        s.DebitReceivableId === settlement.DebitReceivableId &&
-        s.DebitReceivableTypeId === settlement.DebitReceivableTypeId
+      (e) =>
+        e.id === settlement.id &&
+        e.debitReceivableVoucherTypeId === settlement.debitReceivableVoucherTypeId
     );
-    if (settlement.PaidAmount > settlement.CanBePay) {
+    if (settlement.paidAmount > settlement.canBePay) {
       this.settlements[itemIndex] = this.currentSettlement;
       this._globalService.messageAlert(
         MessageType.Warning,
@@ -363,7 +410,7 @@ export class EditPaymentReceiptComponent implements OnInit {
       );
       return;
     }
-    if (settlement.PaidAmount <= 0) {
+    if (settlement.paidAmount <= 0) {
       this.settlements[itemIndex] = this.currentSettlement;
       this._globalService.messageAlert(
         MessageType.Warning,
@@ -375,10 +422,10 @@ export class EditPaymentReceiptComponent implements OnInit {
     let totalpaid = 0;
     this.settlements.forEach((item, index) => {
       if (index !== itemIndex) {
-        totalpaid += item.PaidAmount;
+        totalpaid += item.paidAmount;
       }
     });
-    if (totalpaid + settlement.PaidAmount > this.totalVal) {
+    if (totalpaid + settlement.paidAmount > this.totalVal) {
       this.settlements[itemIndex] = this.currentSettlement;
 
       this._globalService.messageAlert(
@@ -469,8 +516,18 @@ export class EditPaymentReceiptComponent implements OnInit {
     this.onSelectVoucherType();
   }
   getSelectedItem(vm: any, id: any) {
+    debugger
     if (id) {
       return vm.filter((x) => x.Id.toString() === id.toString())[0];
+    }
+    return null;
+  }
+
+
+  getSelectedCreditCard(vm: any, code: any) {
+    debugger
+    if (code) {
+      return vm.filter((x) => x.code.toString() === code.toString())[0];
     }
     return null;
   }
