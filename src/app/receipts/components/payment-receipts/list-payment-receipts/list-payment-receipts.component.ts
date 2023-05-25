@@ -34,9 +34,9 @@ export class ListPaymentReceiptsComponent implements OnInit {
 
   createPageListConfig() {
     this.pageListConfig = {
-      pageAuthorization: 'receipts-payment-receipts-list',
+      pageAuthorization: 'Finance-PaymentReceipt-GetPagedList',
       pageTitle: 'Receipts.Titles.PaymentReceiptsListPage',
-      createAuthorization: 'receipts-payment-receipts-create',
+      createAuthorization: 'Finance-PaymentReceipt-Create',
       createButtonTitle: 'Receipts.Buttons.PaymentReceiptCreate',
       createLink: '/finance/receipts/create-payment-receipts',
       getDataAPIURL: `${environment.financeSectorAPIURL}/v1/PaymentReceipt/GetPagedList`,
