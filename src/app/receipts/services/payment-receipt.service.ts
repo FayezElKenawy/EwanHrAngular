@@ -25,31 +25,6 @@ export class PaymentReceiptService {
     return this._http.post<PagedList>(`${this.serviceUrl}/GetPagedList`, searchModel)
   }
 
-  getCreate(): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return Observable.create((observer) => {
-      this._http
-        .get(`${this.serviceUrl}/GetCreatePage`)
-        .pipe(catchError(this._globalService.errorHandler))
-        .subscribe(
-          (resultVM: IResultVM) => {
-            if (resultVM.IsSuccess) {
-              serviceResult.data = resultVM.Data;
-            } else {
-            }
-            serviceResult.isSuccess = resultVM.IsSuccess;
-            observer.next(serviceResult);
-            observer.complete();
-            return observer;
-          },
-          () => {
-            observer.complete();
-            return observer;
-          }
-        );
-    });
-  }
-
   create(postedVM: any): Observable<any> {
     return this._http.post(`${this.serviceUrl}/Create`, postedVM)
   }
@@ -63,7 +38,7 @@ export class PaymentReceiptService {
   }
 
   getEdit(paymentId: string): Observable<any>  {
-    return this._http.get(`${this.serviceUrl}/GetById/${paymentId}`)
+    return this._http.get(`${this.serviceUrl}/Details/${paymentId}`)
   }
 
 }

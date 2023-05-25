@@ -58,7 +58,6 @@ export class CreateCreditNoteComponent implements OnInit {
     private _salesPeriodService: SalesPeriodService
   ) {
     this.settlements = [];
-    this.voucherType = 'CR';
   }
 
   ngOnInit() {

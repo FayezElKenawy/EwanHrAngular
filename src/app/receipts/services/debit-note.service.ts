@@ -22,9 +22,11 @@ export class DebitNoteService {
   ) { }
 
   getAll(searchModel: SearchModel): Observable<PagedList> {
-
     return this._http.post<PagedList>(`${this.serviceUrl}/GetPagedList`, searchModel)
+  }
 
+  getById(id: any): Observable<PagedList> {
+    return this._http.get<PagedList>(`${this.serviceUrl}/Details/${id}`)
   }
 
   create(postedVM: any): Observable<any> {

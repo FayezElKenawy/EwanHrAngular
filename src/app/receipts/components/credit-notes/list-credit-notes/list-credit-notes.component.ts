@@ -31,7 +31,8 @@ export class ListCreditNotesComponent implements OnInit {
   constructor(
     public _dynamicSearchService: DynamicSearchService,
     private authService:AuthService,
-    private globalService: GlobalService
+    private globalService: GlobalService,
+    private _router: Router,
   ) { }
 
   ngOnInit() {
@@ -55,10 +56,20 @@ export class ListCreditNotesComponent implements OnInit {
       ],
       actions: [
         {
-          authorization: 'receipts-payment-receipts-print',
+          authorization: '',
           title: 'App.Buttons.Print',
           callBack: (dataItem) => {
             this.showReport(dataItem.code);
+          },
+        },
+        {
+          authorization: '',
+          title: 'App.Buttons.Details',
+          callBack: (dataItem) => {
+            this._router.navigate([
+              '/finance/receipts/details-credit-note',
+              dataItem.id,
+            ]);
           },
         },
       ],

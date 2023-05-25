@@ -24,6 +24,8 @@ import { ListCreditNotesComponent } from './components/credit-notes/list-credit-
 import { CreateCreditNoteComponent } from './components/credit-notes/create-credit-note/create-credit-note.component';
 import { CreateDebitNoteComponent } from './components/debit-notes/create-debit-note/create-debit-note.component';
 import { ListDebitNotesComponent } from './components/debit-notes/list-debit-notes/list-debit-notes.component';
+import { DetailsCreditNoteComponent } from './components/credit-notes/details-credit-note/details-credit-note.component';
+import { DetailsDebitNoteComponent } from './components/debit-notes/details-debit-note/details-debit-note.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,9 @@ import { ListDebitNotesComponent } from './components/debit-notes/list-debit-not
     DetailCreditInvoiceComponent,
     ListCustomerAccountComponent,
     DetailsCustomerAccountComponent,
-    CustomerAccountLogComponent
+    CustomerAccountLogComponent,
+    DetailsCreditNoteComponent,
+    DetailsDebitNoteComponent
   ],
   imports: [
     CommonModule,
