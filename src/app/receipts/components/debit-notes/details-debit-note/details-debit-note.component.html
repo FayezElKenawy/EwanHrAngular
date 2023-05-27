@@ -116,11 +116,11 @@
                 <div class="row mx-0 mb-1 box-shadow custom-details-card">
                   <p-table
                     [columns]="costElementCols"
-                    [value]="viewModel.debitReceivableElement"
+                    [value]="viewModel?.debitReceivableElements"
                     [paginator]="true"
                     [rows]="5"
                     dataKey="Id"
-                    [totalRecords]="viewModel.debitReceivableElement.length"
+                    [totalRecords]="viewModel?.debitReceivableElements.length"
                     [autoLayout]="true"
                     [responsive]="true"
                     class="full-width"
@@ -205,7 +205,7 @@
                       </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>
-                      <tr *ngIf="viewModel.debitReceivableElement.length === 0">
+                      <tr *ngIf="viewModel?.debitReceivableElement.length === 0">
                         <td
                           [attr.colspan]="columns?.length"
                           class="empty-grid-table"
@@ -234,6 +234,20 @@
                   </div>
                   <div class="details-value">
                     <span>{{ viewModel?.totalPaid | currency : " " }}</span>
+                  </div>
+                </div>
+              </div>
+              <!-- ArabicRemarks -->
+              <div class="tableBody col-12 py-2">
+                <div class="row mx-0 details-card">
+                  <!-- رقم العقد -->
+                  <div class="details-label">
+                    <span>{{
+                      "App.Fields.Notes" | translate
+                    }}</span>
+                  </div>
+                  <div class="details-value">
+                    <span>{{ viewModel?.arabicRemarks }}</span>
                   </div>
                 </div>
               </div>

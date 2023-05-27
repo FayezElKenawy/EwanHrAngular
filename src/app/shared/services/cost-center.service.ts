@@ -17,7 +17,7 @@ export class CostCenterService {
   ) {}
 
   getAll(searchTerm:string):Observable<any>{
-    return this._http.get<any>(`${this.serviceUrl}/GetCostCenterByCustomerCode`, {
+    return this._http.get<any>(`${this.serviceUrl}/GetCostCenterSelectList`, {
       params: {sectorId:this._globalService.getSectorType() ,customerCode: searchTerm },
     });
   }

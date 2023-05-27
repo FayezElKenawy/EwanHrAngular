@@ -181,6 +181,7 @@ export class CreateDebitNoteComponent implements OnInit {
   }
 
   addCostElement() {
+    debugger
     this.selected = true;
     if (this.Amount > 0 && this.selectedItem) {
       if (
@@ -188,10 +189,9 @@ export class CreateDebitNoteComponent implements OnInit {
         undefined
       ) {
         const costElement = Object.assign({}, this.selectedItem);
-        costElement.TaxRatio = this.selectedItem.tax.taxRatio;
-        costElement.Amount = ((this.Amount * 100) / (100 + costElement.TaxRatio)).toFixed(4);
-        costElement.TaxAmount = (this.Amount - costElement.Amount).toFixed(4);
-
+        costElement.Amount = this.Amount;
+        costElement.TaxAmount = (this.Amount * costElement.tax.taxRatio) / 100;
+        costElement.TaxRatio = costElement.tax.taxRatio
         this.costElements.push(costElement);
         this.selected = false;
         this.calculateDebitNote();

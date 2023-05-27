@@ -47,16 +47,16 @@ export class DetailsDebitNoteComponent implements OnInit{
         header: "Receipts.Fields.CostElementName"
       },
       {
-        field: "elementAmount",
+        field: "netAmount",
         header: "Receipts.Fields.CostElementAmount"
       },
 
       {
-        field: "elementTaxAmount",
+        field: "taxRatio",
         header: "Receipts.Fields.TaxRatio"
       },
       {
-        field: "elementNetAmount",
+        field: "taxAmount",
         header: "Receipts.Fields.TaxAmount"
       },
       {
