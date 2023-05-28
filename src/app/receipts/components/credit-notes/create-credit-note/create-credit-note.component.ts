@@ -43,7 +43,7 @@ export class CreateCreditNoteComponent implements OnInit {
   added: boolean;
   currentSettlement: any;
   filteredVouchers: any[];
-  voucherType: any;
+  voucherType: any="CR";
   minDateValue: any;
   sectorId: string;
 
@@ -58,7 +58,6 @@ export class CreateCreditNoteComponent implements OnInit {
     private _salesPeriodService: SalesPeriodService
   ) {
     this.settlements = [];
-    this.voucherType = 'CR';
   }
 
   ngOnInit() {
@@ -270,15 +269,13 @@ export class CreateCreditNoteComponent implements OnInit {
 
   }
 
-  onSelectContract(event) {
-    this.progressSpinner = true;
+  onSelectCostCenter(event) {
     this.settlements = [];
     this.vouchers = [];
     this.selectedVoucher = undefined;
     this._creditNoteService
       .getVouchers(event.entityCode)
       .subscribe((result: any) => {
-        this.progressSpinner = false;
         this.vouchers = result;
         this.onSelectVoucherType();
       });

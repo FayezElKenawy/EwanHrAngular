@@ -31,7 +31,8 @@ export class ListCreditNotesComponent implements OnInit {
   constructor(
     public _dynamicSearchService: DynamicSearchService,
     private authService:AuthService,
-    private globalService: GlobalService
+    private globalService: GlobalService,
+    private _router: Router,
   ) { }
 
   ngOnInit() {
@@ -42,7 +43,7 @@ export class ListCreditNotesComponent implements OnInit {
     this.pageListConfig = {
       pageAuthorization: 'Finance-CreditNote-GetPagedList',
       pageTitle: 'Receipts.Titles.CreditNotesListPage',
-      createAuthorization: 'Finance-CreditNote-Create',
+      createAuthorization: 'Finance-CreditNote-Details',
       createButtonTitle: 'Receipts.Buttons.CreditNoteCreate',
       createLink: '/finance/receipts/create-credit-note',
       getDataAPIURL: `${environment.financeSectorAPIURL}/v1/CreditNote/GetPagedList`,
@@ -55,10 +56,20 @@ export class ListCreditNotesComponent implements OnInit {
       ],
       actions: [
         {
-          authorization: 'Finance-CreditNote-Print',
+          authorization: '',
           title: 'App.Buttons.Print',
           callBack: (dataItem) => {
             this.showReport(dataItem.code);
+          },
+        },
+        {
+          authorization: '',
+          title: 'App.Buttons.Details',
+          callBack: (dataItem) => {
+            this._router.navigate([
+              '/finance/receipts/details-credit-note',
+              dataItem.id,
+            ]);
           },
         },
       ],

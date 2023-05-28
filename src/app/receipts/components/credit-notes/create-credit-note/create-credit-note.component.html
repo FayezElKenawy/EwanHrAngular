@@ -99,7 +99,7 @@
                 <div class="col-12 px-0">
                   <p-autoComplete id="Contract" class="p-0 form-control" formControlName="Contract" field="entityCode"
                     [suggestions]="filteredArray" (completeMethod)="filterArray($event, Contracts,'entityCode')"
-                    (onSelect)="onSelectContract($event)" (onClear)="onClear('Contract')" [forceSelection]="true"
+                    (onSelect)="onSelectCostCenter($event)" (onClear)="onClear('Contract')" [forceSelection]="true"
                     [size]="30" [minLength]="1" placeholder="{{ 'Receipts.Fields.CostCenter' | translate}}"
                     [dropdown]="true" [ngClass]="{
                             'is-invalid': submitted && form.get('Contract').errors

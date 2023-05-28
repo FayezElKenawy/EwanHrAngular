@@ -16,6 +16,8 @@ import { ListCreditNotesComponent } from './components/credit-notes/list-credit-
 import { CreateCreditNoteComponent } from './components/credit-notes/create-credit-note/create-credit-note.component';
 import { ListDebitNotesComponent } from './components/debit-notes/list-debit-notes/list-debit-notes.component';
 import { CreateDebitNoteComponent } from './components/debit-notes/create-debit-note/create-debit-note.component';
+import { DetailsCreditNoteComponent } from './components/credit-notes/details-credit-note/details-credit-note.component';
+import { DetailsDebitNoteComponent } from './components/debit-notes/details-debit-note/details-debit-note.component';
 
 const routes: Routes = [
   {
@@ -36,8 +38,16 @@ const routes: Routes = [
         component: CreateCreditNoteComponent,
       },
       {
+        path: 'details-credit-note/:id',
+        component: DetailsCreditNoteComponent,
+      },
+      {
         path: 'debit-notes',
         component: ListDebitNotesComponent,
+      },
+      {
+        path: 'details-debit-note/:id',
+        component: DetailsDebitNoteComponent,
       },
       {
         path: 'payment-receipts',

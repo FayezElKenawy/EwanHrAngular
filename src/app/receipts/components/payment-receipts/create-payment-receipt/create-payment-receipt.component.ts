@@ -36,7 +36,7 @@ export class CreatePaymentReceiptComponent implements OnInit {
   paidValue: number;
   added: boolean;
   currentSettlement: any;
-  voucherType: any;
+  voucherType: any="CR";
   filteredVouchers: any[];
   minDateValue: any;
   CashBoxs: any[];
