@@ -49,7 +49,6 @@ export class CreatePaymentReceiptComponent implements OnInit {
     private _datePipe: DatePipe,
     private _router: Router,
     private _paymentReceipt: PaymentReceiptService,
-    private _authService: AuthService,
     private _customerService: CustomerService,
     private _costCenterService: CostCenterService,
     private _cashBox: CashboxService,

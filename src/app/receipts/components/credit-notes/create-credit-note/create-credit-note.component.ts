@@ -10,6 +10,7 @@ import { ContractService } from "@shared/services/contract.service";
 import { SalesPeriodService } from "src/app/master-data/services/sales-period.service";
 import { CostCenterService } from "@shared/services/cost-center.service";
 import { Settlement } from "src/app/receipts/models/credit-notes/settlement.model";
+import { VoucherType } from "src/app/receipts/enum/voucher-type.enum";
 
 @Component({
   selector: "app-create-credit-note",
@@ -43,7 +44,7 @@ export class CreateCreditNoteComponent implements OnInit {
   added: boolean;
   currentSettlement: any;
   filteredVouchers: any[];
-  voucherType: any="CR";
+  voucherType: string= VoucherType.CreditInvoice;
   minDateValue: any;
   sectorId: string;
 
