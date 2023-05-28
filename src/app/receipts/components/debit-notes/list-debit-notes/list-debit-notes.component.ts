@@ -59,7 +59,7 @@ export class ListDebitNotesComponent implements OnInit {
       ],
       actions: [
         {
-          authorization: '',
+          authorization: 'Finance-DebitNote-Details',
           title: 'App.Buttons.Details',
           callBack: (dataItem) => {
             this._router.navigate([
@@ -96,13 +96,6 @@ export class ListDebitNotesComponent implements OnInit {
           field: 'entityCode',
           header: 'Receipts.Fields.ContractId',
         },
-        // {
-        //   field: "CreatedBy",
-        //   header: "Sales.Fields.CreatedBy",
-        //   hidden: false,
-        //   searchable: true,
-        //   searchType: "text"
-        // },
         {
           field: "netValue",
           header: "Receipts.Fields.CreditNoteValue",

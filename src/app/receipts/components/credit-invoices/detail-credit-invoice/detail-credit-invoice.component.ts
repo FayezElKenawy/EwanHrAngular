@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CreditInvoiceService } from '../credit-invoice.service';
+import { CreditInvoiceService } from '../../../services/credit-invoice.service';
 import { IServiceResult } from '@shared/interfaces/results';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -12,65 +12,62 @@ import { ActivatedRoute } from '@angular/router';
 export class DetailCreditInvoiceComponent implements OnInit {
   viewModel: any;
   progressSpinner: boolean;
-  Cols: any[] = [];
+  cols: any[] = [];
 
   constructor(
     private _creditInvoiceService: CreditInvoiceService,
     private _datePipe: DatePipe,
     private _route: ActivatedRoute
   ) {
-    _route.queryParams.subscribe(data => {
-      this.getDetails(data['id']);
-    });
   }
 
   ngOnInit() {
-    this.Cols = [
+
+    this.defCols();
+    this.getDetails(this._route.snapshot.paramMap.get("id"))
+  }
+
+  defCols(){
+    this.cols = [
       {
-        field: 'CostElementId',
+        field: 'costElementId',
         header: 'Receipts.Fields.ItemId',
         hidden: false
       },
       {
-        field: 'CostElementName',
+        field: 'costElementName',
         header: 'Receipts.Fields.ItemDesc',
         hidden: false
       },
       {
-        field: 'ElementAmount',
+        field: 'netAmount',
         header: 'Receipts.Fields.Quantity',
         hidden: false
       },
       {
-        field: 'TaxName',
+        field: 'taxName',
         header: 'Receipts.Fields.TaxType',
         hidden: false
       },
       {
-        field: 'TaxRatio',
+        field: 'taxRatio',
         header: 'Receipts.Fields.TaxPercent',
         hidden: false,
         pipe: 'percentage'
       },
       {
-        field: 'ElementTaxAmount',
+        field: 'taxAmount',
         header: 'Receipts.Fields.TaxValue',
         hidden: false
       }
     ];
   }
-  
   getDetails(id: string) {
-    this.progressSpinner = true;
     this._creditInvoiceService.getDetails(id).subscribe(
-      (result: IServiceResult) => {
-        if (result.isSuccess) {
-          this.viewModel = result.data.DebitReceivableSnapshotVM;
-          this.progressSpinner = false;
+      (result) => {
+        if (result) {
+          this.viewModel = result;
         }
-      },
-      null,
-      () => (this.progressSpinner = false)
-    );
+      })
   }
 }

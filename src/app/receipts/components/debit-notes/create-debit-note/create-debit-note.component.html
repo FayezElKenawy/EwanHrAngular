@@ -32,25 +32,25 @@
               </div>
               <div class="col-12 px-0">
                 <p-calendar
-                  id="contractDate"
+                  id="costCenterDate"
                   [monthNavigator]="true"
                   [yearNavigator]="true"
                   yearRange="{{ '1900:' + currentYear }}"
                   placeholder="{{
                     'Receipts.Fields.CreditNoteDate' | translate
                   }}"
-                  formControlName="DocumentDate"
+                  formControlName="documentDate"
                   dateFormat="yy-mm-dd"
                   class="form-control calendar-form-control p-0"
                   [ngClass]="{
-                    'is-invalid': submitted && form.get('DocumentDate').errors
+                    'is-invalid': submitted && form.get('documentDate').errors
                   }"
                   [minDate]="minDateValue"
                 >
                 </p-calendar>
                 <div
                   class="invalid-feedback"
-                  *ngIf="form.get('DocumentDate').errors?.required"
+                  *ngIf="form.get('documentDate').errors?.required"
                 >
                   {{ "App.Fields.RequiredField" | translate }}
                 </div>
@@ -68,19 +68,19 @@
               </div>
               <div class="col-12 px-0">
                 <input
-                  formControlName="RefNumber"
+                  formControlName="refNumber"
                   type="text"
                   class="form-control m_datetimepicker_1"
                   placeholder="{{
                     'Receipts.Fields.InvoiceRefNumber' | translate
                   }}"
                   [ngClass]="{
-                    'is-invalid': submitted && form.get('RefNumber').errors
+                    'is-invalid': submitted && form.get('refNumber').errors
                   }"
                 />
                 <div
                   class="invalid-feedback"
-                  *ngIf="form.get('RefNumber').errors?.required"
+                  *ngIf="form.get('refNumber').errors?.required"
                 >
                   {{ "App.Fields.RequiredField" | translate }}
                 </div>
@@ -101,31 +101,31 @@
                   id="Customer"
                   class="p-0 form-control"
                   field="fullName"
-                  formControlName="Customer"
+                  formControlName="customer"
                   [suggestions]="filteredArray"
                   (completeMethod)="searchCustomers($event)"
                   (onSelect)="onSelectCustomer($event)"
-                  (onClear)="onClear('Customer')"
+                  (onClear)="onClear('customer')"
                   [forceSelection]="true"
                   [size]="30"
                   [minLength]="1"
                   placeholder="{{ 'Receipts.Fields.CustomerName' | translate }}"
                   [dropdown]="true"
                   [ngClass]="{
-                    'is-invalid': submitted && form.get('Customer').errors
+                    'is-invalid': submitted && form.get('customer').errors
                   }"
                 >
-                  <ng-template let-Customer pTemplate="item">
+                  <ng-template let-customer pTemplate="item">
                     <div class="ui-helper-clearfix">
                       <div>
-                        {{ Customer.fullName }}
+                        {{ customer.fullName }}
                       </div>
                     </div>
                   </ng-template>
                 </p-autoComplete>
                 <div
                   class="invalid-feedback"
-                  *ngIf="form.get('Customer').errors?.required"
+                  *ngIf="form.get('customer').errors?.required"
                 >
                   {{ "App.Fields.RequiredField" | translate }}
                 </div>
@@ -143,60 +143,41 @@
               </div>
               <div class="col-12 px-0">
                 <p-autoComplete
-                  id="Contract"
+                  id="costCenter"
                   class="p-0 form-control"
-                  formControlName="Contract"
+                  formControlName="costCenter"
                   field="entityCode"
                   [suggestions]="filteredArray"
                   (completeMethod)="
-                    filterArray($event, Contracts, 'entityCode')
+                    filterArray($event, costCenters, 'entityCode')
                   "
-                  (onClear)="onClear('Contract')"
+                  (onClear)="onClear('costCenter')"
                   [forceSelection]="true"
                   [size]="30"
                   [minLength]="1"
                   placeholder="{{ 'Receipts.Fields.CostCenter' | translate }}"
                   [dropdown]="true"
                   [ngClass]="{
-                    'is-invalid': submitted && form.get('Contract').errors
+                    'is-invalid': submitted && form.get('costCenter').errors
                   }"
                 >
-                  <ng-template let-Contract pTemplate="item">
+                  <ng-template let-costCenter pTemplate="item">
                     <div class="ui-helper-clearfix">
                       <div>
-                        {{ Contract.entityCode }}
+                        {{ costCenter.entityCode }}
                       </div>
                     </div>
                   </ng-template>
                 </p-autoComplete>
                 <div
                   class="invalid-feedback"
-                  *ngIf="form.get('Contract').errors?.required"
+                  *ngIf="form.get('costCenter').errors?.required"
                 >
                   {{ "App.Fields.RequiredField" | translate }}
                 </div>
               </div>
             </div>
           </div>
-
-          <!--صافي القيمة-->
-          <!-- <div class="col-lg-2 col-md-6 col-12">
-            <div class="form-group m-form__group row mx-0 px-0">
-              <div class="col-12 px-0">
-                <label for="netVal" class="form-control-label">{{ 'Receipts.Fields.NetValue' | translate}}</label>
-                <span class="required">*</span>
-              </div>
-              <div class="col-12 px-0">
-                <input formControlName="NetValue" type="number" class="form-control" id="netVal"
-                  placeholder="{{ 'Receipts.Fields.NetValue' | translate}}" [ngClass]="{
-                    'is-invalid': submitted && form.get('NetValue').errors
-                  }" />
-                <div class="invalid-feedback" *ngIf="form.get('NetValue').errors?.required">
-                  {{'App.Fields.RequiredField' | translate}}
-                </div>
-              </div>
-            </div>
-          </div> -->
 
           <div class="col-lg-2 col-md-6 col-12">
             <div class="form-group m-form__group row mx-0 px-0">
@@ -208,7 +189,7 @@
               </div>
               <div class="col-12 px-0">
                 <input
-                  [(ngModel)]="NetVal"
+                  [(ngModel)]="netVal"
                   [ngModelOptions]="{ standalone: true }"
                   type="number"
                   min="0"
@@ -232,7 +213,7 @@
               </div>
               <div class="col-12 px-0">
                 <input
-                  [(ngModel)]="TotalTaxAmount"
+                  [(ngModel)]="totalTaxAmount"
                   [ngModelOptions]="{ standalone: true }"
                   type="number"
                   disabled
@@ -259,7 +240,7 @@
               <div class="col-12 px-0">
                 <input
                   readonly
-                  [(ngModel)]="NetValAfterTax"
+                  [(ngModel)]="netValAfterTax"
                   [ngModelOptions]="{ standalone: true }"
                   type="number"
                   disabled
@@ -308,10 +289,10 @@
                   [dropdown]="true"
                   [ngClass]="{ 'is-invalid': selected && !selectedItem }"
                 >
-                  <ng-template let-CostElements pTemplate="item">
+                  <ng-template let-costElements pTemplate="item">
                     <div class="ui-helper-clearfix">
                       <div>
-                        {{ CostElements.name }}
+                        {{ costElements.name }}
                       </div>
                     </div>
                   </ng-template>
@@ -336,7 +317,7 @@
               </div>
               <div class="col-12 px-0">
                 <input
-                  [(ngModel)]="Amount"
+                  [(ngModel)]="amount"
                   [ngModelOptions]="{ standalone: true }"
                   type="number"
                   min="0"
@@ -346,12 +327,12 @@
                   }}"
                   [ngClass]="{
                     'is-invalid':
-                      selected && (Amount <= 0 || Amount === undefined)
+                      selected && (amount <= 0 || amount === undefined)
                   }"
                 />
                 <div
                   class="invalid-feedback"
-                  *ngIf="(Amount <= 0 || Amount === undefined) && selected"
+                  *ngIf="(amount <= 0 || amount === undefined) && selected"
                 >
                   {{ "App.Fields.GreaterThanZero" | translate }}
                 </div>
@@ -426,27 +407,27 @@
                       <ng-template #render_data_field>
                         <ng-container
                           *ngIf="
-                            col.field === 'Amount';
+                            col.field === 'amount';
                             then editable_col;
                             else fixed_col
                           "
                         ></ng-container>
                         <ng-template #fixed_col>
-                          <ng-container *ngIf="col.field === 'NonDeductible'">
+                          <ng-container *ngIf="col.field === 'nonDeductible'">
                             <input
                               type="checkbox"
                               [(ngModel)]="rowData[col.field]"
                               [ngModelOptions]="{ standalone: true }"
                             />
                           </ng-container>
-                          <ng-container *ngIf="col.field !== 'NonDeductible'">
+                          <ng-container *ngIf="col.field !== 'nonDeductible'">
                             {{ rowData[col.field] }}
                           </ng-container>
                         </ng-template>
                         <ng-template #editable_col>
                           <p-cellEditor
                             pEditableColumn
-                            [pEditableColumn]="rowData['Id']"
+                            [pEditableColumn]="rowData['id']"
                           >
                             <ng-template pTemplate="input">
                               <input
@@ -454,7 +435,7 @@
                                 pInputText
                                 (blur)="
                                   calculateDebitNoteWithCostElements(
-                                    rowData['Id']
+                                    rowData['id']
                                   )
                                 "
                                 [ngModelOptions]="{ standalone: true }"
@@ -502,7 +483,7 @@
             <div
               class="p-2"
               style="color: #f4516c"
-              *ngIf="NetVal == 0 && submitted && costElements.length > 0"
+              *ngIf="netVal == 0 && submitted && costElements.length > 0"
             >
               {{ "Sales.Fields.DebitNoteValueGreaterThanZero" | translate }}
             </div>
@@ -517,7 +498,7 @@
               </div>
               <div class="col-12 px-0">
                 <textarea
-                  formControlName="ArabicRemarks"
+                  formControlName="arabicRemarks"
                   class="form-control"
                   id="remark"
                 ></textarea>
@@ -542,24 +523,9 @@
             </button>
           </div>
         </div>
-
-       
       </form>
 
       <!--end::Form-->
     </div>
   </div>
 </div>
-
-<!-- <div class="modal-dialog modal-lg" role="document">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h6 class="modal-title" id="exampleModalLabel">إنشاء إشعار إضافة جديد</h6>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-
-
-  </div>
-</div> -->

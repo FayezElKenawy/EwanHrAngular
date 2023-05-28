@@ -143,14 +143,12 @@ export class EditPaymentReceiptComponent implements OnInit {
   }
 
   searchCustomers(event: any) {
-    setTimeout(() => {
       this._customerService
         .getCustomersBySectorId(this._globalService.getSectorType(), event.query)
         .subscribe((result) => {
           this.filteredArray = [];
           this.filteredArray = result;
         });
-    }, 1500);
   }
 
 
@@ -158,7 +156,7 @@ export class EditPaymentReceiptComponent implements OnInit {
   getEditFormData(id: string) {
     this.progressSpinner = true;
     this._paymentReceiptService
-      .getEdit(id)
+      .details(id)
       .subscribe((result) => {
         debugger
         this.viewModel = result;

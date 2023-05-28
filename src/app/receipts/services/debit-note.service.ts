@@ -12,16 +12,14 @@ import { PagedList } from "@shared/interfaces/paged-list";
   providedIn: "root",
 })
 export class DebitNoteService {
-  serviceUrl = `${environment.financeSectorAPIURL}/v1/DebitNote`;
-  ContractUrl = `${environment.financeSectorAPIURL}/Sales/Contract`;
-  customerUrl = `${environment.financeSectorAPIURL}/MasterData/Customer`;
 
+  serviceUrl = `${environment.financeSectorAPIURL}/v1/DebitNote`;
   constructor(
     private _http: HttpClient,
     private _globalService: GlobalService
   ) { }
 
-  getAll(searchModel: SearchModel): Observable<PagedList> {
+  GetPagedList(searchModel: SearchModel): Observable<PagedList> {
     return this._http.post<PagedList>(`${this.serviceUrl}/GetPagedList`, searchModel)
   }
 
