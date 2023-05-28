@@ -346,6 +346,21 @@
                   </p-table>
                 </div>
               </div>
+
+                <!-- ArabicRemarks -->
+                <div class="tableBody col-12 py-2" *ngIf="viewModel?.arabicRemarks.length>0">
+                  <div class="row mx-0 details-card">
+                    <!-- رقم العقد -->
+                    <div class="details-label">
+                      <span>{{
+                        "App.Fields.Notes" | translate
+                      }}</span>
+                    </div>
+                    <div class="details-value">
+                      <span>{{ viewModel?.arabicRemarks }}</span>
+                    </div>
+                  </div>
+                </div>
             </div>
           </div>
         </div>

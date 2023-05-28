@@ -173,7 +173,7 @@ export class EditPaymentReceiptComponent implements OnInit {
           Contract: { entityCode: paymentReceipt.entityCode },
           SalesRepresentative:
             paymentReceipt.salesRepresentativeName,
-          ArabicRemarks: paymentReceipt.ArabicRemarks,
+          ArabicRemarks: paymentReceipt.arabicRemarks,
           CreditCardType: paymentReceipt.creditCardType,
           IsBankDeposit: paymentReceipt.isBankDeposit,
           BankDepositAmount: paymentReceipt.isBankDeposit
@@ -189,7 +189,7 @@ export class EditPaymentReceiptComponent implements OnInit {
           OnlinePaidCreditCard: paymentReceipt.CreditCardType
             ? paymentReceipt.CreditCardType.ArabicName
             : "",
-          PaymentOnlineRef: paymentReceipt.paymentOnlineRef,
+          PaymentOnlineRef: paymentReceipt.paymentOnlineRef
         });
 
         this.isDownPayment = paymentReceipt.isDownPayment;
