@@ -8,7 +8,7 @@ import { DebitNoteService } from "src/app/receipts/services/debit-note.service";
 import { CustomerService } from "@shared/services/customer.service";
 import { CostCenterService } from "@shared/services/cost-center.service";
 import { SalesPeriodService } from "src/app/master-data/services/sales-period.service";
-import { CostElementService } from "src/app/receipts/services/cose-element.service";
+import { CostElementService } from "src/app/receipts/services/cost-element.service";
 
 declare let $: any;
 

@@ -16,10 +16,9 @@ export class DebitNoteService {
   serviceUrl = `${environment.financeSectorAPIURL}/v1/DebitNote`;
   constructor(
     private _http: HttpClient,
-    private _globalService: GlobalService
   ) { }
 
-  GetPagedList(searchModel: SearchModel): Observable<PagedList> {
+  getPagedList(searchModel: SearchModel): Observable<PagedList> {
     return this._http.post<PagedList>(`${this.serviceUrl}/GetPagedList`, searchModel)
   }
 

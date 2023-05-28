@@ -24,7 +24,6 @@ export class EditPaymentReceiptComponent implements OnInit {
   viewModel: any;
   filteredArray: any[];
   submitted: Boolean;
-  progressSpinner: boolean;
   toYear = new Date().getFullYear() + 5;
   Contracts: any;
   totalVal: number;
@@ -51,9 +50,7 @@ export class EditPaymentReceiptComponent implements OnInit {
     private _router: Router,
     private _route: ActivatedRoute,
     private _paymentReceiptService: PaymentReceiptService,
-    private _authService: AuthService,
     private _customerService: CustomerService,
-    private _costCenterService: CostCenterService,
     private _cashBox: CashboxService,
     private _creditCardTypeService: CreditCardTypeService,
     private _bankAccount: BankAccountService,
@@ -154,7 +151,6 @@ export class EditPaymentReceiptComponent implements OnInit {
 
 
   getEditFormData(id: string) {
-    this.progressSpinner = true;
     this._paymentReceiptService
       .details(id)
       .subscribe((result) => {
@@ -208,7 +204,6 @@ export class EditPaymentReceiptComponent implements OnInit {
           .getVouchers(paymentReceipt.entityCode)
           .subscribe((res) => {
             this.vouchers = res;
-            this.progressSpinner = false;
             //////////// me
             this.onSelectVoucherType();
             ////////////////////
@@ -241,7 +236,7 @@ export class EditPaymentReceiptComponent implements OnInit {
   }
 
 
-  EditPaymentReciept() {
+  editPaymentReciept() {
     this.submitted = true;
     if (this.disabled) {
       this._globalService.messageAlert(
@@ -273,7 +268,6 @@ export class EditPaymentReceiptComponent implements OnInit {
         );
         return;
       }
-      this.progressSpinner = true;
       const postedViewModel = Object.assign({}, this.form.getRawValue());
 
       if (postedViewModel.BankDepositAmount == null) {
@@ -312,12 +306,7 @@ export class EditPaymentReceiptComponent implements OnInit {
             );
             this._router.navigate(["/finance/receipts/payment-receipts"]);
           }
-        },
-        null,
-        () => {
-          this.progressSpinner = false;
-        }
-      );
+        })
     }
   }
 

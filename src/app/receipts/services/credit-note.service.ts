@@ -23,7 +23,7 @@ export class CreditNoteService {
     private _globalService: GlobalService
   ) {}
 
-  getAll(searchModel: SearchModel): Observable<PagedList> {
+  getPagedList(searchModel: SearchModel): Observable<PagedList> {
 
     return this._http.post<PagedList>(`${this.serviceUrl}/v1/CreditNote/GetPagedList`, searchModel)
   }

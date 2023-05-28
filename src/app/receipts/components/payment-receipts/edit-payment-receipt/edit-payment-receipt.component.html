@@ -18,7 +18,7 @@
 
     <div class="m-portlet__body">
       <!--begin::Form-->
-      <form class="m-form m-form--fit m-form--label-align-right" [formGroup]="form" (ngSubmit)="EditPaymentReciept()">
+      <form class="m-form m-form--fit m-form--label-align-right" [formGroup]="form" (ngSubmit)="editPaymentReciept()">
 
         <!--Start Inputs-->
         <div class="row mx-0 px-0 tableBody py-2">
@@ -291,22 +291,7 @@
                     </div>
                   </div>
                 </div>
-                <!-- ----------------------------------------------------- -->
-                <!--CheckBox IsPaidOnline-->
-                <!-- <div class="col-lg-12 col-12">
-                <div class="form-group m-form__group row mx-0 px-0 pt-0">
-                  <div class="col-12 px-0">
-                    <div class="m-checkbox-inline">
-                      <label class="m-checkbox m-checkbox--bold m-checkbox--state-brand">
-                        <input formControlName="IsPaidOnline"
-                          type="checkbox" />{{'Receipts.Fields.IsPaidOnline' | translate}}
-                        <span></span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-                <!--BankAccount 6-->
+
 
                 <div class="col-md-4 col-12 p-0">
                   <div class="form-group m-form__group row mx-0 px-0 pt-0">
@@ -570,7 +555,6 @@
     </div>
   </div>
 </div>
-<app-shared-progress-spinner *ngIf="progressSpinner"></app-shared-progress-spinner>
 
 
 <!--begin::Modal for vouchers-->
