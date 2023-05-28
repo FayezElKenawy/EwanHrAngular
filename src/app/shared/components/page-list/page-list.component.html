@@ -1,11 +1,11 @@
-      <div class="m-portlet m-portlet--mobile" >
+      <div class="m-portlet m-portlet--mobile" *authorization="{actionName:pageListConfig?.pageAuthorization,pageLevel:true}" >
     <!-- BEGIN: Subheader -->
     <div class="m-portlet__head m-subheader d-flex align-items-center">
       <div class="mr-auto">
         <h3 class="m-subheader__title p-0">{{ pageListConfig?.pageTitle | translate}}</h3>
       </div>
       <div>
-        <button 
+        <button *authorization="pageListConfig?.createAuthorization"
           [routerLink]="pageListConfig?.createLink" type="button" class="btn btn-brand btn-cons">
           {{ pageListConfig.createButtonTitle | translate}}
         </button>
@@ -103,7 +103,7 @@
                                 title="{{ action?.title | translate}}" (click)="action?.callBack(dataItem)">
                                 {{action?.title | translate}}
                              </a>
-                             <a class="dropdown-item"
+                             <a class="dropdown-item" data-toggle="modal" data-target="#reportModal"
                              title="{{ action?.title | translate}}" (click)="action?.callBack(dataItem)">
                              {{action?.title | translate}}
                           </a>
