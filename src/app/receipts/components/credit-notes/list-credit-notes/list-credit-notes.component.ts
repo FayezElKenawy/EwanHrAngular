@@ -56,14 +56,14 @@ export class ListCreditNotesComponent implements OnInit {
       ],
       actions: [
         {
-          authorization: '',
+          authorization: 'Finance-CreditNote-Print',
           title: 'App.Buttons.Print',
           callBack: (dataItem) => {
             this.showReport(dataItem.code);
           },
         },
         {
-          authorization: '',
+          authorization: 'Finance-CreditNote-Details',
           title: 'App.Buttons.Details',
           callBack: (dataItem) => {
             this._router.navigate([
@@ -100,19 +100,6 @@ export class ListCreditNotesComponent implements OnInit {
           field: 'entityCode',
           header: 'Receipts.Fields.ContractId',
         },
-        // {
-        //   field: "CreatedBy",
-        //   header: "Sales.Fields.CreatedBy",
-        //   hidden: false,
-        //   searchable: true,
-        //   searchType: "text"
-        // },
-        // {
-        //   field: "branchName",
-        //   header: "App.Fields.Branch",
-        //   customSearchField:"Bank.Name",
-        //   isLocalized:true,
-        // },
         {
           field: "netValueAfterTax",
           header: "Receipts.Fields.CreditNoteValue",

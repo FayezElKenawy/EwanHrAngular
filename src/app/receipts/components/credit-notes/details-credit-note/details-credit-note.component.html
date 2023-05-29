@@ -90,14 +90,14 @@
               <!---------------------------- بيانات العقد --------------------->
               <div class="col-12 tableHeader">
                 <label class="form-control-label py-3"
-                  >{{ "Receipts.Fields.CostCenter" | translate }}"</label
+                  >{{ "Receipts.Fields.CostCenter" | translate }}</label
                 >
               </div>
               <div class="tableBody col-12 py-2">
                 <div class="row mx-0 details-card">
                   <!-- رقم العقد -->
                   <div class="details-label">
-                    <span>{{ "Receipts.Fields.CostCenter" | translate }}"</span>
+                    <span>{{ "Receipts.Fields.CostCenter" | translate }}</span>
                   </div>
                   <div class="details-value">
                     <span>{{ viewModel?.entityCode }}</span>
@@ -115,11 +115,11 @@
                 <div class="row mx-0 mb-1 box-shadow custom-details-card">
                   <p-table
                     [columns]="costElementCols"
-                    [value]="costElements"
+                    [value]="viewModel?.costElements"
                     [paginator]="true"
                     [rows]="5"
                     dataKey="Id"
-                    [totalRecords]="costElements.length"
+                    [totalRecords]="viewModel?.costElements.length"
                     [autoLayout]="true"
                     [responsive]="true"
                     class="full-width"
@@ -204,7 +204,7 @@
                       </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>
-                      <tr *ngIf="costElements.length === 0">
+                      <tr *ngIf="viewModel?.costElements.length === 0">
                         <td
                           [attr.colspan]="columns?.length"
                           class="empty-grid-table"
@@ -249,11 +249,11 @@
                 <div class="row mx-0 mb-1 box-shadow custom-details-card">
                   <p-table
                     [columns]="settlementCols"
-                    [value]="settlements"
+                    [value]="viewModel?.paymentsTransactions"
                     [paginator]="true"
                     [rows]="5"
                     dataKey="DebitReceivableId"
-                    [totalRecords]="settlementCols?.length"
+                    [totalRecords]="viewModel?.paymentsTransactions.length"
                     [autoLayout]="true"
                     [responsive]="true"
                     class="full-width"
@@ -332,7 +332,7 @@
                       </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>
-                      <tr *ngIf="settlements.length === 0">
+                      <tr *ngIf="viewModel?.paymentsTransactions.length === 0">
                         <td
                           [attr.colspan]="columns?.length"
                           class="empty-grid-table"

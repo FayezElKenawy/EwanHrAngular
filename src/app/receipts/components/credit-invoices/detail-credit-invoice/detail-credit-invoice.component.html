@@ -27,14 +27,14 @@
               <span>{{ 'Receipts.Fields.InvoiceId' | translate}}</span>
             </div>
             <div class="details-value">
-              <span>{{ viewModel?.Id }}</span>
+              <span>{{ viewModel?.id }}</span>
             </div>
 
             <div class="details-label">
               <span>{{ 'Receipts.Fields.SegmentsInvoiceId' | translate}}</span>
             </div>
             <div class="details-value">
-              <span>{{ viewModel?.DebitReceivableId }}</span>
+              <span>{{ viewModel?.code }}</span>
             </div>
 
             <!-- تاريخ الفاتورة -->
@@ -42,7 +42,7 @@
               <span>{{ 'Receipts.Fields.InvoiceDate' | translate}}</span>
             </div>
             <div dir="ltr" class="details-value">
-              <span>{{ viewModel?.DocumentDate | date:'yyyy-MM-dd HH:mm:ss' }}</span>
+              <span>{{ viewModel?.documentDate | date:'yyyy-MM-dd HH:mm:ss' }}</span>
             </div>
 
             <!-- عدد ايام الفاتورة -->
@@ -50,14 +50,14 @@
               <span>{{ 'Receipts.Fields.InvoiceDays' | translate}}</span>
             </div>
             <div class="details-value">
-              <span>{{ viewModel?.NoDays }}</span>
+              <span>{{ viewModel?.noDays }}</span>
             </div>
             <!-- الرقم المرجعي -->
             <div class="details-label">
               <span>{{ 'Receipts.Fields.InvoiceRefNumber' | translate}}</span>
             </div>
             <div class="details-value">
-              <span>{{ viewModel?.RefNumber }}</span>
+              <span>{{ viewModel?.refNumber }}</span>
             </div>
 
           </div>
@@ -76,7 +76,7 @@
               <span>{{ 'Receipts.Fields.CustomerId' | translate}}</span>
             </div>
             <div class="details-value">
-              <span>{{ viewModel?.SegmentsCustomerId }}</span>
+              <span>{{ viewModel?.customerCode }}</span>
             </div>
 
             <!-- اسم العميل -->
@@ -84,7 +84,7 @@
               <span>{{ 'Receipts.Fields.CustomerName' | translate}}</span>
             </div>
             <div class="details-value">
-              <span>{{ viewModel?.CustomerName }}</span>
+              <span>{{ viewModel?.customerFullName }}</span>
             </div>
 
           </div>
@@ -92,40 +92,24 @@
 
         <!---------------------------- بيانات العقد --------------------->
         <div class="col-12 tableHeader">
-          <label class="form-control-label py-3">{{ 'Receipts.Titles.CreditInvoicesContractData' | translate}} </label>
+          <label class="form-control-label py-3">{{ 'Receipts.Fields.CostCenter' | translate}} </label>
         </div>
         <div class="tableBody col-12 py-2">
           <div class="row mx-0 details-card">
             <!-- رقم العقد -->
-            <div class="details-label">
-              <span>{{ 'Receipts.Fields.ContractId' | translate}}</span>
-            </div>
-            <div class="details-value">
-              <span>{{ viewModel?.ContractId }}</span>
-            </div>
 
             <div class="details-label">
-              <span>{{ 'Sales.Fields.SegmentsContractId' | translate}}</span>
+              <span>{{ 'Receipts.Fields.CostCenter' | translate}}</span>
             </div>
             <div class="details-value">
-              <span>{{ viewModel?.SegmentContractId }}</span>
+              <span>{{ viewModel?.entityCode }}</span>
             </div>
 
             <!-- المنطقة -->
-            <div class="details-label">
-              <span>{{ 'App.Fields.Area' | translate}}</span>
-            </div>
-            <div class="details-value">
-              <span>{{ viewModel?.ContractAreaName }}</span>
-            </div>
+
 
             <!-- الفرع -->
-            <div class="details-label">
-              <span>{{ 'App.Fields.Branch' | translate}}</span>
-            </div>
-            <div class="details-value">
-              <span>{{ viewModel?.ContractBranchName }}</span>
-            </div>
+
           </div>
         </div>
 
@@ -135,8 +119,8 @@
         </div>
         <div class="tableBody col-12 py-2">
           <div class="row mx-0 mb-1 box-shadow custom-details-card">
-            <p-table [columns]="Cols" [value]="viewModel?.DebitReceivableElement" [paginator]="true" [rows]="5"
-              [totalRecords]="viewModel?.DebitReceivableElement?.length" [autoLayout]="true" [responsive]="true"
+            <p-table [columns]="cols" [value]="viewModel?.debitReceivableElements" [paginator]="true" [rows]="5"
+              [totalRecords]="viewModel?.debitReceivableElements?.length" [autoLayout]="true" [responsive]="true"
               class="full-width  ">
               <ng-template pTemplate="header" let-columns>
                 <tr>
@@ -183,7 +167,7 @@
               <span>{{ 'Receipts.Fields.AllItems' | translate}}</span>
             </div>
             <div class="details-value">
-              <span>{{ viewModel?.NetValue | currency:' ' }}</span>
+              <span>{{ viewModel?.netValue | currency:' ' }}</span>
             </div>
 
             <!-- قيمة الخصم -->
@@ -191,7 +175,7 @@
               <span>{{ 'Receipts.Fields.DiscountValue' | translate}}</span>
             </div>
             <div class="details-value">
-              <span>{{ viewModel?.DiscountAmount | currency:' ' }}</span>
+              <span>{{ viewModel?.discountAmount | currency:' ' }}</span>
             </div>
 
             <!-- قيمة الخصم -->
@@ -199,7 +183,7 @@
               <span>{{ 'Receipts.Fields.InvoiceAfterDiscount' | translate}}</span>
             </div>
             <div class="details-value">
-              <span>{{ viewModel?.NetValueAfterDiscount | currency:' ' }}</span>
+              <span>{{ viewModel?.netValueAfterDiscount | currency:' ' }}</span>
             </div>
 
             <!-- قيمة الضرائب -->
@@ -207,7 +191,7 @@
               <span>{{ 'Receipts.Fields.TaxesValue' | translate}}</span>
             </div>
             <div class="details-value">
-              <span>{{ viewModel?.TaxAmount | currency:' ' }}</span>
+              <span>{{ viewModel?.taxAmount | currency:' ' }}</span>
             </div>
 
             <!-- قيمة الفاتورة بعد الضريبة -->
@@ -215,7 +199,7 @@
               <span>{{ 'Receipts.Fields.InvoiceAfterTax' | translate}}</span>
             </div>
             <div class="details-value">
-              <span>{{ viewModel?.NetValueAfterTax | currency:' ' }}</span>
+              <span>{{ viewModel?.netValueAfterTax | currency:' ' }}</span>
             </div>
 
             <!-- قيمة المسدد -->
@@ -223,7 +207,7 @@
               <span>{{ 'Receipts.Fields.InvoiceGetPaid' | translate}}</span>
             </div>
             <div class="details-value">
-              <span>{{ viewModel?.TotalPaid | currency:' ' }}</span>
+              <span>{{ viewModel?.totalPaid | currency:' ' }}</span>
             </div>
           </div>
 

@@ -8,6 +8,7 @@ import { catchError } from "rxjs/operators";
 import { SearchField, SearchModel } from "@shared/interfaces/search-model";
 import { PagedList } from "@shared/interfaces/paged-list";
 import { Operators } from "@shared/models/Operators";
+import { GetCreditNoteModel } from "../models/creditNote/get-credit-note.model";
 
 @Injectable({
   providedIn: "root",
@@ -23,13 +24,13 @@ export class CreditNoteService {
     private _globalService: GlobalService
   ) {}
 
-  getAll(searchModel: SearchModel): Observable<PagedList> {
+  getPagedList(searchModel: SearchModel): Observable<PagedList> {
 
     return this._http.post<PagedList>(`${this.serviceUrl}/v1/CreditNote/GetPagedList`, searchModel)
   }
 
-  getById(id: any): Observable<PagedList> {
-    return this._http.get<PagedList>(`${this.serviceUrl}/v1/CreditNote/Details/${id}`)
+  getById(id: any): Observable<GetCreditNoteModel> {
+    return this._http.get<GetCreditNoteModel>(`${this.serviceUrl}/v1/CreditNote/Details/${id}`)
   }
 
   create(postedVM: any): Observable<any> {

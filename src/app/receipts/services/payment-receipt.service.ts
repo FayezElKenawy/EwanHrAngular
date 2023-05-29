@@ -37,7 +37,7 @@ export class PaymentReceiptService {
     return this._http.get(`${this.serviceVoucherUrl}/GetVouchersById?entityCode=${entityCode}`);
   }
 
-  getEdit(paymentId: string): Observable<any>  {
+  details(paymentId: string): Observable<any>  {
     return this._http.get(`${this.serviceUrl}/Details/${paymentId}`)
   }
 

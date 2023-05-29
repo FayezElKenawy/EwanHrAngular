@@ -4,12 +4,16 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { GlobalService, MessageType } from "@shared/services/global.service";
 import { DatePipe } from "@angular/common";
 import { Router } from "@angular/router";
-import { IServiceResult } from "@shared/interfaces/results";
 import { CustomerService } from "@shared/services/customer.service";
-import { ContractService } from "@shared/services/contract.service";
 import { SalesPeriodService } from "src/app/master-data/services/sales-period.service";
 import { CostCenterService } from "@shared/services/cost-center.service";
-import { Settlement } from "src/app/receipts/models/credit-notes/settlement.model";
+import { SettlementModel } from "src/app/receipts/models/creditNote/settlement.model";
+import { VoucherType } from "src/app/receipts/enum/voucher-type.enum";
+import { CreateCreditNoteModel } from "src/app/receipts/models/creditNote/create-creditNote.model";
+import { GetCostElementListModel } from "src/app/receipts/models/costelement/get-cost-element-list.model";
+import { CreateCostElementItemModel } from "src/app/receipts/models/costelement/create-cost-element-item.model";
+import { GetCostCenterListModel } from "src/app/receipts/models/costCenter/cost-center.model";
+import { ColumnType } from "@shared/models/column-type.model";
 
 @Component({
   selector: "app-create-credit-note",
@@ -17,35 +21,38 @@ import { Settlement } from "src/app/receipts/models/credit-notes/settlement.mode
   styleUrls: ["./create-credit-note.component.scss"],
 })
 export class CreateCreditNoteComponent implements OnInit {
-  vouchersCols: any[] = [];
-  form: FormGroup;
-  viewModel: any;
-  filteredArray: any[];
-  submitted: Boolean;
-  progressSpinner: boolean;
-  toYear = new Date().getFullYear() + 5;
-  Contracts: any;
-  vouchers: any[];
-  selectedVoucher: any;
-  settlementCols: any[];
-  settlements: any[];
-  selectedItem: any;
-  costElementCols: any[] = [];
-  costElements: any[] = [];
-  allCostElements: any[] = [];
-  DebitNoteCostElements: any[] = [];
-  NetVal: number;
-  NetValAfterTax: number;
-  TotalTaxAmount: number;
-  Amount: number;
-  selected: Boolean;
+
+  vouchersCols: ColumnType[];
+  vouchers: SettlementModel[];
+  selectedVoucher: SettlementModel;
+  filteredVouchers: SettlementModel[];
+  voucherType: string = VoucherType.CreditInvoice;
+
+  settlementCols: ColumnType[];
+  settlements: SettlementModel[];
+  currentSettlement: SettlementModel;
+
+  costElementCols: ColumnType[];
+  costElements: CreateCostElementItemModel[] = [];
+  allCostElements: CreateCostElementItemModel[] = [];
+  selectedItem: CreateCostElementItemModel;
+
+  netVal: number;
+  netValAfterTax: number;
+  totalTaxAmount: number;
+  amount: number;
+  selected: boolean;
   paidValue: number;
   added: boolean;
-  currentSettlement: any;
-  filteredVouchers: any[];
-  voucherType: any="CR";
   minDateValue: any;
-  sectorId: string;
+
+  form: FormGroup;
+  submittedObjectModel: CreateCreditNoteModel;
+  filteredArray: any[];
+  submitted: boolean;
+  toYear = new Date().getFullYear() + 5;
+
+  costCenters: GetCostCenterListModel[];
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -61,11 +68,11 @@ export class CreateCreditNoteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.sectorId = this._globalService.getSectorType();
+
     this.createForm();
     this.getCostElements();
     this.defCols();
-    this._salesPeriodService.getMinSelectedDate(this.sectorId).subscribe(
+    this._salesPeriodService.getMinSelectedDate(this._globalService.getSectorType()).subscribe(
       res => {
         this.minDateValue = new Date(res);
       }
@@ -102,16 +109,16 @@ export class CreateCreditNoteComponent implements OnInit {
         header: "Receipts.Fields.CostElementName"
       },
       {
-        field: "Amount",
+        field: "amount",
         header: "Receipts.Fields.CostElementAmount"
       },
 
       {
-        field: "TaxRatio",
+        field: "taxRatio",
         header: "Receipts.Fields.TaxRatio"
       },
       {
-        field: "TaxAmount",
+        field: "taxAmount",
         header: "Receipts.Fields.TaxAmount"
       },
       {
@@ -160,11 +167,11 @@ export class CreateCreditNoteComponent implements OnInit {
 
   createForm() {
     this.form = this._formBuilder.group({
-      DocumentDate: ["", Validators.required],
-      RefNumber: [""],
-      Customer: ["", Validators.required],
-      Contract: [{ value: "", disabled: true }, Validators.required],
-      ArabicRemarks: [""],
+      documentDate: ["", Validators.required],
+      refNumber: [""],
+      customer: ["", Validators.required],
+      costCenter: [{ value: "", disabled: true }, Validators.required],
+      arabicRemarks: [""],
     });
   }
 
@@ -185,7 +192,7 @@ export class CreateCreditNoteComponent implements OnInit {
     });
 
     if (this.form.valid && this.settlements.length > 0 && this.costElements.length > 0) {
-      if (this.NetValAfterTax != totalSetteled) {
+      if (this.netValAfterTax != totalSetteled) {
         this._globalService.messageAlert(
           MessageType.Warning,
           this._globalService.translateWordByKey(
@@ -194,7 +201,7 @@ export class CreateCreditNoteComponent implements OnInit {
         );
         return;
       }
-      if (this.NetVal <= 0) {
+      if (this.netVal <= 0) {
         this._globalService.messageAlert(
           MessageType.Warning,
           this._globalService.translateWordByKey(
@@ -204,25 +211,24 @@ export class CreateCreditNoteComponent implements OnInit {
         return;
       }
 
-      const postedViewModel = Object.assign({}, this.form.value);
-      postedViewModel.CustomerId = this.form.value.Customer.id;
+      this.submittedObjectModel = Object.assign({}, this.form.value);
+      this.submittedObjectModel.customerId = this.form.value.customer.id;
 
-      postedViewModel.DocumentDate = this._datePipe.transform(
-        postedViewModel.DocumentDate, 'yyyy-MM-ddTHH:mm:ss'
+      this.submittedObjectModel.documentDate = this._datePipe.transform(
+        this.submittedObjectModel.documentDate, 'yyyy-MM-ddTHH:mm:ss'
       );
-      postedViewModel.PaymentsTransactions = this.settlements;
-      postedViewModel.costElements = this.costElements;
-      postedViewModel.NetValue = this.NetVal;
-      postedViewModel.EntityCode = postedViewModel.Contract.entityCode;
-      postedViewModel.SectorTypeId = this.sectorId;
-      postedViewModel.TotalTaxAmount=this.TotalTaxAmount;
+      this.submittedObjectModel.paymentsTransactions = this.settlements;
+      this.submittedObjectModel.costElements = this.costElements;
+      this.submittedObjectModel.netValue = this.netVal;
+      this.submittedObjectModel.entityCode = this.form.value.costCenter.entityCode;
+      this.submittedObjectModel.sectorTypeId = this._globalService.getSectorType();
+      this.submittedObjectModel.totalTaxAmount = this.totalTaxAmount;
 
-      this._creditNoteService.create(postedViewModel).subscribe(
+      this._creditNoteService.create(this.submittedObjectModel).subscribe(
         (result) => {
           if (result) {
             this.submitted = false;
             this.form.reset();
-            // this.Oncancel.emit();
             this._globalService.messageAlert(
               MessageType.Success,
               this._globalService.translateWordByKey(
@@ -239,31 +245,29 @@ export class CreateCreditNoteComponent implements OnInit {
   }
 
   searchCustomers(event: any) {
-      this._customerService
-        .getCustomersBySectorId(this.sectorId, event.query)
-        .subscribe((result) => {
-          this.filteredArray = [];
-          this.filteredArray = result;
-        });
+    this._customerService
+      .getCustomersBySectorId(this._globalService.getSectorType(), event.query)
+      .subscribe((result) => {
+        this.filteredArray = [];
+        this.filteredArray = result;
+      });
   }
 
   onSelectCustomer(event: any) {
-    this.progressSpinner = true;
     this.settlements = [];
     this.vouchers = [];
     this.selectedVoucher = undefined;
-    this._costCenterService.getAll(event.code)
+    this._costCenterService.getCostCenterSelectList(event.code)
       .subscribe((result) => {
-        this.progressSpinner = false;
         this.filteredArray = [];
         this.filteredArray = result;
-        this.Contracts = result;
+        this.costCenters = result;
         if (result.length > 0) {
-          this.form.controls.Contract.enable();
-          this.form.controls.Contract.reset();
+          this.form.controls.costCenter.enable();
+          this.form.controls.costCenter.reset();
         } else {
-          this.form.controls.Contract.setValue("");
-          this.form.controls.Contract.disable();
+          this.form.controls.costCenter.setValue("");
+          this.form.controls.costCenter.disable();
         }
       });
 
@@ -284,7 +288,7 @@ export class CreateCreditNoteComponent implements OnInit {
   addSettlement() {
     this.added = true;
     if (this.selectedVoucher && this.paidValue > 0) {
-      const settlement: Settlement = {
+      const settlement: SettlementModel = {
         id: this.selectedVoucher.id,
         voucherCode: this.selectedVoucher.voucherCode,
         debitReceivableId: this.selectedVoucher.id,
@@ -297,7 +301,7 @@ export class CreateCreditNoteComponent implements OnInit {
       };
       if (
         this.settlements.find(
-          (e: Settlement) =>
+          (e: SettlementModel) =>
             e.id === settlement.id &&
             e.debitReceivableVoucherTypeId === settlement.debitReceivableVoucherTypeId
         ) === undefined
@@ -315,10 +319,10 @@ export class CreateCreditNoteComponent implements OnInit {
 
         let totalSetteled = 0;
         this.settlements.forEach((item) => {
-          totalSetteled += item.PaidAmount;
+          totalSetteled += item.paidAmount;
         });
 
-        if (totalSetteled + settlement.paidAmount > this.NetValAfterTax) {
+        if (totalSetteled + settlement.paidAmount > this.netValAfterTax) {
           this._globalService.messageAlert(
             MessageType.Warning,
             this._globalService.translateWordByKey(
@@ -349,7 +353,7 @@ export class CreateCreditNoteComponent implements OnInit {
     const itemIndex = this.settlements.findIndex(
       (s) =>
         s.id === settlement.id &&
-        s.debitReceivableTypeId === settlement.debitReceivableTypeId
+        s.debitReceivableVoucherTypeId === settlement.debitReceivableTypeId
     );
     if (settlement.paidAmount > settlement.canBePay) {
       this.settlements[itemIndex] = this.currentSettlement;
@@ -377,7 +381,7 @@ export class CreateCreditNoteComponent implements OnInit {
         totalSetteled += item.paidAmount;
       }
     });
-    if (totalSetteled + settlement.paidAmount != this.NetValAfterTax) {
+    if (totalSetteled + settlement.paidAmount != this.netValAfterTax) {
       this.settlements[itemIndex] = this.currentSettlement;
 
       this._globalService.messageAlert(
@@ -391,21 +395,22 @@ export class CreateCreditNoteComponent implements OnInit {
   }
 
   addCostElement() {
-
     this.selected = true;
-    if (this.Amount > 0 && this.selectedItem) {
+    if (this.amount > 0 && this.selectedItem) {
       if (
         this.costElements.find((e) => e.id === this.selectedItem.id) ===
         undefined
       ) {
-        const costElement = Object.assign({}, this.selectedItem);
-        costElement.TaxRatio = this.selectedItem.tax.taxRatio;
-        costElement.Amount = ((this.Amount * 100) / (100 + costElement.TaxRatio)).toFixed(4);
-        costElement.TaxAmount = (this.Amount - costElement.Amount).toFixed(4);
+
+        const costElement:CreateCostElementItemModel = Object.assign({}, this.selectedItem);
+        costElement.taxRatio = this.selectedItem.taxRatio;
+        costElement.amount =Number(((this.amount * 100) / (100 + costElement.taxRatio)).toFixed(4));
+        costElement.taxAmount =Number((this.amount - costElement.amount).toFixed(4));
 
         this.costElements.push(costElement);
         this.selected = false;
         this.calculateCreditNote();
+
       } else {
         this._globalService.messageAlert(
           MessageType.Error,
@@ -422,14 +427,13 @@ export class CreateCreditNoteComponent implements OnInit {
   }
 
   calculateCreditNote() {
-
-    this.NetVal = Number(
-      Number(this.costElements.reduce((sum, current) => sum + Number(current.Amount), 0)).toFixed(4)
+    this.netVal = Number(
+      Number(this.costElements.reduce((sum, current) => sum + Number(current.amount), 0)).toFixed(4)
     );
-    this.TotalTaxAmount = Number(
-      Number(this.costElements.reduce((sum, current) => sum + Number(current.TaxAmount), 0)).toFixed(4)
+    this.totalTaxAmount = Number(
+      Number(this.costElements.reduce((sum, current) => sum + Number(current.taxAmount), 0)).toFixed(4)
     );
-    this.NetValAfterTax = Number((this.NetVal + this.TotalTaxAmount).toFixed(4));
+    this.netValAfterTax = Number((this.netVal + this.totalTaxAmount).toFixed(4));
   }
 
   Clear() {
@@ -446,10 +450,10 @@ export class CreateCreditNoteComponent implements OnInit {
   }
 
   calculateCreditNoteWithCostElements(id) {
-    this.costElements.find((i) => i.Id === id).TaxAmount =
-      ((Number(this.costElements.find((i) => i.Id === id).TaxRatio) *
-        Number(this.costElements.find((i) => i.Id === id).Amount)) /
-        100).toFixed(4);
+    this.costElements.find((elem) => elem.id === id).taxAmount = Number(
+      ((Number(this.costElements.find((i) => i.id === id).taxRatio) *
+        Number(this.costElements.find((i) => i.id === id).amount)) /
+        100).toFixed(4));
     this.calculateCreditNote();
   }
 
@@ -472,7 +476,6 @@ export class CreateCreditNoteComponent implements OnInit {
       for (let i = 0; i < arrayObject.length; i++) {
         const item = arrayObject[i];
         var itemFullName = item[ColName];
-
         itemFullName = itemFullName.replace(/\s/g, "").toLowerCase();
         var queryString = event.query.replace(/\s/g, "").toLowerCase();
         if (itemFullName.indexOf(queryString) >= 0) {
@@ -482,21 +485,14 @@ export class CreateCreditNoteComponent implements OnInit {
     }
   }
 
-  removeSettlement(settlement: any) {
+  removeSettlement(settlement: SettlementModel) {
     const voucher = this.vouchers.find(
       (v) =>
-        v.VoucherId === settlement.DebitReceivableId &&
-        v.VoucherTypeId === settlement.DebitReceivableTypeId
+        v.id === settlement.debitReceivableId &&
+        v.debitReceivableVoucherTypeId === settlement.debitReceivableVoucherTypeId
     );
     if (voucher === null || voucher === undefined) {
-      const deletedVoucher = {
-        VoucherId: settlement.DebitReceivableId,
-        VoucherTypeId: settlement.DebitReceivableTypeId,
-        CurrentBalance: settlement.PaidAmount,
-        NetValueAfterTax: settlement.NetValueAfterTax,
-        VoucherTypeArabicName: settlement.VoucherTypeArabicName,
-      };
-      this.vouchers.push(deletedVoucher);
+      this.vouchers.push(settlement);
     }
     this.settlements.splice(this.settlements.indexOf(settlement, 0), 1);
     this.onSelectVoucherType();

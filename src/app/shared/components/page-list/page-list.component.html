@@ -1,132 +1,253 @@
-      <div class="m-portlet m-portlet--mobile" *authorization="{actionName:pageListConfig?.pageAuthorization,pageLevel:true}" >
-    <!-- BEGIN: Subheader -->
-    <div class="m-portlet__head m-subheader d-flex align-items-center">
-      <div class="mr-auto">
-        <h3 class="m-subheader__title p-0">{{ pageListConfig?.pageTitle | translate}}</h3>
-      </div>
-      <div>
-        <button *authorization="pageListConfig?.createAuthorization"
-          [routerLink]="pageListConfig?.createLink" type="button" class="btn btn-brand btn-cons">
-          {{ pageListConfig.createButtonTitle | translate}}
-        </button>
-      </div>
+<div
+  class="m-portlet m-portlet--mobile"
+  *authorization="{
+    actionName: pageListConfig?.pageAuthorization,
+    pageLevel: true
+  }"
+>
+  <!-- BEGIN: Subheader -->
+  <div class="m-portlet__head m-subheader d-flex align-items-center">
+    <div class="mr-auto">
+      <h3 class="m-subheader__title p-0">
+        {{ pageListConfig?.pageTitle | translate }}
+      </h3>
     </div>
-    <!-- END: Subheader -->
-    <form [formGroup]="searchForm" (ngSubmit)="_dynamicSearchService.search(searchForm,searchModel, getPagedList.bind(this))">
-      <div class="m-portlet__body">
-        <!--<div class="m-separator m-separator&#45;&#45;md m-separator&#45;&#45;dashed my-4"></div>-->
-        <div class="row mx-0 box-shadow">
-          <div class="m_datatable w-100 list ">
-            <p-table #dt [value]="dataItems" [scrollable]="true" frozenWidth="6.5%" class="w-100" [paginator]="true"
-              [totalRecords]="pagingMetaData?.totalCount" [first]="pagingMetaData?.pageNumber"
-              [rows]="pagingMetaData?.pageSize" [autoLayout]="true" [responsive]="true"
-              [columns]="pageListConfig?.cols" [(contextMenuSelection)]="selectedItem" [lazy]="true"
-              (onLazyLoad)="_dynamicSearchService.lazy($event, searchModel, getPagedList.bind(this))"
-              [rowsPerPageOptions]="[10, 20, 30]">
-
-              <ng-template pTemplate="header" let-columns>
-                <tr>
-                  <th *ngFor="let col of pageListConfig?.cols" [pSortableColumn]="col.field" [hidden]="col.hidden">
-                    {{ col.header | translate }}
-                    <p-sortIcon [field]="col.field" *ngIf="col.field !== 'ActionButtons'"></p-sortIcon>
-                  </th>
-                  <th pFrozenColumn>{{'App.Fields.Actions' | translate}}</th>
-                </tr>
-                <!-- search caractria -->
-                <tr id="searchRow" formArrayName="searchFields">
-                  <th *ngFor="let col of pageListConfig?.cols let i = index" [ngSwitch]="col.field" [hidden]="col.hidden">
-                    <div [formGroupName]="i" *ngIf="col.searchable != false && col.hidden != true" class="grid-search">
-                      <ng-container *ngIf="!col.searchType || col.searchType == 'text'">
-                        <input formControlName="fieldName" type="text" class="form-control" [value]="col.field" hidden>
-                        <input formControlName="value" type="text" class="form-control">
-                        <select formControlName="operator" class="form-control">
-                          <option *ngFor="let item of operators" [value]="item">
-                            {{'App.SearchOperations.' + item | translate}}
-                          </option>
-                        </select>
-                      </ng-container>
-                      <ng-container *ngIf="col.searchType == 'date'">
-                        <input formControlName="fieldName" type="text" class="form-control" [value]="col.field" hidden>
-                        <input formControlName="value" type="date" class="form-control">
-                        <select formControlName="operator" class="form-control">
-                          <option *ngFor="let item of operators" [value]="item">
-                            {{'App.SearchOperations.' + item | translate}}
-                          </option>
-                        </select>
-                      </ng-container>
-                    </div>
-                  </th>
-                  <th pFrozenColumn>
-                    <div class="grid-buttons ">
-                      <button type="submit" class="btn btn-brand" title="search in gride">
-                        <i class="la la-search"></i>
-                      </button>
-                      <button title="reset" (click)="_dynamicSearchService.reset(searchForm, pageListConfig?.cols, getPagedList.bind(this))"
-                        class="btn btn-secondary">
-                        <i class="fa fa-times"></i>
-                      </button>
-                    </div>
-                  </th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-dataItem let-columns="columns">
-                <tr [pSelectableRow]="dataItem" [pContextMenuRow]="dataItem">
-                  <td *ngFor="let col of columns" [hidden]="col.hidden">
-                    <!--begin::Handle ActionButtons & Data Fields-->
-                    <ng-container *ngIf="
+    <div>
+      <button
+        *authorization="pageListConfig?.createAuthorization"
+        [routerLink]="pageListConfig?.createLink"
+        type="button"
+        class="btn btn-brand btn-cons"
+      >
+        {{ pageListConfig.createButtonTitle | translate }}
+      </button>
+    </div>
+  </div>
+  <!-- END: Subheader -->
+  <form
+    [formGroup]="searchForm"
+    (ngSubmit)="
+      _dynamicSearchService.search(
+        searchForm,
+        searchModel,
+        getPagedList.bind(this)
+      )
+    "
+  >
+    <div class="m-portlet__body">
+      <!--<div class="m-separator m-separator&#45;&#45;md m-separator&#45;&#45;dashed my-4"></div>-->
+      <div class="row mx-0 box-shadow">
+        <div class="m_datatable w-100 list">
+          <p-table
+            #dt
+            [value]="dataItems"
+            [scrollable]="true"
+            frozenWidth="6.5%"
+            class="w-100"
+            [paginator]="true"
+            [totalRecords]="pagingMetaData?.totalCount"
+            [first]="pagingMetaData?.pageNumber"
+            [rows]="pagingMetaData?.pageSize"
+            [autoLayout]="true"
+            [responsive]="true"
+            [columns]="pageListConfig?.cols"
+            [(contextMenuSelection)]="selectedItem"
+            [lazy]="true"
+            (onLazyLoad)="
+              _dynamicSearchService.lazy(
+                $event,
+                searchModel,
+                getPagedList.bind(this)
+              )
+            "
+            [rowsPerPageOptions]="[10, 20, 30]"
+          >
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th
+                  *ngFor="let col of pageListConfig?.cols"
+                  [pSortableColumn]="col.field"
+                  [hidden]="col.hidden"
+                >
+                  {{ col.header | translate }}
+                  <p-sortIcon
+                    [field]="col.field"
+                    *ngIf="col.field !== 'ActionButtons'"
+                  ></p-sortIcon>
+                </th>
+                <th pFrozenColumn>{{ "App.Fields.Actions" | translate }}</th>
+              </tr>
+              <!-- search caractria -->
+              <tr id="searchRow" formArrayName="searchFields">
+                <th
+                  *ngFor="let col of pageListConfig?.cols; let i = index"
+                  [ngSwitch]="col.field"
+                  [hidden]="col.hidden"
+                >
+                  <div
+                    [formGroupName]="i"
+                    *ngIf="col.searchable != false && col.hidden != true"
+                    class="grid-search"
+                  >
+                    <ng-container
+                      *ngIf="!col.searchType || col.searchType == 'text'"
+                    >
+                      <input
+                        formControlName="fieldName"
+                        type="text"
+                        class="form-control"
+                        [value]="col.field"
+                        hidden
+                      />
+                      <input
+                        formControlName="value"
+                        type="text"
+                        class="form-control"
+                      />
+                      <select formControlName="operator" class="form-control">
+                        <option *ngFor="let item of operators" [value]="item">
+                          {{ "App.SearchOperations." + item | translate }}
+                        </option>
+                      </select>
+                    </ng-container>
+                    <ng-container *ngIf="col.searchType == 'date'">
+                      <input
+                        formControlName="fieldName"
+                        type="text"
+                        class="form-control"
+                        [value]="col.field"
+                        hidden
+                      />
+                      <input
+                        formControlName="value"
+                        type="date"
+                        class="form-control"
+                      />
+                      <select formControlName="operator" class="form-control">
+                        <option *ngFor="let item of operators" [value]="item">
+                          {{ "App.SearchOperations." + item | translate }}
+                        </option>
+                      </select>
+                    </ng-container>
+                  </div>
+                </th>
+                <th pFrozenColumn>
+                  <div class="grid-buttons">
+                    <button
+                      type="submit"
+                      class="btn btn-brand"
+                      title="search in gride"
+                    >
+                      <i class="la la-search"></i>
+                    </button>
+                    <button
+                      title="reset"
+                      (click)="
+                        _dynamicSearchService.reset(
+                          searchForm,
+                          pageListConfig?.cols,
+                          getPagedList.bind(this)
+                        )
+                      "
+                      class="btn btn-secondary"
+                    >
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-dataItem let-columns="columns">
+              <tr [pSelectableRow]="dataItem" [pContextMenuRow]="dataItem">
+                <td *ngFor="let col of columns" [hidden]="col.hidden">
+                  <!--begin::Handle ActionButtons & Data Fields-->
+                  <ng-container
+                    *ngIf="
                       col.field === 'ActionButtons';
                       then render_action_buttons;
                       else render_data_field
-                   "></ng-container>
-                    <ng-template #render_action_buttons>
-
-                    </ng-template>
-                    <ng-template #render_data_field>
-                      <!--begin::Handle IsDownPayment-->
-                        {{ !col.pipe ? dataItem[col.field] || '---' : col.pipe === 'date' ? (dataItem[col.field] | date:
-                        col.pipeFormat) : ( col.pipe === 'currency'? (dataItem[col.field] | currency:' ') :
-                        dataItem[col.field])
-                        }}
-                    </ng-template>
-                  </td>
-                  <td pFrozenColumn >
-                    <span class="d-flex justify-content-center">
-                      <span class="d-inline-block">
-                        <div class="dropdown">
-                          <a href="#" class="btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill"
-                            data-toggle="dropdown" aria-expanded="true">
-                            <i class="la la-ellipsis-v"></i>
-                          </a>
-                          <div class="dropdown-menu dropdown-menu-right">
-                            <ng-container *ngFor="let action of pageListConfig?.actions">
-                              <a *authorization="action?.authorization" class="dropdown-item"
-                                title="{{ action?.title | translate}}" (click)="action?.callBack(dataItem)">
-                                {{action?.title | translate}}
-                             </a>
-                             <a class="dropdown-item" data-toggle="modal" data-target="#reportModal"
-                             title="{{ action?.title | translate}}" (click)="action?.callBack(dataItem)">
-                             {{action?.title | translate}}
-                          </a>
-                            </ng-container>
-                          </div>
+                    "
+                  ></ng-container>
+                  <ng-template #render_action_buttons> </ng-template>
+                  <ng-template #render_data_field>
+                    <!--begin::Handle IsDownPayment-->
+                    {{
+                      !col.pipe
+                        ? dataItem[col.field] || "---"
+                        : col.pipe === "date"
+                        ? (dataItem[col.field] | date : col.pipeFormat)
+                        : col.pipe === "currency"
+                        ? (dataItem[col.field] | currency : " ")
+                        : dataItem[col.field]
+                    }}
+                  </ng-template>
+                </td>
+                <td pFrozenColumn>
+                  <span class="d-flex justify-content-center">
+                    <span class="d-inline-block">
+                      <div class="dropdown">
+                        <a
+                          href="#"
+                          class="btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill"
+                          data-toggle="dropdown"
+                          aria-expanded="true"
+                        >
+                          <i class="la la-ellipsis-v"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                          <ng-container
+                            *ngFor="let action of pageListConfig?.actions"
+                          >
+                            <div
+                              *ngIf="
+                                action?.authorization.indexOf('Print') == -1
+                              "
+                            >
+                              <a
+                                *authorization="action?.authorization"
+                                class="dropdown-item"
+                                title="{{ action?.title | translate }}"
+                                (click)="action?.callBack(dataItem)"
+                              >
+                                {{ action?.title | translate }}
+                              </a>
+                            </div>
+                            <div
+                              *ngIf="
+                                action?.authorization.indexOf('Print') > -1
+                              "
+                            >
+                              <a
+                                *authorization="action?.authorization"
+                                class="dropdown-item"
+                                data-toggle="modal"
+                                data-target="#reportModal"
+                                title="{{ action?.title | translate }}"
+                                (click)="action?.callBack(dataItem)"
+                              >
+                                {{ action?.title | translate }}
+                              </a>
+                            </div>
+                          </ng-container>
                         </div>
-                      </span>
+                      </div>
                     </span>
-                  </td>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="emptymessage" let-columns>
-                <tr>
-                  <td [attr.colspan]="columns?.length" class="empty-grid-table">
-                    <span class="emp-msg">
-                      {{ 'App.Fields.NoData' | translate }}
-                    </span>
-                  </td>
-                </tr>
-              </ng-template>
-            </p-table>
-          </div>
+                  </span>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage" let-columns>
+              <tr>
+                <td [attr.colspan]="columns?.length" class="empty-grid-table">
+                  <span class="emp-msg">
+                    {{ "App.Fields.NoData" | translate }}
+                  </span>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
         </div>
       </div>
-    </form>
-  </div>
+    </div>
+  </form>
+</div>
