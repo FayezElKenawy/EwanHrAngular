@@ -72,7 +72,7 @@ const routes: Routes = [
         component: ListCustomerAccountComponent,
       },
       {
-        path: 'details-customer-account',
+        path: 'details-customer-account/:id',
         component: DetailsCustomerAccountComponent,
       },
       { path: '', redirectTo: 'home', pathMatch: 'full' },

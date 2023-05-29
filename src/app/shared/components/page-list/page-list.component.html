@@ -7,7 +7,7 @@
       <div>
         <button *authorization="pageListConfig?.createAuthorization"
           [routerLink]="pageListConfig?.createLink" type="button" class="btn btn-brand btn-cons">
-          {{ pageListConfig.createButtonTitle | translate}}
+          {{ pageListConfig?.createButtonTitle | translate}}
         </button>
       </div>
     </div>
@@ -103,10 +103,10 @@
                                 title="{{ action?.title | translate}}" (click)="action?.callBack(dataItem)">
                                 {{action?.title | translate}}
                              </a>
-                             <a class="dropdown-item" data-toggle="modal" data-target="#reportModal"
+                             <!-- <a class="dropdown-item" data-toggle="modal" data-target="#reportModal"
                              title="{{ action?.title | translate}}" (click)="action?.callBack(dataItem)">
                              {{action?.title | translate}}
-                          </a>
+                          </a> -->
                             </ng-container>
                           </div>
                         </div>

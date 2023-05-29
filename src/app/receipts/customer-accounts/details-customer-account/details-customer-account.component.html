@@ -55,7 +55,7 @@
                 type="button"
                 *ngIf="showNotification"
                 class="btn btn-success m-1"
-                (click)="sendSMSMessage('noify1')"
+
               >
                 {{ "App.Buttons.Ntification1" | translate }}
               </button>
@@ -67,7 +67,7 @@
                 type="button"
                 *ngIf="showNotification"
                 class="btn btn-warning m-1"
-                (click)="sendSMSMessage('noify2')"
+
               >
                 {{ "App.Buttons.Ntification2" | translate }}
               </button>
@@ -79,7 +79,7 @@
                 type="button"
                 *ngIf="showNotification"
                 class="btn btn-danger m-1"
-                (click)="sendSMSMessage('noify3')"
+
               >
                 {{ "App.Buttons.Ntification3" | translate }}
               </button>
@@ -96,7 +96,7 @@
               }}</span>
             </div>
             <div class="details-value">
-              <span>{{ customerData?.SegmentsCustomerId }}</span>
+              <span>{{ viewModel?.customerAccount?.code }}</span>
             </div>
 
             <!-- اسم العميل -->
@@ -104,46 +104,43 @@
               <span>{{ "Receipts.Fields.CustomerName" | translate }}</span>
             </div>
             <div class="details-value">
-              <span>{{ customerData?.Name }}</span>
+              <span>{{ viewModel?.customerAccount?.name }}</span>
             </div>
 
             <div class="details-label">
               <span>{{ "Receipts.Fields.DebitBalance" | translate }}</span>
             </div>
             <div class="details-value">
-              <span>{{ viewModel?.CustomerAccount?.DebitBalance }}</span>
+              <span>{{ viewModel?.customerAccount?.debitBalance }}</span>
             </div>
 
             <div class="details-label">
               <span>{{ "Receipts.Fields.CreditBalance" | translate }}</span>
             </div>
             <div class="details-value">
-              <span>{{ viewModel?.CustomerAccount?.CreditBalance }}</span>
+              <span>{{ viewModel?.customerAccount?.creditBalance }}</span>
             </div>
 
             <div class="details-label">
-              <span>{{ "Receipts.Fields.CurrentBalance" | translate }}</span>
+              <span>{{ "Receipts.Fields.CustomerBalance" | translate }}</span>
             </div>
             <div class="details-value">
-              <span *ngIf="viewModel?.CustomerAccount?.CurrentBalance > 0"
-                >{{ viewModel?.CustomerAccount?.CurrentBalance }} (
+              <span *ngIf="viewModel?.customerAccount?.currentBalance > 0"
+                >{{ viewModel?.customerAccount?.currentBalance }} (
                 {{ "Receipts.Fields.DebitBalance" | translate }} )</span
               >
-              <span *ngIf="viewModel?.CustomerAccount?.CurrentBalance < 0"
-                >({{ viewModel?.CustomerAccount?.CurrentBalance * -1 }}) (
+              <span *ngIf="viewModel?.customerAccount?.currentBalance < 0"
+                >({{ viewModel?.customerAccount?.currentBalance * -1 }}) (
                 {{ "Receipts.Fields.CreditBalance" | translate }} )</span
               >
-              <span *ngIf="viewModel?.CustomerAccount?.CurrentBalance == 0">
+              <span *ngIf="viewModel?.customerAccount?.currentBalance == 0">
                 0
               </span>
             </div>
           </div>
         </div>
 
-        <!-- <form class="m-form m-form--fit m-form--label-align-right"> -->
-
         <div class="row tableBody col-12 py-2">
-          <!-- Contract -->
           <div class="col-lg-3">
             <div class="form-group m-form__group row mx-0 px-0">
               <div class="col-12 px-0">
@@ -155,9 +152,9 @@
                 <p-autoComplete
                   id="Contract"
                   [(ngModel)]="selectedContract"
-                  field="SegmentId"
+                  field="entityCode"
                   [suggestions]="filteredArray"
-                  (completeMethod)="filterArray($event, contracts, 'SegmentId')"
+                  (completeMethod)="filterArray($event, costCenters, 'entityCode')"
                   (onSelect)="onSelectContract($event)"
                   (onClear)="onClear($event)"
                   [forceSelection]="true"
@@ -165,12 +162,10 @@
                   [minLength]="1"
                   [dropdown]="true"
                 >
-                  <ng-template let-Contract pTemplate="item">
+                  <ng-template let-costCenter pTemplate="item">
                     <div class="ui-helper-clearfix">
-                      <div *ngIf="Contract.Id == 'All'">الكل</div>
-
-                      <div *ngIf="Contract.Id != 'All'">
-                        {{ Contract.SegmentId }}
+                      <div>
+                        {{ costCenter.entityCode }}
                       </div>
                     </div>
                   </ng-template>
@@ -183,13 +178,13 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-2" authorization="'Finance-CustomerAccount-Print'">
+          <div class="col-lg-2" *authorization="'Finance-CustomerAccount-Print'">
             <div
               *ngIf="
-                selectedContract?.SegmentId &&
-                !selectedContract?.SegmentId.includes('--') &&
-                customerData?.SegmentsCustomerId &&
-                !customerData?.SegmentsCustomerId.includes('--')
+                selectedContract?.entityCode &&
+                !selectedContract?.entityCode.includes('--') &&
+                customerData?.code &&
+                !customerData?.code.includes('--')
               "
               class="form-group m-form__group row mx-0 px-0"
             >
@@ -201,16 +196,13 @@
                 type="button"
                 data-toggle="modal"
                 data-target="#reportModal"
-                (click)="
-                  showClientAccountStatementReport(selectedContract?.SegmentId)
-                "
+
               >
-                {{ "Sales.Buttons.PrintClientAccountStatement" | translate }}
+                {{ "Receipts.Buttons.PrintClientAccountStatement" | translate }}
               </button>
             </div>
           </div>
         </div>
-        <!-- </form> -->
 
         <!---------------------------- المدين --------------------->
         <div class="col-12 tableHeader">
@@ -222,11 +214,11 @@
           <div class="row mx-0 px-0 box-shadow">
             <p-table
               [columns]="debitCols"
-              [value]="viewModel?.Debits"
+              [value]="viewModel?.debits"
               [paginator]="true"
               [loading]="progressSpinner"
               [rows]="10"
-              [totalRecords]="viewModel?.Debits?.length"
+              [totalRecords]="viewModel?.debits?.length"
               [autoLayout]="true"
               [responsive]="true"
               class="full-width"
@@ -285,13 +277,6 @@
               </ng-template>
             </p-table>
 
-            <!-- اجمالي البنود -->
-            <!-- <div class="details-label">
-          <span>{{ 'Receipts.Fields.AllItems' | translate}}</span>
-        </div>
-        <div class="details-value">
-          <span>{{ viewModel?.NetValue }}</span>
-        </div> -->
           </div>
         </div>
 
@@ -305,10 +290,10 @@
           <div class="row mx-0 box-shadow px-0">
             <p-table
               [columns]="creditCols"
-              [value]="viewModel?.Credits"
+              [value]="viewModel?.credits"
               [paginator]="true"
               [rows]="10"
-              [totalRecords]="viewModel?.Credits?.length"
+              [totalRecords]="viewModel?.credits?.length"
               [autoLayout]="true"
               [responsive]="true"
               class="full-width"
@@ -366,14 +351,6 @@
                 </tr>
               </ng-template>
             </p-table>
-
-            <!-- اجمالي البنود -->
-            <!-- <div class="details-label">
-          <span>{{ 'Receipts.Fields.AllItems' | translate}}</span>
-        </div>
-        <div class="details-value">
-          <span>{{ viewModel?.NetValue }}</span>
-        </div> -->
           </div>
         </div>
       </div>
@@ -381,33 +358,3 @@
   </div>
 </div>
 
-<div
-  *ngIf="customerId && showModal"
-  class="custom-bottom-aside-modal modal fade"
-  id="detailsModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <app-customer-account-log
-    [contractId]="contractId"
-    [customerId]="customerId"
-    (cancel)="onCancel($event)"
-  ></app-customer-account-log>
-</div>
-
-<div
-  class="custom-bottom-aside-modal modal fade"
-  id="reportModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <app-custom-report></app-custom-report>
-</div>
-
-<app-shared-progress-spinner
-  *ngIf="progressSpinner || isLoading"
-></app-shared-progress-spinner>

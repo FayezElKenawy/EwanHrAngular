@@ -11,7 +11,7 @@ import { PagedList } from "@shared/interfaces/paged-list";
   providedIn: "root",
 })
 export class ReturnPaymentReceiptService {
-  serviceUrl = `${environment.financeSectorAPIURL}/Receipts/ReturnPaymentReceipt`;
+  serviceUrl = `${environment.financeSectorAPIURL}/v1/DebitPayment`;
   ContractUrl = `${environment.financeSectorAPIURL}/Sales/Contract`;
 
   constructor(
@@ -22,8 +22,8 @@ export class ReturnPaymentReceiptService {
   getAll(searchModel: SearchModel): Observable<PagedList> {
     return this._http.post<PagedList>(`${this.serviceUrl}/GetPagedList`, searchModel)
   }
-  getById(id:number):Observable<any>{
-    return this._http.get<any>(`${this.serviceUrl}/GetById?id=${id}`);
+  details(id:number):Observable<any>{
+    return this._http.get<any>(`${this.serviceUrl}/Details?id=${id}`);
   }
   create(postedVM: any): Observable<any> {
     return this._http.post(`${this.serviceUrl}/Create`, postedVM);
@@ -59,7 +59,7 @@ export class ReturnPaymentReceiptService {
   }
 
   getVouchers(code: string): Observable<any> {
-    return this._http.get<any>(`${this.serviceUrl}/GetVouchers?code=${code}`)
+    return this._http.get<any>(`${this.serviceUrl}/GetVouchersSelectList?code=${code}`)
   }
 
 }

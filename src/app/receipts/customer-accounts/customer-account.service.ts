@@ -6,32 +6,18 @@ import { SearchModel } from '@shared/interfaces/search-model';
 import { Observable } from 'rxjs';
 import { IServiceResult, IResultVM } from '@shared/interfaces/results';
 import { catchError, map } from 'rxjs/operators';
+import { CustomerAccountModel } from '../models/customer-account/customer-account.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CustomerAccountService {
-  serviceUrl = `${
-    environment.financeSectorAPIURL
-  }/Receipts/CustomersAccounts`;
+  serviceUrl = `${environment.financeSectorAPIURL}/v1/CustomerAccount`;
   constructor(
     private _http: HttpClient,
     private _globalService: GlobalService
   ) {}
 
-  getList(searchModel: SearchModel): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return this._http.post(`${this.serviceUrl}/GetListPage`, searchModel).pipe(
-      catchError(this._globalService.errorHandler),
-      map((resultVM: IResultVM) => {
-        if (resultVM.IsSuccess) {
-          serviceResult.data = resultVM.Data;
-          serviceResult.isSuccess = resultVM.IsSuccess;
-          return serviceResult;
-        }
-      })
-    );
-  }
 
   SendCustomerAccountSMS(postedModel: any): Observable<IServiceResult> {
     const serviceResult: IServiceResult = { isSuccess: null, data: null };
@@ -62,7 +48,7 @@ export class CustomerAccountService {
           true
         );
     }
-    } 
+    }
       )
     );
   }
@@ -82,7 +68,7 @@ export class CustomerAccountService {
         })
       );
   }
-  
+
   getCustomerAccountLoggers(id: number,contractId:number): Observable<IServiceResult> {
     const serviceResult: IServiceResult = { isSuccess: null, data: null };
     return this._http
@@ -99,20 +85,12 @@ export class CustomerAccountService {
       );
   }
 
-  getCustomerData(id: number): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return this._http
-      .get(`${this.serviceUrl}/GetCustomerData?id=${id}`)
-      .pipe(
-        catchError(this._globalService.errorHandler),
-        map((resultVM: IResultVM) => {
-          if (resultVM.IsSuccess) {
-            serviceResult.data = resultVM.Data;
-            serviceResult.isSuccess = resultVM.IsSuccess;
-            return serviceResult;
-          }
-        })
-      );
+  details(id: number): Observable<CustomerAccountModel> {
+    return this._http.get<CustomerAccountModel>(`${this.serviceUrl}/Details?id=${id}`);
+  }
+
+  getCustomerAccountData(id:number,entityCode:string,sectorTypeId:string):Observable<any>{
+    return this._http.get<any>(`${this.serviceUrl}/GetCustomerAccountData?id=${id}&entityCode=${entityCode}&sectorTypeId=${sectorTypeId}`)
   }
 
 }
