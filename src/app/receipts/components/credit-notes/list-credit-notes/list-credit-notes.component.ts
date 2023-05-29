@@ -100,19 +100,6 @@ export class ListCreditNotesComponent implements OnInit {
           field: 'entityCode',
           header: 'Receipts.Fields.ContractId',
         },
-        // {
-        //   field: "CreatedBy",
-        //   header: "Sales.Fields.CreatedBy",
-        //   hidden: false,
-        //   searchable: true,
-        //   searchType: "text"
-        // },
-        // {
-        //   field: "branchName",
-        //   header: "App.Fields.Branch",
-        //   customSearchField:"Bank.Name",
-        //   isLocalized:true,
-        // },
         {
           field: "netValueAfterTax",
           header: "Receipts.Fields.CreditNoteValue",

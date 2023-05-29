@@ -36,9 +36,7 @@ export class ListCreditInvoicesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.createPageListConfig();
-
   }
 
 
@@ -67,78 +65,107 @@ export class ListCreditInvoicesComponent implements OnInit {
               dataItem.id,
             ]);
           },
-        }
+        },
+        {
+          authorization: '',
+          title: 'App.Buttons.Print',
+          callBack: (dataItem) => {
+            this.showReport(dataItem.code);
+          },
+        },
       ],
       cols: [
-          {
-            field: "code",
-            header: "Receipts.Fields.InvoiceId",
-          },
-          {
-            field: "documentDate",
-            header: "Receipts.Fields.InvoiceDate",
-            searchType: SearchType.Date,
-            pipe: ColumnPipeType.Date,
-            pipeFormat: ColumnPipeFormat.DatePipeFormat,
-          },
-          {
-            field: "customerCode",
-            header: "Receipts.Fields.SegmentsCustomerId",
-          },
-          {
-            field: "customerName",
-            header: "Receipts.Fields.CustomerName",
+        {
+          field: "code",
+          header: "Receipts.Fields.InvoiceId",
+        },
+        {
+          field: "documentDate",
+          header: "Receipts.Fields.InvoiceDate",
+          searchType: SearchType.Date,
+          pipe: ColumnPipeType.Date,
+          pipeFormat: ColumnPipeFormat.DatePipeFormat,
+        },
+        {
+          field: "customerCode",
+          header: "Receipts.Fields.SegmentsCustomerId",
+        },
+        {
+          field: "customerName",
+          header: "Receipts.Fields.CustomerName",
 
-          },
-          {
-            field: "BranchName",
-            header: "App.Fields.Branch",
-          },
-          {
-            field: "entityCode",
-            header: "Receipts.Fields.ContractId",
+        },
+        {
+          field: "BranchName",
+          header: "App.Fields.Branch",
+        },
+        {
+          field: "entityCode",
+          header: "Receipts.Fields.ContractId",
 
-          },
-          {
-            field: "netValue",
-            header: "Receipts.Fields.InvoiceValue",
-            pipe: ColumnPipeType.Currency,
-          },
-          {
-            field: "discountAmount",
-            header: "Receipts.Fields.DiscountValue",
-            pipe: ColumnPipeType.Currency,
-          },
-          {
-            field: "taxAmount",
-            header: "Receipts.Fields.TaxValue",
-            pipe: ColumnPipeType.Currency,
-          },
-          {
-            field: "netValueAfterTax",
-            header: "Receipts.Fields.AllInvoiceValue",
-            pipe: ColumnPipeType.Currency,
-          },
-          {
-            field: "totalPaid",
-            header: "Receipts.Fields.InvoiceGetPaid",
-            pipe: ColumnPipeType.Currency,
-          },
-          {
-            field: "paidFromDownpayment",
-            header: "Receipts.Fields.PaidFromDownpayment",
-            pipe: ColumnPipeType.Currency,
-          },
-          {
-            field: "totalReceivable",
-            header: "Receipts.Fields.TotalReceivable",
-            pipe: ColumnPipeType.Currency,
-          }
+        },
+        {
+          field: "netValue",
+          header: "Receipts.Fields.InvoiceValue",
+          pipe: ColumnPipeType.Currency,
+        },
+        {
+          field: "discountAmount",
+          header: "Receipts.Fields.DiscountValue",
+          pipe: ColumnPipeType.Currency,
+        },
+        {
+          field: "taxAmount",
+          header: "Receipts.Fields.TaxValue",
+          pipe: ColumnPipeType.Currency,
+        },
+        {
+          field: "netValueAfterTax",
+          header: "Receipts.Fields.AllInvoiceValue",
+          pipe: ColumnPipeType.Currency,
+        },
+        {
+          field: "totalPaid",
+          header: "Receipts.Fields.InvoiceGetPaid",
+          pipe: ColumnPipeType.Currency,
+        },
+        {
+          field: "paidFromDownpayment",
+          header: "Receipts.Fields.PaidFromDownpayment",
+          pipe: ColumnPipeType.Currency,
+        },
+        {
+          field: "totalReceivable",
+          header: "Receipts.Fields.TotalReceivable",
+          pipe: ColumnPipeType.Currency,
+        }
       ],
       defaultOrder: 'documentDate',
       defaultOrderType: 'desc'
     };
   }
 
+  showReport(invoiceId: any) {
+    this.reportchild.reportName = "Receipts.Titles.TotalInvoice";
+    this.authService.getAuthUser().subscribe(result => {
+      const user = result.data;
+      switch (this.globalService.getSectorType()) {
+        case "01-01":
+          this.reportchild.showReprot(
+            71,
+            `&Ds1_Filter1=And,DebitReceivableId,=,${invoiceId}&Ds1_Filter2=And,DebitReceivableTypeId,=,CR&UserName=${user.ArabicFullName}`,
+            false
+          );
+          break;
+        case "01-02":
+          this.reportchild.showReprot(
+            3,
+            `&Ds1_Filter1=And,DebitReceivableId,=,${invoiceId}&Ds1_Filter2=And,DebitReceivableTypeId,=,CR&UserName=${user.ArabicFullName}`,
+            false
+          );
+          break;
 
+      }
+    });
+  }
 }

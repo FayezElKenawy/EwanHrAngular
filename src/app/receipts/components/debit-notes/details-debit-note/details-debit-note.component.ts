@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ColumnType } from '@shared/models/column-type.model';
+import { CreateCostElementItemModel } from 'src/app/receipts/models/costelement/create-cost-element-item.model';
 import { DebitNoteService } from 'src/app/receipts/services/debit-note.service';
 
 @Component({
@@ -11,8 +13,7 @@ export class DetailsDebitNoteComponent implements OnInit {
 
   viewModel: any;
   sectorId: string;
-  allCostElements: any[] = [];
-  costElementCols: { field: string; header: string; }[];
+  costElementCols: ColumnType[];
 
   constructor(
     private _route: ActivatedRoute,

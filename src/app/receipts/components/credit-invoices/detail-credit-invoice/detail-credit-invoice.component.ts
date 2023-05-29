@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CreditInvoiceService } from '../../../services/credit-invoice.service';
-import { IServiceResult } from '@shared/interfaces/results';
-import { DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -16,7 +14,6 @@ export class DetailCreditInvoiceComponent implements OnInit {
 
   constructor(
     private _creditInvoiceService: CreditInvoiceService,
-    private _datePipe: DatePipe,
     private _route: ActivatedRoute
   ) {
   }
@@ -25,6 +22,7 @@ export class DetailCreditInvoiceComponent implements OnInit {
 
     this.defCols();
     this.getDetails(this._route.snapshot.paramMap.get("id"))
+    
   }
 
   defCols(){
@@ -62,6 +60,7 @@ export class DetailCreditInvoiceComponent implements OnInit {
       }
     ];
   }
+
   getDetails(id: string) {
     this._creditInvoiceService.getDetails(id).subscribe(
       (result) => {

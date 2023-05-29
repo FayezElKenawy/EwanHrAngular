@@ -26,7 +26,7 @@ export class ListPaymentReceiptsComponent implements OnInit {
     private _router: Router,
     private auth: AuthService,
     private globalService: GlobalService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.createPageListConfig();

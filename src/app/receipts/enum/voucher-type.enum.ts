@@ -1,4 +1,5 @@
 export enum VoucherType {
   CreditNote = 'CN',
-  CreditInvoice='CR'
+  CreditInvoice='CR',
+  PaymentReceipt='PR'
 }

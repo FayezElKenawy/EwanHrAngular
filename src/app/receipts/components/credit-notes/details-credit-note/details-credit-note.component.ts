@@ -1,15 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { CreditNoteService } from "../../../services/credit-note.service";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { GlobalService, MessageType } from "@shared/services/global.service";
-import { DatePipe } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
-import { IServiceResult } from "@shared/interfaces/results";
-import { CustomerService } from "@shared/services/customer.service";
-import { ContractService } from "@shared/services/contract.service";
-import { SalesPeriodService } from "src/app/master-data/services/sales-period.service";
-import { CostCenterService } from "@shared/services/cost-center.service";
-import { Settlement } from "src/app/receipts/models/credit-notes/settlement.model";
+import { GetCreditNoteModel } from "src/app/receipts/models/creditNote/get-credit-note.model";
 
 
 @Component({
@@ -20,27 +13,18 @@ import { Settlement } from "src/app/receipts/models/credit-notes/settlement.mode
 export class DetailsCreditNoteComponent implements OnInit {
   vouchersCols: any[] = [];
   form: FormGroup;
-  viewModel: any;
-  vouchers: any[];
+  viewModel: GetCreditNoteModel;
   settlementCols: any[];
-  settlements: any[];
-  selectedItem: any;
   costElementCols: any[] = [];
-  costElements: any[] = [];
-  allCostElements: any[] = [];
-  DebitNoteCostElements: any[] = [];
 
   constructor(
-    private _formBuilder: FormBuilder,
     private _route: ActivatedRoute,
     private _creditNoteService: CreditNoteService,
 
   ) {
-    this.settlements = [];
   }
 
   ngOnInit() {
-    this.createForm();
     this.defCols();
     this.getCreditNoteData(this._route.snapshot.paramMap.get("id"));
   }
@@ -75,16 +59,16 @@ export class DetailsCreditNoteComponent implements OnInit {
         header: "Receipts.Fields.CostElementName"
       },
       {
-        field: "elementAmount",
+        field: "amount",
         header: "Receipts.Fields.CostElementAmount"
       },
 
       {
-        field: "elementTaxAmount",
+        field: "taxAmount",
         header: "Receipts.Fields.TaxRatio"
       },
       {
-        field: "elementNetAmount",
+        field: "netAmount",
         header: "Receipts.Fields.TaxAmount"
       },
       {
@@ -118,57 +102,13 @@ export class DetailsCreditNoteComponent implements OnInit {
     ];
   }
 
-  createForm() {
-    this.form = this._formBuilder.group({
-      DocumentDate: ["", Validators.required],
-      RefNumber: [""],
-      Customer: ["", Validators.required],
-      Contract: [{ value: "", disabled: true }, Validators.required],
-      ArabicRemarks: [""],
-    });
-  }
 
   getCreditNoteData(id: any) {
     this._creditNoteService
       .getById(id)
       .subscribe((result) => {
         this.viewModel = result;
-        this.form.patchValue({
-          CreditReceivableId: this.viewModel.id,
-          CreditReceivableTypeId: this.viewModel.voucherTypeId,
-          DocumentDate: new Date(this.viewModel.documentDate),
-          RefNumber: this.viewModel.refNumber,
-          Customer: this.viewModel.customer,
-          Contract: { entityCode: this.viewModel.entityCode },
-          SalesRepresentative:
-            this.viewModel.salesRepresentativeName,
-          ArabicRemarks: this.viewModel.ArabicRemarks,
-          CreditCardType: this.viewModel.creditCardType,
-          IsBankDeposit: this.viewModel.isBankDeposit,
-          BankDepositAmount: this.viewModel.isBankDeposit
-            ? this.viewModel.bankDepositAmount
-            : 0,
-          BankAccount: this.viewModel.bankAccount,
-          IsCashBox: this.viewModel.isCashBox,
-          CashBox: this.viewModel.cashBox,
-          CashBoxAmount: this.viewModel.isCashBox
-            ? this.viewModel.cashBoxAmount
-            : 0,
-          IsPaidOnline: this.viewModel.isPaidOnline,
-          OnlinePaidCreditCard: this.viewModel.CreditCardType
-            ? this.viewModel.CreditCardType.ArabicName
-            : "",
-          PaymentOnlineRef: this.viewModel.paymentOnlineRef,
-        });
-
-
-        this.settlements = this.viewModel.paymentsTransactions
-          ? this.viewModel.paymentsTransactions
-          : [];
-
-        this.costElements = this.viewModel.costElements
-
-      });
+      })
   }
 
 }

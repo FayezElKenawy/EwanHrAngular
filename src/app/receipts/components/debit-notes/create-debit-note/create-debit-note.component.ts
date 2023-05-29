@@ -9,6 +9,9 @@ import { CustomerService } from "@shared/services/customer.service";
 import { CostCenterService } from "@shared/services/cost-center.service";
 import { SalesPeriodService } from "src/app/master-data/services/sales-period.service";
 import { CostElementService } from "src/app/receipts/services/cost-element.service";
+import { GetCostCenterListModel } from "src/app/receipts/models/costCenter/cost-center.model";
+import { ColumnType } from "@shared/models/column-type.model";
+import { CreateCostElementItemModel } from 'src/app/receipts/models/costelement/create-cost-element-item.model';
 
 declare let $: any;
 
@@ -19,28 +22,29 @@ declare let $: any;
 })
 export class CreateDebitNoteComponent implements OnInit {
 
-  form: FormGroup;
-  viewModel: any;
-  filteredArray: any[];
-  submitted: Boolean;
-  currentYear = new Date().getFullYear() + 5;
-  costCenters: any;
   @Output() refresh: EventEmitter<any> = new EventEmitter();
-  selectedItem: any;
-  costElementCols: any[] = [];
-  costElements: any[] = [];
-  DebitNoteCostElements: any[] = [];
+  form: FormGroup;
+
+  costElementCols: ColumnType[];
+  costElements: CreateCostElementItemModel[] = [];
+  allCostElements: CreateCostElementItemModel[] = [];
+  selectedItem: CreateCostElementItemModel;
+
+  costCenters: GetCostCenterListModel[];
+  filteredArray: any[];
+
   netVal: number;
   netValAfterTax: number;
   MonthlyCost: number;
   totalTaxAmount: number;
   amount: number;
-  selected: Boolean;
+  selected: boolean;
   ValidFromMaxDate: Date;
   ValidToMinDate: Date;
   minDateValue: any;
   sectorId: string;
-  allCostElements: any[] = [];
+  submitted: boolean;
+  currentYear = new Date().getFullYear() + 5;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -189,8 +193,8 @@ export class CreateDebitNoteComponent implements OnInit {
       ) {
         const costElement = Object.assign({}, this.selectedItem);
         costElement.amount = this.amount;
-        costElement.taxAmount = (this.amount * costElement.tax.taxRatio) / 100;
-        costElement.taxRatio = costElement.tax.taxRatio
+        costElement.taxAmount = (this.amount * costElement.taxRatio) / 100;
+        costElement.taxRatio = costElement.taxRatio
         this.costElements.push(costElement);
         this.selected = false;
         this.calculateDebitNote();
@@ -229,14 +233,14 @@ export class CreateDebitNoteComponent implements OnInit {
   }
 
   calculateDebitNoteWithCostElements(id) {
-    this.costElements.find((i) => i.Id === id).taxAmount =
-      (Number(this.costElements.find((i) => i.Id === id).taxRatio) * Number(this.costElements.find((i) => i.Id === id).amount)) / 100;
+    this.costElements.find((i) => i.id === id).taxAmount =
+      (Number(this.costElements.find((i) => i.id === id).taxRatio) * Number(this.costElements.find((i) => i.id === id).amount)) / 100;
     this.calculateDebitNote();
   }
 
   onSelectCustomer(event: any) {
     this._costCenterService
-      .getAll(event.code)
+      .getCostCenterSelectList(event.code)
       .subscribe((result) => {
         this.filteredArray = [];
         this.filteredArray = result;
@@ -260,7 +264,6 @@ export class CreateDebitNoteComponent implements OnInit {
     for (let i = 0; i < arrayObject.length; i++) {
       const item = arrayObject[i];
       var itemFullName = item[ColName];
-
       itemFullName = itemFullName.replace(/\s/g, "").toLowerCase();
       var queryString = event.query.replace(/\s/g, "").toLowerCase();
       if (itemFullName.indexOf(queryString) >= 0) {

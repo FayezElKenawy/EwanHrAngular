@@ -1,4 +1,4 @@
-export class Settlement{
+export class SettlementModel{
   id:number;
   debitReceivableId:number;
   debitReceivableVoucherTypeId:string;
@@ -8,4 +8,6 @@ export class Settlement{
   currentBalance:number;
   canBePay:number;
   voucherCode:string;
+  voucherTypeId?:string;
+  voucherTypeName?:string;
 }
