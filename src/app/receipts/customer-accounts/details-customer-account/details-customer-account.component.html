@@ -183,8 +183,8 @@
               *ngIf="
                 selectedContract?.entityCode &&
                 !selectedContract?.entityCode.includes('--') &&
-                customerData?.code &&
-                !customerData?.code.includes('--')
+                viewModel.customerAccount?.code &&
+                !viewModel.customerAccount?.code.includes('--')
               "
               class="form-group m-form__group row mx-0 px-0"
             >
