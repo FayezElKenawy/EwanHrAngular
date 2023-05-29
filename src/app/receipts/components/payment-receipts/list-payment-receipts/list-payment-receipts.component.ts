@@ -49,7 +49,7 @@ export class ListPaymentReceiptsComponent implements OnInit {
       ],
       actions: [
         {
-          authorization: 'receipts-payment-receipts-print',
+          authorization: 'Finance-PaymentReceipt-Details',
           title: 'App.Buttons.Edit',
           callBack: (dataItem) => {
             this._router.navigate([
@@ -59,7 +59,7 @@ export class ListPaymentReceiptsComponent implements OnInit {
           },
         },
         {
-          authorization: 'receipts-payment-receipts-print',
+          authorization: 'Finance-PaymentReceipt-Print',
           title: 'App.Buttons.Print',
           callBack: (dataItem) => {
             this.showReport(dataItem.code);

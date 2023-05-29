@@ -56,14 +56,14 @@ export class ListCreditNotesComponent implements OnInit {
       ],
       actions: [
         {
-          authorization: '',
+          authorization: 'Finance-CreditNote-Print',
           title: 'App.Buttons.Print',
           callBack: (dataItem) => {
             this.showReport(dataItem.code);
           },
         },
         {
-          authorization: '',
+          authorization: 'Finance-CreditNote-Details',
           title: 'App.Buttons.Details',
           callBack: (dataItem) => {
             this._router.navigate([
