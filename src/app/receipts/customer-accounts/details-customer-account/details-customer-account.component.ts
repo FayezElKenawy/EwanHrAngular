@@ -9,6 +9,7 @@ import { Operators } from "@shared/models/Operators";
 import { FieldTypesEnum } from "@shared/models/dynamic-fields";
 import { CustomerAccountModel } from "../../models/customer-account/customer-account.model";
 import { CostCenterService } from "@shared/services/cost-center.service";
+import { CustomerDetailsPageModel } from "../../models/customer-account/customer-details-page.model";
 declare let Swal: any;
 
 @Component({
@@ -17,7 +18,7 @@ declare let Swal: any;
   styleUrls: ["./details-customer-account.component.scss"],
 })
 export class DetailsCustomerAccountComponent implements OnInit {
-  viewModel: any;
+  viewModel: CustomerDetailsPageModel;
   progressSpinner: boolean;
   isLoading: boolean;
   debitCols: any[] = [];
@@ -26,7 +27,6 @@ export class DetailsCustomerAccountComponent implements OnInit {
   filteredArray: any[];
   customerId: number;
   costCenters: any[] = [];
-  customerData: CustomerAccountModel;
   selectedContract: any;
   showExtentionMessage: boolean = false;
   showNotification: boolean = false;
@@ -129,7 +129,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
   }
 
   getCustomerData(customerId) {
-    this._customerAccountService.getCustomerAccountData(this.customerId,'',this.sectorTypeId).subscribe(
+    this._customerAccountService.details(this.customerId,'',this.sectorTypeId).subscribe(
       data=>{
         this.getCostCenters(data.customerAccount.code)
         this.viewModel = data;
@@ -168,9 +168,11 @@ export class DetailsCustomerAccountComponent implements OnInit {
   }
 
   onSelectContract(event) {
-    this._customerAccountService.getCustomerAccountData(this.customerId,event?.entityCode,this.sectorTypeId).subscribe(
-      result =>{
-        this.viewModel = result;
+    this._customerAccountService
+        .details(this.customerId,event?.entityCode,this.sectorTypeId)
+        .subscribe(
+          (result:CustomerDetailsPageModel) =>{
+            this.viewModel = result;
       }
     )
   }
@@ -187,11 +189,11 @@ export class DetailsCustomerAccountComponent implements OnInit {
 
   reset() {
     if (this.viewModel) {
-      this.viewModel.CustomerAccount.CurrentBalance = 0;
-      this.viewModel.CustomerAccount.CreditBalance = 0;
-      this.viewModel.CustomerAccount.DebitBalance = 0;
-      this.viewModel.Credits = [];
-      this.viewModel.Debits = [];
+      this.viewModel.customerAccount.currentBalance = 0;
+      this.viewModel.customerAccount.creditBalance = 0;
+      this.viewModel.customerAccount.debitBalance = 0;
+      this.viewModel.credits = [];
+      this.viewModel.debits = [];
     }
   }
 

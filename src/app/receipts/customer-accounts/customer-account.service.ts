@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { IServiceResult, IResultVM } from '@shared/interfaces/results';
 import { catchError, map } from 'rxjs/operators';
 import { CustomerAccountModel } from '../models/customer-account/customer-account.model';
+import { CustomerDetailsPageModel } from '../models/customer-account/customer-details-page.model';
 
 @Injectable({
   providedIn: 'root'
@@ -85,12 +86,8 @@ export class CustomerAccountService {
       );
   }
 
-  details(id: number): Observable<CustomerAccountModel> {
-    return this._http.get<CustomerAccountModel>(`${this.serviceUrl}/Details?id=${id}`);
-  }
-
-  getCustomerAccountData(id:number,entityCode:string,sectorTypeId:string):Observable<any>{
-    return this._http.get<any>(`${this.serviceUrl}/GetCustomerAccountData?id=${id}&entityCode=${entityCode}&sectorTypeId=${sectorTypeId}`)
+  details(id:number,entityCode:string,sectorTypeId:string):Observable<CustomerDetailsPageModel>{
+    return this._http.get<CustomerDetailsPageModel>(`${this.serviceUrl}/details?id=${id}&entityCode=${entityCode}&sectorTypeId=${sectorTypeId}`)
   }
 
 }
