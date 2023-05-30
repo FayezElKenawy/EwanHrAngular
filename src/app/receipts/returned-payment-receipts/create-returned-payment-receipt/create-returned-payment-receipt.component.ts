@@ -205,7 +205,7 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
   }
 
   searchCustomers(event: any) {
-    this._customer.getAll(event.query)
+    this._customer.getCustomersBySectorId(this.sectorId,event.query)
     .subscribe(result =>{
       this.Customers = result;
     });
@@ -236,9 +236,6 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
     this.settlements = [];
     this.vouchers = [];
     this.selectedVoucher = undefined;
-    // this.form
-    //   .get("salesRepresentative")
-    //   .setValue(event.salesRepresentativeName);
     this._returnPaymentReceipt
       .getVouchers(event.entityCode)
       .subscribe((result: any) => {
