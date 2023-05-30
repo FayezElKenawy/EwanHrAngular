@@ -87,7 +87,7 @@ export class CustomerAccountService {
   }
 
   details(id:number,entityCode:string,sectorTypeId:string):Observable<CustomerDetailsPageModel>{
-    return this._http.get<CustomerDetailsPageModel>(`${this.serviceUrl}/details?id=${id}&entityCode=${entityCode}&sectorTypeId=${sectorTypeId}`)
+    return this._http.get<CustomerDetailsPageModel>(`${this.serviceUrl}/Details?id=${id}&entityCode=${entityCode}&sectorTypeId=${sectorTypeId}`)
   }
 
 }

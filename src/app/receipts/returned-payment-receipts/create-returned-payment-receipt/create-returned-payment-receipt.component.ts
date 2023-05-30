@@ -241,7 +241,6 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
       .subscribe((result: any) => {
         this.vouchers = result;
         this.filteredVouchers = this.vouchers;
-        console.log(this.filteredVouchers)
       });
     this._cashBox.getAll('')
     .subscribe(result =>{

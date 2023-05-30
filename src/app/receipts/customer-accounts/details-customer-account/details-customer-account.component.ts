@@ -349,38 +349,38 @@ export class DetailsCustomerAccountComponent implements OnInit {
   //   شاكرين لك: خدمة العملاء (920007653)`;
   // }
 
-  // getMessage2() {
-  //   let contId: string = "";
+  getMessage2() {
+    let contId: string = "";
 
-  //   contId =
-  //     this.selectedContract.SegmentId === "All" || this.selectedContract.SegmentId === "الكل"
-  //       ? ""
-  //       : `رقم العقد : (${this.selectedContract.SegmentId})`;
+    contId =
+      this.selectedContract.SegmentId === "All" || this.selectedContract.SegmentId === "الكل"
+        ? ""
+        : `رقم العقد : (${this.selectedContract.SegmentId})`;
 
-  //   return `عزيزى العميل / ${this.customerData.Name}
-  //   لديك فاتورة مستحقة متأخرة لم يتم سدادها ، فضلاً سداد المبلغ فى مدة اقصاها ثلاثة ايام تجنباً لتحويل العقد لقسم الشؤون القانونية
-  //   ${contId}
-  //   مبلغ المديونية: ( ${this.viewModel.CustomerAccount.CurrentBalance} ريال)
-  //    شركة ايوان للموارد البشرية
-  //   بنك الراجحى: رقم حساب 678608010051770 - رقم الابيان SA7280000678608010051770
-  //   شاكرين لك: خدمة العملاء (920007653)`;
-  // }
+    return `عزيزى العميل / ${this.customerData.Name}
+    لديك فاتورة مستحقة متأخرة لم يتم سدادها ، فضلاً سداد المبلغ فى مدة اقصاها ثلاثة ايام تجنباً لتحويل العقد لقسم الشؤون القانونية
+    ${contId}
+    مبلغ المديونية: ( ${this.viewModel.CustomerAccount.CurrentBalance} ريال)
+     شركة ايوان للموارد البشرية
+    بنك الراجحى: رقم حساب 678608010051770 - رقم الابيان SA7280000678608010051770
+    شاكرين لك: خدمة العملاء (920007653)`;
+  }
 
-  // getMessage3() {
-  //   let contId: string = "";
+  getMessage3() {
+    let contId: string = "";
 
-  //   contId =
-  //     this.selectedContract.SegmentId === "All" || this.selectedContract.SegmentId === "الكل"
-  //       ? ""
-  //       : `رقم العقد : (${this.selectedContract.SegmentId})`;
-  //   return `عزيزى العميل / ${this.customerData.Name}
-  //   لديك فاتورة مستحقة متأخرة لم يتم سدادها ، فضلاً سداد المبلغ فى مدة أقصاها 48 ساعة تجنباً لإتخاذ الإجراءات القانونية
-  //   ${contId}
-  //   مبلغ المديونية: ( ${this.viewModel.CustomerAccount.CurrentBalance} ريال)
-  //    شركة ايوان للموارد البشرية
-  //   بنك الراجحى: رقم حساب 678608010051770 - رقم الابيان SA7280000678608010051770
-  //   شاكرين لك: خدمة العملاء (920007653) `;
-  // }
+    contId =
+      this.selectedContract.SegmentId === "All" || this.selectedContract.SegmentId === "الكل"
+        ? ""
+        : `رقم العقد : (${this.selectedContract.SegmentId})`;
+    return `عزيزى العميل / ${this.customerData.Name}
+    لديك فاتورة مستحقة متأخرة لم يتم سدادها ، فضلاً سداد المبلغ فى مدة أقصاها 48 ساعة تجنباً لإتخاذ الإجراءات القانونية
+    ${contId}
+    مبلغ المديونية: ( ${this.viewModel.CustomerAccount.CurrentBalance} ريال)
+     شركة ايوان للموارد البشرية
+    بنك الراجحى: رقم حساب 678608010051770 - رقم الابيان SA7280000678608010051770
+    شاكرين لك: خدمة العملاء (920007653) `;
+  }
 
   @ViewChild(CustomReportComponent) report: CustomReportComponent;
 
