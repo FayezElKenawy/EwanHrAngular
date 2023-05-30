@@ -29,6 +29,7 @@
             "businessSectorDesc":"Financial System For Business Sector"
         },
         "Fields": {
+          "CustomerNotifications":"Customer Notifications",
             "SearchAllBranch": "Search in All Branches",
             "NumberOfChildren": "Number Of Children",
             "LaborerTallness": "Height",

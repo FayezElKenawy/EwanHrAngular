@@ -48,38 +48,32 @@
                 {{ "App.Buttons.Logger" | translate }}
               </button>
             </ng-container>
-            <ng-container
-              *authorization="'Finance-CustomerAccount-FirstNotification'"
-            >
+            <ng-container *authorization="'Finance-CustomerAccount-ShowMessages'">
               <button
                 type="button"
                 *ngIf="showNotification"
                 class="btn btn-success m-1"
-
+                (click)="getSMSMessage('noify1')"
               >
                 {{ "App.Buttons.Ntification1" | translate }}
               </button>
             </ng-container>
-            <ng-container
-              *authorization="'Finance-CustomerAccount-SecondNotification'"
-            >
+            <ng-container *authorization="'Finance-CustomerAccount-ShowMessages'">
               <button
                 type="button"
                 *ngIf="showNotification"
                 class="btn btn-warning m-1"
-
+                (click)="getSMSMessage('noify2')"
               >
                 {{ "App.Buttons.Ntification2" | translate }}
               </button>
             </ng-container>
-            <ng-container
-              *authorization="'Finance-CustomerAccount-ThirdNotification'"
-            >
+            <ng-container *authorization="'Finance-CustomerAccount-ShowMessages'">
               <button
                 type="button"
                 *ngIf="showNotification"
                 class="btn btn-danger m-1"
-
+                (click)="getSMSMessage('noify3')"
               >
                 {{ "App.Buttons.Ntification3" | translate }}
               </button>
@@ -216,7 +210,6 @@
               [columns]="debitCols"
               [value]="viewModel?.debits"
               [paginator]="true"
-              [loading]="progressSpinner"
               [rows]="10"
               [totalRecords]="viewModel?.debits?.length"
               [autoLayout]="true"
@@ -358,3 +351,18 @@
   </div>
 </div>
 
+<div
+  *ngIf="customerId && showModal"
+  class="custom-bottom-aside-modal modal fade"
+  id="detailsModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <app-customer-account-log
+    [costCenter]="costCenter"
+    [customerCode]="customerCode"
+    (cancel)="onCancel($event)"
+  ></app-customer-account-log>
+</div>

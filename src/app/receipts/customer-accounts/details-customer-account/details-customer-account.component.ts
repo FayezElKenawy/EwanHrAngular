@@ -3,13 +3,14 @@ import { CustomerAccountService } from "../customer-account.service";
 import { DatePipe } from "@angular/common";
 import { ActivatedRoute } from "@angular/router";
 import { IServiceResult } from "@shared/interfaces/results";
-import { GlobalService } from "@shared/services/global.service";
+import { GlobalService, MessageType } from "@shared/services/global.service";
 import { CustomReportComponent } from "@shared/components/reporting/custom-report/custom-report.component";
 import { Operators } from "@shared/models/Operators";
 import { FieldTypesEnum } from "@shared/models/dynamic-fields";
 import { CustomerAccountModel } from "../../models/customer-account/customer-account.model";
 import { CostCenterService } from "@shared/services/cost-center.service";
 import { CustomerDetailsPageModel } from "../../models/customer-account/customer-details-page.model";
+import { SendCustomerSMSModel } from "../../models/customer-account/send-customer-sms.model";
 declare let Swal: any;
 
 @Component({
@@ -19,34 +20,42 @@ declare let Swal: any;
 })
 export class DetailsCustomerAccountComponent implements OnInit {
   viewModel: CustomerDetailsPageModel;
-  progressSpinner: boolean;
-  isLoading: boolean;
+
+  customerCode: string;
+  costCenter: string;
+
   debitCols: any[] = [];
   creditCols: any[] = [];
   logCols: any[] = [];
   filteredArray: any[];
-  customerId: number;
   costCenters: any[] = [];
   selectedContract: any;
   showExtentionMessage: boolean = false;
   showNotification: boolean = false;
-  contractId: number;
+
   showReport: boolean = false;
-  sectorTypeId:string;
+  sectorTypeId: string;
+  customerData: any;
+  customerId: number;
+  showModal: boolean = false;
+  message: string = "";
+  notificationType: string = "";
 
   constructor(
     private _customerAccountService: CustomerAccountService,
     private _globalService: GlobalService,
     private _route: ActivatedRoute,
     private _costCenterService: CostCenterService,
-  ) {
-      this.customerId = _route.snapshot.params['id'];
-      this.sectorTypeId = this._globalService.getSectorType();
-      this.getCustomerData(this.customerId);
-
-  }
+  ) { }
 
   ngOnInit() {
+    this.customerId = this._route.snapshot.params['id'];
+    this.sectorTypeId = this._globalService.getSectorType();
+    this.getDetails(this.customerId, '');
+    this.defCols();
+  }
+
+  defCols() {
     this.debitCols = [
       {
         field: "code",
@@ -128,16 +137,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
     ];
   }
 
-  getCustomerData(customerId) {
-    this._customerAccountService.details(this.customerId,'',this.sectorTypeId).subscribe(
-      data=>{
-        this.getCostCenters(data.customerAccount.code)
-        this.viewModel = data;
-      }
-    );
-  }
-
-  getCostCenters(code:string){
+  getCostCenters(code: string) {
     this._costCenterService
       .getAll(code)
       .subscribe((result: any) => {
@@ -168,16 +168,18 @@ export class DetailsCustomerAccountComponent implements OnInit {
   }
 
   onSelectContract(event) {
-    this._customerAccountService
-        .details(this.customerId,event?.entityCode,this.sectorTypeId)
-        .subscribe(
-          (result:CustomerDetailsPageModel) =>{
-            this.viewModel = result;
-      }
-    )
-  }
 
-  showModal: boolean = false;
+    if (event.entityCode === "All" || event.entityCode === "الكل") {
+      this.costCenter = null;
+      this.showReport = false;
+    } else {
+      this.costCenter = event?.entityCode;
+      this.showReport = true;
+    }
+
+    this.getDetails(this.customerId, event?.entityCode)
+
+  }
 
   openModal() {
     this.showModal = true;
@@ -197,190 +199,158 @@ export class DetailsCustomerAccountComponent implements OnInit {
     }
   }
 
-  // getDetails(customerId: number, contractId: number, fromSms?: boolean) {
-  //   debugger
-  //   if (contractId && customerId) {
-  //     this.reset();
+  getDetails(customerId: number, contractId: string) {
 
-  //     this.isLoading = true;
-  //     this._customerAccountService.getDetails(customerId, contractId).subscribe(
-  //       (result: IServiceResult) => {
-  //         if (result.isSuccess) {
+    if (customerId) {
+      this.reset();
 
-  //           this.viewModel = result.data;
+      this._customerAccountService.details(customerId, contractId, this.sectorTypeId).subscribe(
+        (result: CustomerDetailsPageModel) => {
+          if (result) {
 
-  //           if (this.viewModel.IsExtentionContract)
-  //             this.showExtentionMessage = true;
-  //           else this.showExtentionMessage = false;
+            this.viewModel = result;
+            this.customerCode = this.viewModel?.customerAccount?.code;
+            this.getCostCenters(this.viewModel?.customerAccount?.code)
+            if (this.viewModel.isExtentionContract)
+              this.showExtentionMessage = true;
+            else this.showExtentionMessage = false;
+            let debitValue =
+              this.viewModel && this.viewModel.customerAccount
+                ? Number(this.viewModel.customerAccount.debitBalance)
+                : 0;
+            let creditValue =
+              this.viewModel && this.viewModel.customerAccount
+                ? Number(this.viewModel.customerAccount.creditBalance)
+                : 0;
+            if (debitValue <= creditValue) {
+              this.showNotification = false;
+            } else {
+              this.showNotification = true;
+            }
+          }
+        }
+      );
+    }
+  }
 
-  //           this.isLoading = false;
 
-  //           let debitValue =
-  //             this.viewModel && this.viewModel.CustomerAccount
-  //               ? Number(this.viewModel.CustomerAccount.DebitBalance)
-  //               : 0;
-  //           let creditValue =
-  //             this.viewModel && this.viewModel.CustomerAccount
-  //               ? Number(this.viewModel.CustomerAccount.CreditBalance)
-  //               : 0;
-  //           if (debitValue <= creditValue) {
-  //             this.showNotification = false;
-  //           } else {
-  //             this.showNotification = true;
-  //           }
-  //           if (fromSms) {
-  //             if (this.notificationType.toLowerCase() === "noify1") {
-  //               this.message = this.getMessage1();
-  //             } else if (this.notificationType.toLowerCase() === "noify2") {
-  //               this.message = this.getMessage2();
-  //             } else {
-  //               this.message = this.getMessage3();
-  //             }
+  getSMSMessage(notificationType: string) {
 
-  //             Swal.fire({
-  //               title: this.message,
-  //               type: "warning",
-  //               showCancelButton: true,
-  //               confirmButtonText:
-  //                 this._globalService.languageGetCurrent === "ar"
-  //                   ? "إرسال"
-  //                   : "Send",
-  //               cancelButtonText:
-  //                 this._globalService.languageGetCurrent === "ar"
-  //                   ? "إلغاء"
-  //                   : "Cancel",
-  //             }).then((result) => {
-  //               if (result.value) {
-  //                 this.sentSms(this.notificationType);
-  //               }
-  //             });
-  //           }
-  //         }
-  //       },
-  //       () => (this.isLoading = false),
-  //       () => (this.isLoading = false)
-  //     );
-  //   }
-  // }
+    if (notificationType.toLowerCase() === "noify1") {
+      this.notificationType = "noify1";
+      this.getMessage(1);
+    } else if (notificationType.toLowerCase() === "noify2") {
+      this.notificationType = "noify2";
+      this.getMessage(2);
+    } else {
+      this.notificationType = "noify3";
+      this.getMessage(3);
+    }
 
-  // message: string = "";
-  // notificationType: string = "";
-  // sendSMSMessage(notificationType: string) {
-  //   this.notificationType = notificationType;
-  //   if (this.selectedContract.Id === "الكل") {
-  //     this.getDetails(this.customerId, null, true);
-  //   }
-  //   this.getDetails(this.customerId, this.selectedContract.Id, true);
-  // }
+  }
 
-  // sentSms(notificationType: string) {
+  sentSms(notificationType: string) {
 
-  //   let message = "";
-  //   if (notificationType.toLowerCase() === "noify1") {
-  //     message = this.getMessage1();
-  //   } else if (notificationType.toLowerCase() === "noify2") {
-  //     message = this.getMessage2();
-  //   } else {
-  //     message = this.getMessage3();
-  //   }
+    let entityCode = this.selectedContract?.entityCode ? this.selectedContract?.entityCode : '';
 
-  //   let notificationTypeSelected = notificationType.toUpperCase();
-  //   let customerNotification = {
-  //     Message: message,
-  //     NotificationType: notificationTypeSelected,
-  //     CustomerId: 0,
-  //     DebitValue: 0,
-  //     CreditValue: 0,
-  //     ContractId:
-  //       this.selectedContract.SegmentId === "All" ||
-  //       this.selectedContract.SegmentId === "الكل"
-  //         ? null
-  //         : this.selectedContract.Id,
-  //   };
+    this._customerAccountService.isCustomerBalanceDebit(this.viewModel.customerAccount.id, entityCode).subscribe(
+      res => {
+        if (res) {
+          let notificationTypeSelected = notificationType.toUpperCase();
+          let customerNotification: SendCustomerSMSModel = {
+            message: this.message,
+            notificationType: notificationTypeSelected,
+            customerId: this.viewModel.customerAccount.id,
+            customerCode:this.viewModel.customerAccount.code,
+            debitValue: this.viewModel && this.viewModel.customerAccount
+              ? Number(this.viewModel.customerAccount.debitBalance)
+              : 0,
+            creditValue: this.viewModel && this.viewModel.customerAccount
+              ? Number(this.viewModel.customerAccount.creditBalance)
+              : 0,
+            contractId: entityCode
+          };
 
-  //   customerNotification.CustomerId = this.customerData
-  //     ? this.customerData.Id
-  //     : "";
-  //   customerNotification.DebitValue =
-  //     this.viewModel && this.viewModel.CustomerAccount
-  //       ? Number(this.viewModel.CustomerAccount.DebitBalance)
-  //       : 0;
-  //   customerNotification.CreditValue =
-  //     this.viewModel && this.viewModel.CustomerAccount
-  //       ? Number(this.viewModel.CustomerAccount.CreditBalance)
-  //       : 0;
+          this._customerAccountService
+            .sendCustomerAccountSMS(customerNotification)
+            .subscribe((res) => {
+              if(res){
+                this._globalService.messageAlert(
+                  MessageType.Success,
+                  this._globalService.translateWordByKey(
+                    "App.Messages.SentSuccessFully"
+                  )
+                );
+              }else{
 
-  //   this.progressSpinner = true;
+                this._globalService.messageAlert(
+                  MessageType.Error,
+                  this._globalService.translateWordByKey(
+                    "App.Messages.Error"
+                  ));
+              }
+            });
+        } else {
 
-  //   this._customerAccountService
-  //     .SendCustomerAccountSMS(customerNotification)
-  //     .subscribe((res) => {
-  //       if (res && res.isSuccess) {
-  //         this.progressSpinner = false;
-  //       } else {
-  //         this.progressSpinner = false;
-  //       }
-  //       () => {
-  //         this.progressSpinner = false;
-  //       };
-  //       () => {
-  //         this.progressSpinner = false;
-  //       };
-  //     });
-  // }
+          this.showNotification = false;
+          this._globalService.messageAlert(
+            MessageType.Error,
+            this._globalService.translateWordByKey(
+              "App.Messages.Error"
+            )
+          );
+        }
+      }
+
+    )
+
+
+  }
 
   onCancel(event) {
     this.showModal = false;
   }
 
-  // getMessage1() {
-  //   let contId: string = "";
+  getMessage(notificationNumber) {
 
-  //   contId =
-  //     this.selectedContract.SegmentId === "All" || this.selectedContract.SegmentId === "الكل"
-  //       ? ""
-  //       : `رقم العقد : (${this.selectedContract.SegmentId})`;
-  //   return `عميلنا العزيز / ${this.customerData.Name}
-  //   لديك فواتير لم تسدد بعد، يُرجى سداد المبلغ المستحق
-  //   ${contId}
-  //   مبلغ المديونية: ( ${this.viewModel.CustomerAccount.CurrentBalance} ريال)
-  //    شركة ايوان للموارد البشرية
-  //   بنك الراجحى: رقم حساب 678608010051770 - رقم الابيان SA7280000678608010051770
-  //   شاكرين لك: خدمة العملاء (920007653)`;
-  // }
+    let entityCode = this.selectedContract?.entityCode ? this.selectedContract?.entityCode : null;
+    this._customerAccountService.getNotificationMessage(
+      {
+        notificationNumber: notificationNumber,
+        customerName: this.viewModel?.customerAccount?.name,
+        entityCode: entityCode,
+        balance: this.viewModel.customerAccount.currentBalance,
+        customerId: this.viewModel.customerAccount.id
+      })
+      .subscribe(
+        (res) => {
+          this.message = res;
 
-  getMessage2() {
-    let contId: string = "";
+          Swal.fire({
+            title: this.message,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonText:
+              this._globalService.languageGetCurrent === "ar"
+                ? "إرسال"
+                : "Send",
+            cancelButtonText:
+              this._globalService.languageGetCurrent === "ar"
+                ? "إلغاء"
+                : "Cancel",
+          }).then((result) => {
+            if (result.value) {
+              this.sentSms(this.notificationType);
+            }
+          });
+        }
+      )
 
-    contId =
-      this.selectedContract.SegmentId === "All" || this.selectedContract.SegmentId === "الكل"
-        ? ""
-        : `رقم العقد : (${this.selectedContract.SegmentId})`;
-
-    return `عزيزى العميل / ${this.customerData.Name}
-    لديك فاتورة مستحقة متأخرة لم يتم سدادها ، فضلاً سداد المبلغ فى مدة اقصاها ثلاثة ايام تجنباً لتحويل العقد لقسم الشؤون القانونية
-    ${contId}
-    مبلغ المديونية: ( ${this.viewModel.CustomerAccount.CurrentBalance} ريال)
-     شركة ايوان للموارد البشرية
-    بنك الراجحى: رقم حساب 678608010051770 - رقم الابيان SA7280000678608010051770
-    شاكرين لك: خدمة العملاء (920007653)`;
+    return this.message;
   }
 
-  getMessage3() {
-    let contId: string = "";
 
-    contId =
-      this.selectedContract.SegmentId === "All" || this.selectedContract.SegmentId === "الكل"
-        ? ""
-        : `رقم العقد : (${this.selectedContract.SegmentId})`;
-    return `عزيزى العميل / ${this.customerData.Name}
-    لديك فاتورة مستحقة متأخرة لم يتم سدادها ، فضلاً سداد المبلغ فى مدة أقصاها 48 ساعة تجنباً لإتخاذ الإجراءات القانونية
-    ${contId}
-    مبلغ المديونية: ( ${this.viewModel.CustomerAccount.CurrentBalance} ريال)
-     شركة ايوان للموارد البشرية
-    بنك الراجحى: رقم حساب 678608010051770 - رقم الابيان SA7280000678608010051770
-    شاكرين لك: خدمة العملاء (920007653) `;
-  }
+
 
   @ViewChild(CustomReportComponent) report: CustomReportComponent;
 

@@ -8,6 +8,7 @@ import { IServiceResult, IResultVM } from '@shared/interfaces/results';
 import { catchError, map } from 'rxjs/operators';
 import { CustomerAccountModel } from '../models/customer-account/customer-account.model';
 import { CustomerDetailsPageModel } from '../models/customer-account/customer-details-page.model';
+import { GetMessageModel } from '../models/customer-account/get-Message.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,77 +18,30 @@ export class CustomerAccountService {
   constructor(
     private _http: HttpClient,
     private _globalService: GlobalService
-  ) {}
+  ) { }
 
 
-  SendCustomerAccountSMS(postedModel: any): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return this._http.post(`${this.serviceUrl}/SendCustomerAccountSMS`, postedModel).pipe(
-      catchError(this._globalService.errorHandler),
-      map((resultVM: IResultVM) => {
-        serviceResult.isSuccess = (!resultVM)? false :resultVM.IsSuccess;
-        if (resultVM.IsSuccess) {
-          serviceResult.data = resultVM.Data;
-          this._globalService.messageAlert(
-            MessageType.Success,
-            this._globalService.translateWordByKey(
-              "App.Messages.SentSuccessFully"
-            )
-          );
-          return serviceResult;
-        }else if (resultVM.FailedReason === "invalid-credit") {
-          this._globalService.messageAlert(
-            MessageType.Error,
-            "Receipts.Messages.invalidCredit",
-            true
-          );
-      }
-      else if (resultVM.FailedReason === "invalid-debit") {
-        this._globalService.messageAlert(
-          MessageType.Error,
-          "Receipts.Messages.invalidDebit",
-          true
-        );
-    }
-    }
-      )
-    );
+  sendCustomerAccountSMS(postedModel: any): Observable<any> {
+    return this._http.post(`${this.serviceUrl}/SendCustomerAccountSMS`, postedModel)
   }
 
-  getDetails(id: number, contractId: number): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return this._http
-      .get(`${this.serviceUrl}/GetDetailsPage?contractId=${contractId}&id=${id}`)
-      .pipe(
-        catchError(this._globalService.errorHandler),
-        map((resultVM: IResultVM) => {
-          if (resultVM.IsSuccess) {
-            serviceResult.data = resultVM.Data;
-            serviceResult.isSuccess = resultVM.IsSuccess;
-            return serviceResult;
-          }
-        })
-      );
+
+  getCustomerAccountLoggers(customerCode: string, costCenter: string): Observable<any> {
+    return this._http.get(`${this.serviceUrl}/GetCustomerAccountLoggers?customerCode=${customerCode}&costCenter=${costCenter}`);
   }
 
-  getCustomerAccountLoggers(id: number,contractId:number): Observable<IServiceResult> {
-    const serviceResult: IServiceResult = { isSuccess: null, data: null };
-    return this._http
-      .get(`${this.serviceUrl}/GetCustomerAccountLoggers?contractId=${contractId}&id=${id}`)
-      .pipe(
-        catchError(this._globalService.errorHandler),
-        map((resultVM: IResultVM) => {
-          if (resultVM.IsSuccess) {
-            serviceResult.data = resultVM.Data;
-            serviceResult.isSuccess = resultVM.IsSuccess;
-            return serviceResult;
-          }
-        })
-      );
-  }
-
-  details(id:number,entityCode:string,sectorTypeId:string):Observable<CustomerDetailsPageModel>{
+  details(id: number, entityCode: string, sectorTypeId: string): Observable<CustomerDetailsPageModel> {
     return this._http.get<CustomerDetailsPageModel>(`${this.serviceUrl}/Details?id=${id}&entityCode=${entityCode}&sectorTypeId=${sectorTypeId}`)
   }
+
+  getNotificationMessage(getMessageModel:GetMessageModel):Observable<string>{
+    return this._http.post<string>(`${this.serviceUrl}/GetNotificationMessage`,getMessageModel)
+  }
+
+  isCustomerBalanceDebit(customerId:number,entityCode:string):Observable<Boolean>{
+    return this._http.get<Boolean>(`${this.serviceUrl}/IsCustomerBalanceDebit?customerId=${customerId}&entityCode=${entityCode}`)
+  }
+
+
 
 }

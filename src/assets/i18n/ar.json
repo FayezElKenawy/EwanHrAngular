@@ -29,6 +29,7 @@
             "businessSectorDesc":"النظام المالى لقطاع الأعمال"
         },
         "Fields": {
+            "CustomerNotifications":"إشعارات العميل",
             "SearchAllBranch": "البحث فى جميع الفروع",
             "Qualifications": "المؤهلات",
             "NumberOfChildren": "عدد الاطفال",
