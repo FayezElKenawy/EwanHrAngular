@@ -11,6 +11,7 @@ import { CustomerAccountModel } from "../../models/customer-account/customer-acc
 import { CostCenterService } from "@shared/services/cost-center.service";
 import { CustomerDetailsPageModel } from "../../models/customer-account/customer-details-page.model";
 import { SendCustomerSMSModel } from "../../models/customer-account/send-customer-sms.model";
+import { NotificationType } from "../enum/notification-type.enum";
 declare let Swal: any;
 
 @Component({
@@ -49,6 +50,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    
     this.customerId = this._route.snapshot.params['id'];
     this.sectorTypeId = this._globalService.getSectorType();
     this.getDetails(this.customerId, '');
@@ -200,14 +202,11 @@ export class DetailsCustomerAccountComponent implements OnInit {
   }
 
   getDetails(customerId: number, contractId: string) {
-
     if (customerId) {
       this.reset();
-
       this._customerAccountService.details(customerId, contractId, this.sectorTypeId).subscribe(
         (result: CustomerDetailsPageModel) => {
           if (result) {
-
             this.viewModel = result;
             this.customerCode = this.viewModel?.customerAccount?.code;
             this.getCostCenters(this.viewModel?.customerAccount?.code)
@@ -233,90 +232,61 @@ export class DetailsCustomerAccountComponent implements OnInit {
     }
   }
 
-
   getSMSMessage(notificationType: string) {
-
-    if (notificationType.toLowerCase() === "noify1") {
-      this.notificationType = "noify1";
-      this.getMessage(1);
-    } else if (notificationType.toLowerCase() === "noify2") {
-      this.notificationType = "noify2";
-      this.getMessage(2);
-    } else {
-      this.notificationType = "noify3";
-      this.getMessage(3);
-    }
-
+    this.notificationType = notificationType;
+    this.getMessage();
   }
 
   sentSms(notificationType: string) {
 
     let entityCode = this.selectedContract?.entityCode ? this.selectedContract?.entityCode : '';
 
-    this._customerAccountService.isCustomerBalanceDebit(this.viewModel.customerAccount.id, entityCode).subscribe(
-      res => {
+    let notificationTypeSelected = notificationType.toUpperCase();
+    let customerNotification: SendCustomerSMSModel = {
+      message: this.message,
+      notificationType: notificationTypeSelected,
+      customerId: this.viewModel.customerAccount.id,
+      customerCode: this.viewModel.customerAccount.code,
+      debitValue: this.viewModel && this.viewModel.customerAccount
+        ? Number(this.viewModel.customerAccount.debitBalance)
+        : 0,
+      creditValue: this.viewModel && this.viewModel.customerAccount
+        ? Number(this.viewModel.customerAccount.creditBalance)
+        : 0,
+      entityCode: entityCode,
+      balance: this.viewModel.customerAccount.currentBalance
+    };
+
+    this._customerAccountService
+      .sendCustomerAccountSMS(customerNotification)
+      .subscribe((res) => {
         if (res) {
-          let notificationTypeSelected = notificationType.toUpperCase();
-          let customerNotification: SendCustomerSMSModel = {
-            message: this.message,
-            notificationType: notificationTypeSelected,
-            customerId: this.viewModel.customerAccount.id,
-            customerCode:this.viewModel.customerAccount.code,
-            debitValue: this.viewModel && this.viewModel.customerAccount
-              ? Number(this.viewModel.customerAccount.debitBalance)
-              : 0,
-            creditValue: this.viewModel && this.viewModel.customerAccount
-              ? Number(this.viewModel.customerAccount.creditBalance)
-              : 0,
-            contractId: entityCode
-          };
-
-          this._customerAccountService
-            .sendCustomerAccountSMS(customerNotification)
-            .subscribe((res) => {
-              if(res){
-                this._globalService.messageAlert(
-                  MessageType.Success,
-                  this._globalService.translateWordByKey(
-                    "App.Messages.SentSuccessFully"
-                  )
-                );
-              }else{
-
-                this._globalService.messageAlert(
-                  MessageType.Error,
-                  this._globalService.translateWordByKey(
-                    "App.Messages.Error"
-                  ));
-              }
-            });
+          this._globalService.messageAlert(
+            MessageType.Success,
+            this._globalService.translateWordByKey(
+              "App.Messages.SentSuccessFully"
+            )
+          );
         } else {
 
-          this.showNotification = false;
           this._globalService.messageAlert(
             MessageType.Error,
             this._globalService.translateWordByKey(
               "App.Messages.Error"
-            )
-          );
-        }
-      }
-
-    )
-
-
+            ));
+        }})
   }
 
   onCancel(event) {
     this.showModal = false;
   }
 
-  getMessage(notificationNumber) {
+  getMessage() {
 
     let entityCode = this.selectedContract?.entityCode ? this.selectedContract?.entityCode : null;
     this._customerAccountService.getNotificationMessage(
       {
-        notificationNumber: notificationNumber,
+        notificationType: this.notificationType,
         customerName: this.viewModel?.customerAccount?.name,
         entityCode: entityCode,
         balance: this.viewModel.customerAccount.currentBalance,

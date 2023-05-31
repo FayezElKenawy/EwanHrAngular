@@ -10,7 +10,7 @@ import { CustomerAccountService } from "../customer-account.service";
 })
 export class CustomerAccountLogComponent implements OnInit {
 
-  @Input("costCenter") costCenter: string;
+  @Input("costCenter") costCenter: string='';
   @Input("customerCode") customerCode: string;
 
   @Output() cancel = new EventEmitter<boolean>();

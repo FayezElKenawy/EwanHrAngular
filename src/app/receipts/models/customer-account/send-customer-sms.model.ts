@@ -5,5 +5,7 @@ export interface SendCustomerSMSModel {
   customerCode: string;
   debitValue: number;
   creditValue: number;
-  contractId: string;
+  contractId?: number;
+  entityCode:string
+  balance:number;
 }

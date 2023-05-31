@@ -1,5 +1,5 @@
 export interface GetMessageModel {
-  notificationNumber: number;
+  notificationType: string;
   entityCode: string;
   customerName: string;
   balance: number;
