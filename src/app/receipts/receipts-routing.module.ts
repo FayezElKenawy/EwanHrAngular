@@ -2,11 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AboutComponent } from '../home/dashboard/dashboard.component';
 import { CoreLayoutComponent } from '@shared/layouts/core-layout/core-layout.component';
-import { ListCreditInvoicesComponent } from './credit-invoices/list-credit-invoices/list-credit-invoices.component';
 import { ListReturnedPaymentReceiptsComponent } from './returned-payment-receipts/list-returned-payment-receipts/list-returned-payment-receipts.component';
 import { CreateReturnedPaymentReceiptComponent } from './returned-payment-receipts/create-returned-payment-receipt/create-returned-payment-receipt.component';
 import { EditReturnedPaymentReceiptComponent } from './returned-payment-receipts/edit-returned-payment-receipt/edit-returned-payment-receipt.component';
-import { DetailCreditInvoiceComponent } from './credit-invoices/detail-credit-invoice/detail-credit-invoice.component';
 import { ListCustomerAccountComponent } from './customer-accounts/list-customer-account/list-customer-account.component';
 import { DetailsCustomerAccountComponent } from './customer-accounts/details-customer-account/details-customer-account.component';
 import { ListPaymentReceiptsComponent } from './components/payment-receipts/list-payment-receipts/list-payment-receipts.component';
@@ -16,6 +14,10 @@ import { ListCreditNotesComponent } from './components/credit-notes/list-credit-
 import { CreateCreditNoteComponent } from './components/credit-notes/create-credit-note/create-credit-note.component';
 import { ListDebitNotesComponent } from './components/debit-notes/list-debit-notes/list-debit-notes.component';
 import { CreateDebitNoteComponent } from './components/debit-notes/create-debit-note/create-debit-note.component';
+import { DetailsCreditNoteComponent } from './components/credit-notes/details-credit-note/details-credit-note.component';
+import { DetailsDebitNoteComponent } from './components/debit-notes/details-debit-note/details-debit-note.component';
+import { DetailCreditInvoiceComponent } from './components/credit-invoices/detail-credit-invoice/detail-credit-invoice.component';
+import { ListCreditInvoicesComponent } from './components/credit-invoices/list-credit-invoices/list-credit-invoices.component';
 
 const routes: Routes = [
   {
@@ -24,7 +26,7 @@ const routes: Routes = [
       { path: '', component: AboutComponent },
       { path: 'credit-invoices', component: ListCreditInvoicesComponent },
       {
-        path: 'details-credit-invoices',
+        path: 'details-credit-invoices/:id',
         component: DetailCreditInvoiceComponent,
       },
       {
@@ -36,8 +38,16 @@ const routes: Routes = [
         component: CreateCreditNoteComponent,
       },
       {
+        path: 'details-credit-note/:id',
+        component: DetailsCreditNoteComponent,
+      },
+      {
         path: 'debit-notes',
         component: ListDebitNotesComponent,
+      },
+      {
+        path: 'details-debit-note/:id',
+        component: DetailsDebitNoteComponent,
       },
       {
         path: 'payment-receipts',

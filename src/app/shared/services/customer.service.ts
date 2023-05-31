@@ -20,7 +20,7 @@ export class CustomerService {
   }
 
   getCustomersBySectorId(sectorId:string, searchTerm:string):Observable<any>{
-    return this._http.get<any>(`${this.serviceUrl}/GetCustomersBySectorId`, {
+    return this._http.get<any>(`${this.serviceUrl}/GetSelectListCustomersBySectorId`, {
       params: { sectorId: sectorId , searchTerm: searchTerm },
     });
   }

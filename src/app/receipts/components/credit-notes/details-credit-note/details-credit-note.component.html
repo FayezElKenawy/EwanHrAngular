@@ -1,0 +1,370 @@
+<div class="details py-0">
+  <div class="m-portlet m-0">
+    <!-- BEGIN: Subheader -->
+
+    <div class="m-portlet__head">
+      <div class="m-portlet__head-caption">
+        <div class="m-portlet__head-title">
+          <h6 class="m-portlet__head-text">
+            <a routerLink="/finance/receipts/credit-notes" class="back-icon">
+              <i class="fa fa-arrow-alt-circle-right"></i>
+            </a>
+            {{ "Receipts.Titles.CreditNotesDetailsPage" | translate }}
+          </h6>
+        </div>
+      </div>
+    </div>
+
+    <div class="m-portlet__body">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <div class="row mx-0 px-0">
+              <!---------------------------- تفاصيل الفاتوره --------------------->
+              <div class="col-12 tableHeader">
+                <label class="form-control-label py-3">{{
+                  "Receipts.Titles.CreditNotesDetailsPage" | translate
+                }}</label>
+              </div>
+              <div class="tableBody col-12 py-2">
+                <div class="row mx-0 details-card">
+                  <div class="details-label">
+                    <span>{{
+                      "Receipts.Fields.CreditNoteId" | translate
+                    }}</span>
+                  </div>
+                  <div class="details-value">
+                    <span>{{ viewModel?.code }}</span>
+                  </div>
+                  <div class="details-label">
+                    <span>{{ "Receipts.Fields.ReciptDate" | translate }}</span>
+                  </div>
+                  <div class="details-value">
+                    <span>{{
+                      viewModel?.documentDate | date : "yy-mm-dd"
+                    }}</span>
+                  </div>
+
+                  <div class="details-label">
+                    <span>{{
+                      "Receipts.Fields.InvoiceRefNumber" | translate
+                    }}</span>
+                  </div>
+                  <div class="details-value">
+                    <span>{{ viewModel?.refNumber }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!---------------------------- بيانات العميل --------------------->
+              <div class="col-12 tableHeader">
+                <label class="form-control-label py-3"
+                  >{{
+                    "Receipts.Titles.CreditInvoicesCustomerData" | translate
+                  }}
+                </label>
+              </div>
+
+              <div class="tableBody col-12 py-2">
+                <div class="row mx-0 details-card">
+                  <!-- رقم العميل -->
+                  <div class="details-label">
+                    <span>{{ "Receipts.Fields.CustomerId" | translate }}</span>
+                  </div>
+                  <div class="details-value">
+                    <span>{{ viewModel?.customerCode }}</span>
+                  </div>
+
+                  <!-- اسم العميل -->
+                  <div class="details-label">
+                    <span>{{
+                      "Receipts.Fields.CustomerName" | translate
+                    }}</span>
+                  </div>
+                  <div class="details-value">
+                    <span>{{ viewModel?.customerName }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!---------------------------- بيانات العقد --------------------->
+              <div class="col-12 tableHeader">
+                <label class="form-control-label py-3"
+                  >{{ "Receipts.Fields.CostCenter" | translate }}</label
+                >
+              </div>
+              <div class="tableBody col-12 py-2">
+                <div class="row mx-0 details-card">
+                  <!-- رقم العقد -->
+                  <div class="details-label">
+                    <span>{{ "Receipts.Fields.CostCenter" | translate }}</span>
+                  </div>
+                  <div class="details-value">
+                    <span>{{ viewModel?.entityCode }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!---------------------------- البنود --------------------->
+              <div class="col-12 tableHeader">
+                <label class="form-control-label py-3">
+                  {{ "Receipts.Titles.CreditInvoicesItemsData" | translate }}
+                </label>
+              </div>
+              <div class="tableBody col-12 py-2">
+                <div class="row mx-0 mb-1 box-shadow custom-details-card">
+                  <p-table
+                    [columns]="costElementCols"
+                    [value]="viewModel?.costElements"
+                    [paginator]="true"
+                    [rows]="5"
+                    dataKey="Id"
+                    [totalRecords]="viewModel?.costElements.length"
+                    [autoLayout]="true"
+                    [responsive]="true"
+                    class="full-width"
+                  >
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <th
+                          *ngFor="let col of columns"
+                          [pSortableColumn]="col.field"
+                        >
+                          {{ col.header | translate }}
+                          <!-- <p-sortIcon [field]="col.field"></p-sortIcon> -->
+                        </th>
+                      </tr>
+                    </ng-template>
+                    <ng-template
+                      pTemplate="body"
+                      let-rowData
+                      let-columns="columns"
+                    >
+                      <tr [pSelectableRow]="rowData">
+                        <td *ngFor="let col of columns">
+                          <ng-container
+                            *ngIf="
+                              col.field === 'ActionButtons';
+                              else render_data_field
+                            "
+                          ></ng-container>
+
+                          <ng-template #render_data_field>
+                            <ng-container
+                              *ngIf="
+                                col.field === 'Amount';
+                                then editable_col;
+                                else fixed_col
+                              "
+                            ></ng-container>
+                            <ng-template #fixed_col>
+                              <ng-container
+                                *ngIf="col.field === 'NonDeductible'"
+                              >
+                                <input
+                                  type="checkbox"
+                                  [(ngModel)]="rowData[col.field]"
+                                  [ngModelOptions]="{ standalone: true }"
+                                />
+                              </ng-container>
+                              <ng-container
+                                *ngIf="col.field !== 'NonDeductible'"
+                              >
+                                {{ rowData[col.field] }}
+                              </ng-container>
+                            </ng-template>
+                            <ng-template #editable_col>
+                              <p-cellEditor
+                                pEditableColumn
+                                [pEditableColumn]="rowData['Id']"
+                              >
+                                <ng-template pTemplate="input">
+                                  <input
+                                    class="form-control"
+                                    pInputText
+                                    [ngModelOptions]="{ standalone: true }"
+                                    type="number"
+                                    min="0"
+                                    [(ngModel)]="rowData[col.field]"
+                                  />
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                  {{ rowData[col.field] }}
+                                  <a
+                                    class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill"
+                                    title="{{ 'App.Buttons.Edit' | translate }}"
+                                  >
+                                    <i class="la la-edit"></i>
+                                  </a>
+                                </ng-template>
+                              </p-cellEditor>
+                            </ng-template>
+                          </ng-template>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage" let-columns>
+                      <tr *ngIf="viewModel?.costElements.length === 0">
+                        <td
+                          [attr.colspan]="columns?.length"
+                          class="empty-grid-table"
+                        >
+                          <span class="emp-msg">
+                            {{ "App.Fields.NoData" | translate }}
+                          </span>
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+                <div class="row details-card py-2 mx-0 px-0">
+                  <!-- اجمالي البنود -->
+                  <div class="details-label">
+                    <span>{{ "Receipts.Fields.AllItems" | translate }}</span>
+                  </div>
+                  <div class="details-value">
+                    <span>{{
+                      viewModel?.netValueAfterTax | currency : " "
+                    }}</span>
+                  </div>
+
+                  <div class="details-label">
+                    <span>{{
+                      "Receipts.Fields.InvoiceGetPaid" | translate
+                    }}</span>
+                  </div>
+                  <div class="details-value">
+                    <span>{{ viewModel?.tolalPaid | currency : " " }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 tableHeader">
+                <label class="form-control-label py-3">
+                  {{ "Receipts.Titles.PaymentSection" | translate }}
+                </label>
+              </div>
+
+              <div class="tableBody col-12 py-2">
+                <div class="row mx-0 mb-1 box-shadow custom-details-card">
+                  <p-table
+                    [columns]="settlementCols"
+                    [value]="viewModel?.paymentsTransactions"
+                    [paginator]="true"
+                    [rows]="5"
+                    dataKey="DebitReceivableId"
+                    [totalRecords]="viewModel?.paymentsTransactions.length"
+                    [autoLayout]="true"
+                    [responsive]="true"
+                    class="full-width"
+                  >
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <th
+                          *ngFor="let col of columns"
+                          [pSortableColumn]="col.field"
+                          [hidden]="col.hidden"
+                        >
+                          {{ col.header | translate }}
+                          <!-- <p-sortIcon [field]="col.field"></p-sortIcon> -->
+                        </th>
+                      </tr>
+                    </ng-template>
+                    <ng-template
+                      pTemplate="body"
+                      let-rowData
+                      let-columns="columns"
+                    >
+                      <tr [pSelectableRow]="rowData">
+                        <td *ngFor="let col of columns" [hidden]="col.hidden">
+                          <ng-container
+                            *ngIf="
+                              col.field === 'ActionButtons';
+                              else render_data_field
+                            "
+                          >
+                          </ng-container>
+
+                          <ng-template #render_data_field>
+                            <ng-container
+                              *ngIf="
+                                col.field === 'PaidAmount';
+                                then editable_col;
+                                else fixed_col
+                              "
+                            >
+                            </ng-container>
+                            <ng-template #fixed_col>
+                              {{
+                                !col.pipe
+                                  ? rowData[col.field]
+                                  : col.pipe === "number"
+                                  ? (rowData[col.field]
+                                    | number : col.pipeFormat)
+                                  : rowData[col.field]
+                              }}
+                            </ng-template>
+                            <ng-template #editable_col>
+                              <p-cellEditor
+                                pEditableColumn
+                                [pEditableColumn]="rowData"
+                              >
+                                <ng-template pTemplate="input">
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    [(ngModel)]="rowData[col.field]"
+                                  />
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                  {{ rowData[col.field] }}
+                                  <a
+                                    class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill"
+                                    title="{{ 'App.Buttons.Edit' | translate }}"
+                                  >
+                                    <i class="la la-edit"></i>
+                                  </a>
+                                </ng-template>
+                              </p-cellEditor>
+                            </ng-template>
+                          </ng-template>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage" let-columns>
+                      <tr *ngIf="viewModel?.paymentsTransactions.length === 0">
+                        <td
+                          [attr.colspan]="columns?.length"
+                          class="empty-grid-table"
+                        >
+                          <span class="emp-msg">
+                            {{ "App.Fields.NoData" | translate }}
+                          </span>
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+
+                <!-- ArabicRemarks -->
+                <div class="tableBody col-12 py-2" *ngIf="viewModel?.arabicRemarks.length>0">
+                  <div class="row mx-0 details-card">
+                    <!-- رقم العقد -->
+                    <div class="details-label">
+                      <span>{{
+                        "App.Fields.Notes" | translate
+                      }}</span>
+                    </div>
+                    <div class="details-value">
+                      <span>{{ viewModel?.arabicRemarks }}</span>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -8,7 +8,10 @@ import { DebitNoteService } from "src/app/receipts/services/debit-note.service";
 import { CustomerService } from "@shared/services/customer.service";
 import { CostCenterService } from "@shared/services/cost-center.service";
 import { SalesPeriodService } from "src/app/master-data/services/sales-period.service";
-import { CostElementService } from "src/app/receipts/services/cose-element.service";
+import { CostElementService } from "src/app/receipts/services/cost-element.service";
+import { GetCostCenterListModel } from "src/app/receipts/models/costCenter/cost-center.model";
+import { ColumnType } from "@shared/models/column-type.model";
+import { CreateCostElementItemModel } from 'src/app/receipts/models/costelement/create-cost-element-item.model';
 
 declare let $: any;
 
@@ -18,30 +21,31 @@ declare let $: any;
   styleUrls: ["./create-debit-note.component.scss"],
 })
 export class CreateDebitNoteComponent implements OnInit {
+
+  @Output() refresh: EventEmitter<any> = new EventEmitter();
   form: FormGroup;
 
-  viewModel: any;
+  costElementCols: ColumnType[];
+  costElements: CreateCostElementItemModel[] = [];
+  allCostElements: CreateCostElementItemModel[] = [];
+  selectedItem: CreateCostElementItemModel;
+
+  costCenters: GetCostCenterListModel[];
   filteredArray: any[];
-  submitted: Boolean;
-  progressSpinner: boolean;
-  currentYear = new Date().getFullYear() + 5;
-  Contracts: any;
-  @Output() refresh: EventEmitter<any> = new EventEmitter();
-  selectedItem: any;
-  costElementCols: any[] = [];
-  costElements: any[] = [];
-  DebitNoteCostElements: any[] = [];
-  NetVal: number;
-  NetValAfterTax: number;
+
+  netVal: number;
+  netValAfterTax: number;
   MonthlyCost: number;
-  TotalTaxAmount: number;
-  Amount: number;
-  selected: Boolean;
+  totalTaxAmount: number;
+  amount: number;
+  selected: boolean;
   ValidFromMaxDate: Date;
   ValidToMinDate: Date;
   minDateValue: any;
-  sectorId:string;
-  allCostElements:any[]=[];
+  sectorId: string;
+  submitted: boolean;
+  currentYear = new Date().getFullYear() + 5;
+
   constructor(
     private _formBuilder: FormBuilder,
     private _router: Router,
@@ -50,19 +54,19 @@ export class CreateDebitNoteComponent implements OnInit {
     private _debitNoteService: DebitNoteService,
     private _customerService: CustomerService,
     private _costCenterService: CostCenterService,
-    private _salesPeriodService: SalesPeriodService,
-    private _costElementService:CostElementService
+    private _costElementService: CostElementService
   ) { }
 
   ngOnInit() {
 
-    this.sectorId=this._globalService.getSectorType();
+    this.sectorId = this._globalService.getSectorType();
     this.createForm();
     this.defCols();
     this.getCostElements();
   }
 
   defCols() {
+
     this.costElementCols = [
       { field: "id", header: "Receipts.Fields.CostElementId" },
       {
@@ -70,16 +74,16 @@ export class CreateDebitNoteComponent implements OnInit {
         header: "Receipts.Fields.CostElementName"
       },
       {
-        field: "Amount",
+        field: "amount",
         header: "Receipts.Fields.CostElementAmount"
       },
 
       {
-        field: "TaxRatio",
+        field: "taxRatio",
         header: "Receipts.Fields.TaxRatio"
       },
       {
-        field: "TaxAmount",
+        field: "taxAmount",
         header: "Receipts.Fields.TaxAmount"
       },
       {
@@ -91,21 +95,21 @@ export class CreateDebitNoteComponent implements OnInit {
 
 
   searchCustomers(event: any) {
-      this._customerService
-        .getCustomersBySectorId(this.sectorId,event.query)
-        .subscribe((result) => {
-          this.filteredArray = [];
-          this.filteredArray = result;
-        });
+    this._customerService
+      .getCustomersBySectorId(this.sectorId, event.query)
+      .subscribe((result) => {
+        this.filteredArray = [];
+        this.filteredArray = result;
+      });
   }
 
   createForm() {
     this.form = this._formBuilder.group({
-      DocumentDate: ["", Validators.required],
-      RefNumber: [""],
-      Customer: ["", Validators.required],
-      Contract: [{ value: "", disabled: true }, Validators.required],
-      ArabicRemarks: [""],
+      documentDate: ["", Validators.required],
+      refNumber: [""],
+      customer: ["", Validators.required],
+      costCenter: [{ value: "", disabled: true }, Validators.required],
+      arabicRemarks: [""],
     });
   }
 
@@ -120,7 +124,7 @@ export class CreateDebitNoteComponent implements OnInit {
 
   createDebitNote() {
     this.submitted = true;
-    if (!this.form.controls.Contract.value) {
+    if (!this.form.controls.costCenter.value) {
       this._globalService.messageAlert(
         MessageType.Warning,
         this._globalService.translateWordByKey(
@@ -140,17 +144,17 @@ export class CreateDebitNoteComponent implements OnInit {
         return;
       }
       const debitNote = Object.assign({}, this.form.value);
-      debitNote.DocumentDate = this._datePipe.transform(
-        debitNote.DocumentDate, 'yyyy-MM-ddTHH:mm:ss'
+      debitNote.documentDate = this._datePipe.transform(
+        debitNote.documentDate, 'yyyy-MM-ddTHH:mm:ss'
       );
 
-      debitNote.CustomerId = this.form.value.Customer.id;
-      debitNote.TotalTaxAmount = this.TotalTaxAmount;
-      debitNote.NetValAfterTax = this.NetValAfterTax;
-      debitNote.NetValue = this.NetVal;
-      debitNote.CostElements = this.costElements;
-      debitNote.EntityCode = debitNote.Contract.entityCode;
-      debitNote.SectorTypeId = this.sectorId;
+      debitNote.customerId = this.form.value.customer.id;
+      debitNote.totalTaxAmount = this.totalTaxAmount;
+      debitNote.netValAfterTax = this.netValAfterTax;
+      debitNote.netValue = this.netVal;
+      debitNote.costElements = this.costElements;
+      debitNote.entityCode = debitNote.costCenter.entityCode;
+      debitNote.sectorTypeId = this.sectorId;
 
 
       this._debitNoteService.create(debitNote).subscribe(
@@ -182,16 +186,15 @@ export class CreateDebitNoteComponent implements OnInit {
 
   addCostElement() {
     this.selected = true;
-    if (this.Amount > 0 && this.selectedItem) {
+    if (this.amount > 0 && this.selectedItem) {
       if (
         this.costElements.find((e) => e.id === this.selectedItem.id) ===
         undefined
       ) {
         const costElement = Object.assign({}, this.selectedItem);
-        costElement.TaxRatio = this.selectedItem.tax.taxRatio;
-        costElement.Amount = ((this.Amount * 100) / (100 + costElement.TaxRatio)).toFixed(4);
-        costElement.TaxAmount = (this.Amount - costElement.Amount).toFixed(4);
-
+        costElement.amount = this.amount;
+        costElement.taxAmount = (this.amount * costElement.taxRatio) / 100;
+        costElement.taxRatio = costElement.taxRatio
         this.costElements.push(costElement);
         this.selected = false;
         this.calculateDebitNote();
@@ -211,14 +214,13 @@ export class CreateDebitNoteComponent implements OnInit {
   }
 
   calculateDebitNote() {
-
-    this.NetVal = Number(
-      Number(this.costElements.reduce((sum, current) => sum + Number(current.Amount), 0)).toFixed(4)
+    this.netVal = Number(
+      Number(this.costElements.reduce((sum, current) => sum + Number(current.amount), 0)).toFixed(4)
     );
-    this.TotalTaxAmount =  Number(
-      Number(this.costElements.reduce((sum, current) => sum + Number(current.TaxAmount), 0)).toFixed(4)
+    this.totalTaxAmount = Number(
+      Number(this.costElements.reduce((sum, current) => sum + Number(current.taxAmount), 0)).toFixed(4)
     );
-    this.NetValAfterTax = Number((this.NetVal + this.TotalTaxAmount).toFixed(4));
+    this.netValAfterTax = Number((this.netVal + this.totalTaxAmount).toFixed(4));
   }
 
   removeItem(item) {
@@ -231,29 +233,23 @@ export class CreateDebitNoteComponent implements OnInit {
   }
 
   calculateDebitNoteWithCostElements(id) {
-    this.costElements.find((i) => i.Id === id).TaxAmount =
-      (Number(this.costElements.find((i) => i.Id === id).TaxRatio) *
-        Number(this.costElements.find((i) => i.Id === id).Amount)) /
-      100;
+    this.costElements.find((i) => i.id === id).taxAmount =
+      (Number(this.costElements.find((i) => i.id === id).taxRatio) * Number(this.costElements.find((i) => i.id === id).amount)) / 100;
     this.calculateDebitNote();
   }
 
   onSelectCustomer(event: any) {
-    this.progressSpinner = true;
-
     this._costCenterService
-      .getAll(event.code)
+      .getCostCenterSelectList(event.code)
       .subscribe((result) => {
-        this.progressSpinner = false;
         this.filteredArray = [];
         this.filteredArray = result;
-
-        this.Contracts = result;
+        this.costCenters = result;
         if (result.length > 0) {
-          this.form.controls.Contract.enable();
+          this.form.controls.costCenter.enable();
         } else {
-          this.form.controls.Contract.setValue("");
-          this.form.controls.Contract.disable();
+          this.form.controls.costCenter.setValue("");
+          this.form.controls.costCenter.disable();
         }
       });
   }
@@ -268,7 +264,6 @@ export class CreateDebitNoteComponent implements OnInit {
     for (let i = 0; i < arrayObject.length; i++) {
       const item = arrayObject[i];
       var itemFullName = item[ColName];
-
       itemFullName = itemFullName.replace(/\s/g, "").toLowerCase();
       var queryString = event.query.replace(/\s/g, "").toLowerCase();
       if (itemFullName.indexOf(queryString) >= 0) {

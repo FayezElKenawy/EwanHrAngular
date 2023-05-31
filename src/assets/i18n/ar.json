@@ -230,6 +230,7 @@
             "PaymentSection": "التسوية",
             "DebitNotesListPage": "إشعارات الاضافة",
             "DebitNotesCreatePage": "اضافة اشعار اضافة",
+            "DebitNotesDetailsPage": "تفاصيل اشعار اضافة",
             "DebitNotesEditPage": "تعديل اشعار اضافة",
             "PaymentReceiptsListPage": "سندات القبض",
             "PaymentReceiptsCreatePage": "اضافة سند قبض جديد",

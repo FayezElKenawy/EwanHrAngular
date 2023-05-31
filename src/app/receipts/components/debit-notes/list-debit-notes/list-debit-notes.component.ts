@@ -31,7 +31,8 @@ export class ListDebitNotesComponent implements OnInit {
   constructor(
     public _dynamicSearchService: DynamicSearchService,
     private authService: AuthService,
-    private globalService: GlobalService
+    private globalService: GlobalService,
+    private _router: Router,
   ) { }
 
   ngOnInit() {
@@ -58,12 +59,15 @@ export class ListDebitNotesComponent implements OnInit {
       ],
       actions: [
         {
-          authorization: 'receipts-payment-receipts-print',
-          title: 'App.Buttons.Print',
+          authorization: 'Finance-DebitNote-Details',
+          title: 'App.Buttons.Details',
           callBack: (dataItem) => {
-
+            this._router.navigate([
+              '/finance/receipts/details-debit-note',
+              dataItem.id,
+            ]);
           },
-        },
+        }
       ],
       cols: [
         {
@@ -92,13 +96,6 @@ export class ListDebitNotesComponent implements OnInit {
           field: 'entityCode',
           header: 'Receipts.Fields.ContractId',
         },
-        // {
-        //   field: "CreatedBy",
-        //   header: "Sales.Fields.CreatedBy",
-        //   hidden: false,
-        //   searchable: true,
-        //   searchType: "text"
-        // },
         {
           field: "netValue",
           header: "Receipts.Fields.CreditNoteValue",
