@@ -29,6 +29,7 @@
             "businessSectorDesc":"Financial System For Business Sector"
         },
         "Fields": {
+          "CustomerNotifications":"Customer Notifications",
             "SearchAllBranch": "Search in All Branches",
             "NumberOfChildren": "Number Of Children",
             "LaborerTallness": "Height",
@@ -278,6 +279,7 @@
             "NoteId": "Note Id",
             "DocumentType": "Document Type",
             "CurrentBalance": "The Current Balance",
+            "CustomerBalance":"Current Balance",
             "CanPay": "Can be Paid",
             "Value": "Value",
             "CRInvoice": "Credit Invoice",
@@ -343,7 +345,9 @@
             "DebitNoteCreate": "Add Debit Note",
             "PaymentReceiptCreate": "Add Payment Receipt",
             "ReturnedPaymentReceiptCreate": "Add Returned PaymentReceipt",
-            "Select": "Select"
+            "Select": "Select",
+            "PrintClientAccountStatement":"Account Statement"
+
         },
         "Messages": {
             "EditSuccessFully":"Edited Successfully",

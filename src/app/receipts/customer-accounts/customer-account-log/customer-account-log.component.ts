@@ -10,34 +10,33 @@ import { CustomerAccountService } from "../customer-account.service";
 })
 export class CustomerAccountLogComponent implements OnInit {
 
-  @Input("contractId") contractId: number;
-  @Input("customerId") customerId: number;
+  @Input("costCenter") costCenter: string='';
+  @Input("customerCode") customerCode: string;
 
   @Output() cancel = new EventEmitter<boolean>();
 
   viewModel: any;
-  progressSpinner: boolean;
   dataLogs: any[];
   logCols: any[] = [];
 
-  constructor(private _customerAccountService: CustomerAccountService) {}
+  constructor(private _customerAccountService: CustomerAccountService,) {}
 
   ngOnInit() {
     this.logCols = [
       {
-        field: "SegmentsCustomerId",
+        field: "segmentsCustomerId",
         header: "Receipts.Fields.SegmentsCustomerId",
         hidden: true,
       },
 
       {
-        field: "ContractId",
+        field: "contractId",
         header: "Receipts.Fields.ContractId",
         hidden: false,
       },
 
       {
-        field: "CreatedDate",
+        field: "createdDate",
         header: "App.Fields.SentDate",
         hidden: false,
         pipe: "date",
@@ -45,41 +44,38 @@ export class CustomerAccountLogComponent implements OnInit {
       },
 
       {
-        field: "NotificationType",
+        field: "notificationType",
         header: "App.Fields.NotificationType",
         hidden: false,
       },
 
       {
-        field: "Message",
+        field: "message",
         header: "App.Fields.Message",
         hidden: false,
       },
     ];
-    this.getCustomerAccountLoggers(this.customerId, this.contractId);
+    this.getCustomerAccountLoggers(this.customerCode, this.costCenter);
   }
 
- 
 
-  getCustomerAccountLoggers(customerId: number, contractId: number) {
-    this.progressSpinner = true;
+
+  getCustomerAccountLoggers(customerId: string, contractId: string) {
+    debugger
     this._customerAccountService
       .getCustomerAccountLoggers(customerId, contractId)
       .subscribe(
-        (result: IServiceResult) => {
-          if (result.isSuccess) {
-            this.dataLogs = result.data;
-            this.progressSpinner = false;
+        (result: any) => {
+          if (result) {
+            this.dataLogs = result;
           }
         },
-        null,
-        () => (this.progressSpinner = false)
       );
   }
 
   onCancel() {
-    this.contractId = null;
-    this.customerId = null;
+    this.costCenter = null;
+    this.customerCode = null;
     this.cancel.emit(true);
   }
 }

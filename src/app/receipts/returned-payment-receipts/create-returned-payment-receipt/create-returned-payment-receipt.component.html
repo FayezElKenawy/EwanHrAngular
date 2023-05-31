@@ -42,19 +42,19 @@
             </div>
           </div>
           <!-- مندوب المبيعات -->
-
+<!-- 
           <div class="col-lg-2 col-md-4 col-12">
             <div class="form-group m-form__group row mx-0 px-0">
               <div class="col-12 mx-0 px-0 text-nowrap">
                 <label for="rep" class="form-control-label">{{'Receipts.Fields.SalesRepresentive' | translate}}</label>
-                <!-- <span class="required">*</span> -->
+
               </div>
               <div class="col-12 mx-0 px-0 ">
                 <input type="text" formControlName="salesRepresentative" class="form-control" id="rep"
                   placeholder="{{'Receipts.Fields.SalesRepresentive' | translate}}" [disabled]="true">
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- الرقم المرجعى -->
           <div class="col-lg-2 col-md-4 col-12">
             <div class="form-group m-form__group row mx-0 px-0  ">
@@ -105,9 +105,8 @@
           <div class="col-lg-3 col-md-6 col-12">
             <div class="form-group m-form__group row mx-0 px-0">
               <div class="col-12 mx-auto px-0">
-                <label for="contractNumber" class="form-control-label">
-                  {{'Receipts.Fields.ContractId' | translate}}
-                </label>
+                <label class="form-control-label" for="Contract">
+                  {{ 'Receipts.Fields.CostCenter' | translate}}</label>
                 <span class="required">*</span>
               </div>
               <div class="col-12 px-0">

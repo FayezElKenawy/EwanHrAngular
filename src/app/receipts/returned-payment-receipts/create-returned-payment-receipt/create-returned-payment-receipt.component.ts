@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { DatePipe } from "@angular/common";
 import { Router } from "@angular/router";
-import { ReturnPaymentReceiptService } from "../return-payment-receipt.service";
+import { ReturnPaymentReceiptService } from "../../services/return-payment-receipt.service";
 import { IServiceResult } from "@shared/interfaces/results";
 
 import { GlobalService, MessageType } from "@shared/services/global.service";
@@ -11,6 +11,7 @@ import { CashboxService } from "@shared/services/cashbox.service";
 import { BankAccountService } from "@shared/services/bank-account.service";
 import { CustomerService } from "@shared/services/customer.service";
 import { ContractService } from "@shared/services/contract.service";
+import { CostCenterService } from "@shared/services/cost-center.service";
 @Component({
   selector: "app-create-returned-payment-receipt",
   templateUrl: "./create-returned-payment-receipt.component.html",
@@ -39,6 +40,7 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
   CashBoxs:any[]=[];
   Customers:any[]=[];
   BankAccounts:any[]=[];
+  sectorId:string;
   disabledVoucher:boolean = true;
   constructor(
     private _formBuilder: FormBuilder,
@@ -46,6 +48,7 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
     private _datePipe: DatePipe,
     private _router: Router,
     private _returnPaymentReceipt: ReturnPaymentReceiptService,
+    private _costCenterService: CostCenterService,
     private _cashBox:CashboxService,
     private _bankAccount:BankAccountService,
     private _customer:CustomerService,
@@ -55,6 +58,7 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.sectorId = this._globalService.getSectorType();
     this.createForm();
     this.IsCashOrWithdraw();
 
@@ -133,7 +137,6 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
       refNumber: [""],
       customer: ["", Validators.required],
       contract: [{ value: "", disabled: true }, Validators.required],
-      salesRepresentative: [{value:"",disabled:true}],
       arabicRemarks: [""],
       isBankWithdraw: [false],
       bankWithdrawAmount: [0, Validators.required],
@@ -171,7 +174,7 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
       const postedViewModel = Object.assign({}, this.form.value);
       postedViewModel.customerId = postedViewModel.customer.id;
       postedViewModel.entityCode =  postedViewModel.contract.entityCode;
-      postedViewModel.sectorTypeId = '01-02';
+      postedViewModel.sectorTypeId = this.sectorId;
       postedViewModel.cashBoxId = postedViewModel.cashBox
         ? postedViewModel.cashBox.code
         : null;
@@ -183,7 +186,6 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
       );
 
       postedViewModel.refundsTransactions = this.settlements;
-      console.log(postedViewModel)
       this._returnPaymentReceipt.create(postedViewModel).subscribe(
         (result: any) => {
           if (result) {
@@ -194,7 +196,7 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
             this.submitted = false;
             this.form.reset();
             this._router.navigate([
-              "/receipts/returned-payment-receipts",
+              "/finance/receipts/returned-payment-receipts",
             ]);
           }
         }
@@ -203,19 +205,18 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
   }
 
   searchCustomers(event: any) {
-    this._customer.getAll(event.query)
+    this._customer.getCustomersBySectorId(this.sectorId,event.query)
     .subscribe(result =>{
       this.Customers = result;
     });
   }
 
   onSelectCustomer(event: any) {
-
     this.settlements = [];
     this.vouchers = [];
     this.selectedVoucher = undefined;
-    this._contract
-      .getAll(event.code)
+    this._costCenterService
+      .getCostCenterSelectList(event.code)
       .subscribe((result: any) => {
 
         this.filteredArray = [];
@@ -235,15 +236,11 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
     this.settlements = [];
     this.vouchers = [];
     this.selectedVoucher = undefined;
-    this.form
-      .get("salesRepresentative")
-      .setValue(event.salesRepresentativeName);
     this._returnPaymentReceipt
       .getVouchers(event.entityCode)
       .subscribe((result: any) => {
         this.vouchers = result;
         this.filteredVouchers = this.vouchers;
-        console.log(this.filteredVouchers)
       });
     this._cashBox.getAll('')
     .subscribe(result =>{
@@ -265,7 +262,6 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
   }
 
   addSettlement() {
-    debugger
     this.added = true;
     if (this.selectedVoucher && this.refundValue > 0) {
       const settlement = {
@@ -370,8 +366,6 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
 
   filterArray(event, arrayObject: any, ColName = "FullArabicName") {
     this.filteredArray = [];
-    debugger
-
     for (let i = 0; i < arrayObject.length; i++) {
       const item = arrayObject[i];
       let itemFullName = item[ColName];

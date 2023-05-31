@@ -54,7 +54,7 @@
             </div>
           </div>
           <!-- مندوب المبيعات -->
-          <div class="col-lg-2 col-md-4 col-12">
+          <!-- <div class="col-lg-2 col-md-4 col-12">
             <div class="form-group m-form__group row mx-0 px-0">
               <div class="col-12 mx-auto px-0">
                 <label for="rep" class="form-control-label">{{'Receipts.Fields.SalesRepresentive' | translate}} </label>
@@ -65,7 +65,7 @@
                   placeholder="{{'Receipts.Fields.SalesRepresentive' | translate}}" [disabled]="true">
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- الرقم المرجعى -->
           <div class="col-lg-2 col-md-4 col-12">
             <div class="form-group m-form__group row mx-0 px-0">
@@ -471,7 +471,6 @@
     </div>
   </div>
 </div>
-<app-shared-progress-spinner *ngIf="progressSpinner"></app-shared-progress-spinner>
 
 <!--begin::Modal for vouchers-->
 <div class="custom-bottom-aside-modal modal fade" id="showVouchers" tabindex="-1" role="dialog"
@@ -489,7 +488,7 @@
           <div class="col-12" *ngIf="vouchers">
             <div class="m-portlet__body box-shadow">
               <p-table [columns]="vouchersCols" [value]="filteredVouchers" [(selection)]="selectedVoucher"
-                dataKey="VoucherId" [paginator]="true" [rows]="4">
+                dataKey="voucherId" [paginator]="true" [rows]="4">
                 <ng-template pTemplate="header" let-columns>
                   <tr>
                     <th style="width: 3em"></th>

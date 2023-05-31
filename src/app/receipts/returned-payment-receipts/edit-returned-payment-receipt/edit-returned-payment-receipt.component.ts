@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { GlobalService, MessageType } from "@shared/services/global.service";
 import { DatePipe } from "@angular/common";
 import { Router, ActivatedRoute } from "@angular/router";
-import { ReturnPaymentReceiptService } from "../return-payment-receipt.service";
+import { ReturnPaymentReceiptService } from "../../services/return-payment-receipt.service";
 
 import { IServiceResult } from "@shared/interfaces/results";
 import { CashboxService } from "@shared/services/cashbox.service";
@@ -21,7 +21,6 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
   viewModel: any;
   filteredArray: any[];
   submitted: Boolean;
-  progressSpinner: boolean;
   toYear = new Date().getFullYear() + 5;
   Contracts: any;
   totalVal: number;
@@ -58,7 +57,7 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
     const id = this._route.snapshot.paramMap.get("id");
 
     this._returnPaymentReceiptService
-    .getById(parseInt(id)).subscribe(result =>{
+    .details(parseInt(id)).subscribe(result =>{
       this.debitPaymentObj = result;
       this.form.patchValue({
         id:result.id,
@@ -67,7 +66,6 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
         refNumber:result.refNumber,
         customer:result.customer,
         contract:{entityCode:result.entityCode},
-        salesRepresentative:result.salesRepresentativeName,
         arabicRemarks:result.arabicRemarks,
         bankWithdrawAmount:result.bankWithdrawAmount,
         bankAccount:result.bankAccount,
@@ -78,10 +76,8 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
       this._returnPaymentReceiptService
       .getVouchers(this.form.get('contract').value.entityCode)
       .subscribe(result => {
-        console.log(result);
         this.vouchers = result;
-        this.filteredVouchers = this.vouchers;
-        console.log(this.vouchers);
+        this.filteredVouchers = result;
       })
     });
     this.vouchersCols = [
@@ -161,7 +157,6 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
       refNumber: [""],
       customer: [{value:"",disabled:true}, Validators.required],
       contract: [{ value: "", disabled: true }, Validators.required],
-      salesRepresentative: [{value:"",disabled:true}],
       arabicRemarks: [""],
       isBankWithdraw: [true],
       bankWithdrawAmount: [0, [Validators.required]],
@@ -206,13 +201,12 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
         );
         return;
       }
-      this.progressSpinner = true;
-      debugger
       const postedViewModel = Object.assign({}, this.form.getRawValue());
       postedViewModel.documentDate = this._datePipe.transform(postedViewModel.documentDate,'yyyy-MM-ddTHH:mm:ss');
       postedViewModel.customerId = postedViewModel.customer.id;
       postedViewModel.entityCode = postedViewModel.contract.entityCode;
       postedViewModel.sectorTypeId =this._globalService.getSectorType();
+      debugger
       postedViewModel.cashBoxId = postedViewModel.cashBox
       ? postedViewModel.cashBox.id
       : null;
@@ -221,7 +215,7 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
       }
 
       postedViewModel.bankAccountId = postedViewModel.bankAccount
-        ? postedViewModel.bankAccount.id
+        ? postedViewModel.bankAccount.code
         : null;
       if(postedViewModel.bankAccountId==null){
           postedViewModel.bankWithdrawAmount = 0
@@ -231,10 +225,14 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
       this._returnPaymentReceiptService.edit(postedViewModel).subscribe(
         (result: any) => {
           if (result) {
+            this._globalService.messageAlert(
+              MessageType.Success,
+              this._globalService.translateWordByKey(
+              "App.Messages.SavedSuccessfully"));
             this.submitted = false;
             this.form.reset();
             this._router.navigate([
-              "individual/receipts/returned-payment-receipts",
+              "finance/receipts/returned-payment-receipts",
             ]);
           }
         }
@@ -407,10 +405,11 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
   }
 
   removeSettlement(settlement: any) {
-    const voucher = this.vouchers.find(
+    debugger
+    let voucher = this.vouchers.find(
       (v) =>
-        v.voucherId === settlement.creditReceivableId &&
-        v.voucherTypeId === settlement.creditReceivableTypeId
+        v.id == settlement.creditReceivableId &&
+        v.voucherTypeId == settlement.creditReceivableVoucherTypeId
     );
     if (voucher === null || voucher === undefined) {
       const deletedVoucher = {
@@ -424,6 +423,9 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
       this.vouchers.push(deletedVoucher);
     }
     this.settlements.splice(this.settlements.indexOf(settlement, 0), 1);
+
+
+
   }
 
   getLookups(){

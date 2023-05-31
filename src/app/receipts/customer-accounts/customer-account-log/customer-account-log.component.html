@@ -2,7 +2,7 @@
   <div class="modal-dialog modal-lg modalW90">
     <div class="modal-content ">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">{{ 'Sales.Fields.CustomerNotifications' | translate}}</h5>
+        <h5 class="modal-title" id="exampleModalLabel">{{ 'App.Fields.CustomerNotifications' | translate}}</h5>
         <button type="button"  (click)="onCancel()" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -11,14 +11,14 @@
       <div class="modal-body">
         <div  class="row tableBody py-2 px-0 mx-0">
           <!-- table  -->
-          
+
           <div class="col-12 list px-0 mb-3 box-shadow" >
-            <p-table  #rr [columns]="logCols" [value]="dataLogs" 
-              dataKey="Id"  [paginator]="true" 
-              [rows]="dataLogs?.length" 
-              [totalRecords]="dataLogs?.length" 
+            <p-table  #rr [columns]="logCols" [value]="dataLogs"
+              dataKey="Id"  [paginator]="true"
+              [rows]="dataLogs?.length"
+              [totalRecords]="dataLogs?.length"
               [scrollable]="true" class="customTable" >
-             
+
               <ng-template pTemplate="header" let-columns>
                 <tr>
                   <th *ngFor="let col of columns" [pSortableColumn]="col.field" style="padding: 0.58em 0.857em" [hidden]="col.hidden">
@@ -44,7 +44,7 @@
                   <td [attr.colspan]="columns?.length" class="empty-grid-table">
                     <span class="emp-msg">
                       {{ 'App.Fields.NoData' | translate }}
-                      
+
                     </span>
                   </td>
                 </tr>
@@ -66,5 +66,4 @@
     </div>
   </div>
 </div>
-<!-- Progress Spinner -->
-<app-shared-progress-spinner *ngIf="progressSpinner"></app-shared-progress-spinner>
+

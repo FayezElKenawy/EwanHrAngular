@@ -29,6 +29,7 @@
             "businessSectorDesc":"النظام المالى لقطاع الأعمال"
         },
         "Fields": {
+            "CustomerNotifications":"إشعارات العميل",
             "SearchAllBranch": "البحث فى جميع الفروع",
             "Qualifications": "المؤهلات",
             "NumberOfChildren": "عدد الاطفال",
@@ -305,6 +306,7 @@
             "NoteId": "رقم الاشعار",
             "DocumentType": "نوع المستند",
             "CurrentBalance": "الرصيد الحالي (ما يمكن سداده)",
+            "CustomerBalance":"الرصيد الحالي",
             "CanPay": "ما يمكن سداده",
             "Value": "القيمة",
             "CRInvoice": "فاتورة آجلة",
@@ -359,7 +361,8 @@
             "DebitNoteCreate": "اضف اشعار اضافة",
             "PaymentReceiptCreate": "اضف سند قبض جديد",
             "ReturnedPaymentReceiptCreate": "اضف سند دفع جديد",
-            "Select": "اختر"
+            "Select": "اختر",
+            "PrintClientAccountStatement":"كشف حساب عميل"
         },
         "Messages": {
             "EditSuccessFully":"تم الحفظ بنجاح",
