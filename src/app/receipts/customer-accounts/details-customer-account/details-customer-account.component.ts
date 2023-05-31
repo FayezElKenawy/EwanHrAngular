@@ -144,7 +144,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
 
   getCostCenters(code: string) {
     this._costCenterService
-      .getAll(code)
+      .getCostCenterSelectList(code)
       .subscribe((result: any) => {
         this.filteredArray = [];
         this.filteredArray = result;

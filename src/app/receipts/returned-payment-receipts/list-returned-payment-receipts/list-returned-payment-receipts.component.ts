@@ -13,6 +13,7 @@ import { GlobalService } from "@shared/services/global.service";
 import { ColumnPipeFormat } from "@shared/enum/columns-pipe-format.enum";
 import { ColumnPipeType } from "@shared/enum/column-pipe.enum";
 import { environment } from "@environments/environment";
+
 @Component({
   selector: "app-list-returned-payment-receipts",
   templateUrl: "./list-returned-payment-receipts.component.html",

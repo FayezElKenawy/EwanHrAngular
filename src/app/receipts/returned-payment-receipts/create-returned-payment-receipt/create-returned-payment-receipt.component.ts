@@ -216,7 +216,7 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
     this.vouchers = [];
     this.selectedVoucher = undefined;
     this._costCenterService
-      .getAll(event.code)
+      .getCostCenterSelectList(event.code)
       .subscribe((result: any) => {
 
         this.filteredArray = [];
