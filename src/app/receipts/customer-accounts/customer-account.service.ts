@@ -27,7 +27,7 @@ export class CustomerAccountService {
 
 
   getCustomerAccountLoggers(customerCode: string, costCenter: string): Observable<any> {
-    return this._http.get(`${this.serviceUrl}/GetCustomerAccountLoggers?customerCode=${customerCode}&costCenter=${costCenter}`);
+    return this._http.get(`${this.serviceUrl}/GetCustomerAccountLoggers?customerCode=${customerCode}&costCenterId=${costCenter}`);
   }
 
   details(id: number, entityCode: string, sectorTypeId: string): Observable<CustomerDetailsPageModel> {

@@ -186,11 +186,12 @@
                 <label class="form-control-label"> </label>
               </div>
               <button
+               *ngIf="this.sectorTypeId=='01-02'"
                 class="btn btn-secondary m-1"
                 type="button"
                 data-toggle="modal"
                 data-target="#reportModal"
-
+                (click)="showClientAccountStatementReport(selectedContract?.entityCode)"
               >
                 {{ "Receipts.Buttons.PrintClientAccountStatement" | translate }}
               </button>
@@ -365,4 +366,16 @@
     [customerCode]="customerCode"
     (cancel)="onCancel($event)"
   ></app-customer-account-log>
+</div>
+
+
+<div
+  class="custom-bottom-aside-modal modal fade"
+  id="reportModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <app-custom-report></app-custom-report>
 </div>

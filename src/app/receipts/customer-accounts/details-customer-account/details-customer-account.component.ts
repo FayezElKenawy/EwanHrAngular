@@ -20,6 +20,9 @@ declare let Swal: any;
   styleUrls: ["./details-customer-account.component.scss"],
 })
 export class DetailsCustomerAccountComponent implements OnInit {
+
+  @ViewChild(CustomReportComponent) report: CustomReportComponent;
+
   viewModel: CustomerDetailsPageModel;
 
   customerCode: string;
@@ -50,7 +53,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    
+
     this.customerId = this._route.snapshot.params['id'];
     this.sectorTypeId = this._globalService.getSectorType();
     this.getDetails(this.customerId, '');
@@ -170,7 +173,6 @@ export class DetailsCustomerAccountComponent implements OnInit {
   }
 
   onSelectContract(event) {
-
     if (event.entityCode === "All" || event.entityCode === "الكل") {
       this.costCenter = null;
       this.showReport = false;
@@ -322,33 +324,30 @@ export class DetailsCustomerAccountComponent implements OnInit {
 
 
 
-  @ViewChild(CustomReportComponent) report: CustomReportComponent;
 
-  // showClientAccountStatementReport(contractId) {
 
-  //   let x =this.selectedContract;
+  showClientAccountStatementReport(contractId) {
+    this.report.filters = [
+      {
+        dataSourceName: "Ds1",
+        fieldName: "CustomerId",
+        logicalOperator: "And",
+        operator: Operators.Equal,
+        type: FieldTypesEnum.Text,
+        value: this.viewModel?.customerAccount?.code
+      },
+      {
+        dataSourceName: "Ds1",
+        fieldName: "ContractId",
+        logicalOperator: "And",
+        operator: Operators.Equal,
+        type: FieldTypesEnum.Text,
+        value: (contractId === 'All' || contractId === 'الكل') ? ' ' : contractId
+      }
+    ];
+    this.report.reportId = "24";
+    this.report.reportName = "Sales.Titles.PrintClientAccountStatement";
 
-  //   this.report.filters = [
-  //     {
-  //       dataSourceName: "Ds1",
-  //       fieldName: "CustomerId",
-  //       logicalOperator: "And",
-  //       operator: Operators.Equal,
-  //       type: FieldTypesEnum.Text,
-  //       value: this.customerData.SegmentsCustomerId
-  //     },
-  //     {
-  //       dataSourceName: "Ds1",
-  //       fieldName: "ContractId",
-  //       logicalOperator: "And",
-  //       operator: Operators.Equal,
-  //       type: FieldTypesEnum.Text,
-  //       value: (contractId === 'All' || contractId === 'الكل') ? ' ' : contractId
-  //     }
-  //   ];
-  //   this.report.reportId = "24";
-  //   this.report.reportName = "Sales.Titles.PrintClientAccountStatement";
-
-  //   this.report.showReport();
-  // }
+    this.report.showReport();
+  }
 }

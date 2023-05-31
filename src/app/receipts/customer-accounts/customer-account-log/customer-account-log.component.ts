@@ -61,6 +61,7 @@ export class CustomerAccountLogComponent implements OnInit {
 
 
   getCustomerAccountLoggers(customerId: string, contractId: string) {
+    debugger
     this._customerAccountService
       .getCustomerAccountLoggers(customerId, contractId)
       .subscribe(
