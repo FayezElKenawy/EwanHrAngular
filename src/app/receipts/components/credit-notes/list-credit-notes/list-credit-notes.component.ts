@@ -58,6 +58,7 @@ export class ListCreditNotesComponent implements OnInit {
         {
           authorization: 'Finance-CreditNote-Print',
           title: 'App.Buttons.Print',
+          actionModal:"reportModal",
           callBack: (dataItem) => {
             this.showReport(dataItem.code);
           },

@@ -199,9 +199,7 @@
                             *ngFor="let action of pageListConfig?.actions"
                           >
                             <div
-                              *ngIf="
-                                action?.authorization.indexOf('Print') == -1
-                              "
+                            *ngIf="!action.actionModal"
                             >
                               <a
                                 *authorization="action?.authorization"
@@ -213,15 +211,13 @@
                               </a>
                             </div>
                             <div
-                              *ngIf="
-                                action?.authorization.indexOf('Print') > -1
-                              "
+                              *ngIf="action.actionModal"
                             >
                               <a
                                 *authorization="action?.authorization"
                                 class="dropdown-item"
                                 data-toggle="modal"
-                                data-target="#reportModal"
+                                [attr.data-target]="'#' + action.actionModal"
                                 title="{{ action?.title | translate }}"
                                 (click)="action?.callBack(dataItem)"
                               >

@@ -34,6 +34,8 @@ export class AuthGuard implements CanActivateChild, CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean | Observable<boolean> | Promise<boolean> {
+    console.log('auth guard');
+    
     history.pushState(null, null, environment.hostingFolder + state.url);
     return this._authService.getAuthUser().pipe(
       map((res) => {

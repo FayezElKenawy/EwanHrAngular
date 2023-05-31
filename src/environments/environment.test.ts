@@ -1,19 +1,21 @@
 export const environment = {
-  production: true,
-  name: "App.Titles.TrialVersion",
-  hostingFolder: "/ERP.IndividualSector",
+  production: false,
+  name: 'App.Titles.DevelopingVersion',
+  hostingFolder: "/ERP.Finance",
 
-  coreApiUrl: "http://185.230.211.136:64/BroaERP.Core.API",
-  reportingApiUrl: "http://185.230.211.136:64/BroaERP.Reporting.API",
+  coreApiUrl: 'http://ewan1.uksouth.cloudapp.azure.com:64/BroaERP.Core.API',
+  reportingApiUrl: 'http://ewan1.uksouth.cloudapp.azure.com:64/BroaERP.Reporting.API',
+  financeSectorAPIURL:"http://ewan1.uksouth.cloudapp.azure.com:64/Ewan.Finance.API/api",
   
-  coreUrl: "http://185.230.211.136:64/ERP.Core",
-  businessSectorURL: "http://185.230.211.136:64/ERP.BusinessSector",
-  houseLabourSectorUrl: "http://185.230.211.136:64/ERP.HouseLabourSector",
-  individualSectorURL: "http://185.230.211.136:64/ERP.IndividualSector",
+  coreUrl: "http://ewan1.uksouth.cloudapp.azure.com:64/ERP.Core",
+  businessSectorURL: "http://ewan1.uksouth.cloudapp.azure.com:64/ERP.BusinessSector",
+  houseLabourSectorUrl: "http://ewan1.uksouth.cloudapp.azure.com:64/ERP.HouseLabourSector",
+  individualSectorURL: "http://ewan1.uksouth.cloudapp.azure.com:64/ERP.IndividualSector",
+  financeURL:"http://ewan1.uksouth.cloudapp.azure.com:64/ERP.Finance",
 
-  storagePhysicalPath: "C:\\BroaERP\\Test\\UploadFolder\\",
-  storagePath: "http://185.230.211.136:64/BroaERP.Core.API/Uploading/File/Public",
+  storagePath: 'http://localhost/BroaERP.Core.API/Uploading/File/Public',
+  storagePhysicalPath: "C:\\inetpub\\BroaERP\\Developing\\UploadFolder\\",
 
   mapKey: "AIzaSyCMk0rodttpnH6PaTd0O6l6lcZfbXzCc8Q",
-  timeoutPeriod: 5 * 60                    // in seconds
+  timeoutPeriod: 5 * 60 * 60                     // in seconds
 };

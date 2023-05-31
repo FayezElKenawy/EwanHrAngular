@@ -61,6 +61,7 @@ export class ListPaymentReceiptsComponent implements OnInit {
         {
           authorization: 'Finance-PaymentReceipt-Print',
           title: 'App.Buttons.Print',
+          actionModal:"reportModal",
           callBack: (dataItem) => {
             this.showReport(dataItem.code);
           },

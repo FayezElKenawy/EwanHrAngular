@@ -69,6 +69,7 @@ export class ListCreditInvoicesComponent implements OnInit {
         {
           authorization: 'Finance-CreditInvoice-Print',
           title: 'App.Buttons.Print',
+          actionModal:"reportModal",
           callBack: (dataItem) => {
             this.showReport(dataItem.code);
           },

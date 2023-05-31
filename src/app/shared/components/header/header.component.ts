@@ -67,6 +67,8 @@ export class HeaderComponent implements OnInit {
   }
 
   getAuthUser() {
+    console.log('header component');
+
     this.authService.getAuthUser().subscribe(
       (res) => {
         if (res.isSuccess) {

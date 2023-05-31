@@ -18,6 +18,7 @@ const remeberMeKey = 'Ewan_RMS-ERP-APP_RemeberMeKey';
 export class AuthService {
   serviceUrl: string = environment.coreApiUrl + "/Security/Auth/";
   currentAuthUser: any;
+  
   constructor(
     private _http: HttpClient,
     private _globalService: GlobalService,
@@ -52,14 +53,16 @@ export class AuthService {
   }
 
   getAuthUser(): Observable<IServiceResult> {
-
     return this._http.get(this.serviceUrl + "GetAuthUser").pipe(
       map((result: IResultVM) => {
         const serviceResult: IServiceResult = {
           isSuccess: result.IsSuccess,
           data: result.Data,
         };
+
         if (result.IsSuccess) {
+          console.log("GetAuthUser => " + result.Data);
+          
           this.currentAuthUser = result.Data;
         }
         return serviceResult;
