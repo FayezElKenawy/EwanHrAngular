@@ -27,6 +27,9 @@ export class CustomerAccountService {
 
 
   getCustomerAccountLoggers(customerCode: string, costCenter: string): Observable<any> {
+    if (costCenter == undefined || costCenter== null) {
+      costCenter = '';
+    }
     return this._http.get(`${this.serviceUrl}/GetCustomerAccountLoggers?customerCode=${customerCode}&costCenterId=${costCenter}`);
   }
 
@@ -34,11 +37,11 @@ export class CustomerAccountService {
     return this._http.get<CustomerDetailsPageModel>(`${this.serviceUrl}/Details?id=${id}&entityCode=${entityCode}&sectorTypeId=${sectorTypeId}`)
   }
 
-  getNotificationMessage(getMessageModel:GetMessageModel):Observable<string>{
-    return this._http.post<string>(`${this.serviceUrl}/GetNotificationMessage`,getMessageModel)
+  getNotificationMessage(getMessageModel: GetMessageModel): Observable<string> {
+    return this._http.post<string>(`${this.serviceUrl}/GetNotificationMessage`, getMessageModel)
   }
 
-  isCustomerBalanceDebit(customerId:number,entityCode:string):Observable<Boolean>{
+  isCustomerBalanceDebit(customerId: number, entityCode: string): Observable<Boolean> {
     return this._http.get<Boolean>(`${this.serviceUrl}/IsCustomerBalanceDebit?customerId=${customerId}&entityCode=${entityCode}`)
   }
 
