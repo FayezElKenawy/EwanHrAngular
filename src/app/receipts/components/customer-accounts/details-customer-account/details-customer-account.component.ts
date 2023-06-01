@@ -1,17 +1,13 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { CustomerAccountService } from "../customer-account.service";
-import { DatePipe } from "@angular/common";
 import { ActivatedRoute } from "@angular/router";
-import { IServiceResult } from "@shared/interfaces/results";
 import { GlobalService, MessageType } from "@shared/services/global.service";
 import { CustomReportComponent } from "@shared/components/reporting/custom-report/custom-report.component";
 import { Operators } from "@shared/models/Operators";
 import { FieldTypesEnum } from "@shared/models/dynamic-fields";
-import { CustomerAccountModel } from "../../models/customer-account/customer-account.model";
 import { CostCenterService } from "@shared/services/cost-center.service";
-import { CustomerDetailsPageModel } from "../../models/customer-account/customer-details-page.model";
-import { SendCustomerSMSModel } from "../../models/customer-account/send-customer-sms.model";
-import { NotificationType } from "../enum/notification-type.enum";
+import { CustomerAccountService } from "src/app/receipts/services/customer-account.service";
+import { CustomerDetailsPageModel } from "src/app/receipts/models/customer-account/customer-details-page.model";
+import { SendCustomerSMSModel } from "src/app/receipts/models/customer-account/send-customer-sms.model";
 declare let Swal: any;
 
 @Component({

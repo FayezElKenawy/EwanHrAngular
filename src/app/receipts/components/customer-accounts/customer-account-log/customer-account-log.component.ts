@@ -1,7 +1,7 @@
 import { EventEmitter, Input, Output } from "@angular/core";
 import { Component, OnInit } from "@angular/core";
-import { IServiceResult } from "@shared/interfaces/results";
-import { CustomerAccountService } from "../customer-account.service";
+import { CustomerAccountService } from "src/app/receipts/services/customer-account.service";
+
 
 @Component({
   selector: "app-customer-account-log",

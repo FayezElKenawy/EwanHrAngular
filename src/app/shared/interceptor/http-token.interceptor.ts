@@ -24,7 +24,7 @@ export class HttpTokenInterceptor implements HttpInterceptor {
     const headersConfig = {};
     const token = this._authService.getToken();
     const lang = this._globalService.languageGetCurrent;
-    
+    debugger
     this._globalService.isSpinnerLoaded.next(true);
 
     if (token) {

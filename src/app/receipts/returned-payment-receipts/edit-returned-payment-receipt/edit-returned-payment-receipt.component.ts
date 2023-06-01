@@ -4,12 +4,9 @@ import { GlobalService, MessageType } from "@shared/services/global.service";
 import { DatePipe } from "@angular/common";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ReturnPaymentReceiptService } from "../../services/return-payment-receipt.service";
-
-import { IServiceResult } from "@shared/interfaces/results";
 import { CashboxService } from "@shared/services/cashbox.service";
 import { BankAccountService } from "@shared/services/bank-account.service";
-import { CustomerService } from "@shared/services/customer.service";
-import { ContractService } from "@shared/services/contract.service";
+
 @Component({
   selector: "app-edit-returned-payment-receipt",
   templateUrl: "./edit-returned-payment-receipt.component.html",

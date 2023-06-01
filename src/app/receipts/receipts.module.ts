@@ -12,9 +12,7 @@ import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
 import { CreateDownpaymentReceiptComponent } from './downpayment-receipt/create-downpayment-receipt/create-downpayment-receipt.component';
-import { ListCustomerAccountComponent } from './customer-accounts/list-customer-account/list-customer-account.component';
-import { DetailsCustomerAccountComponent } from './customer-accounts/details-customer-account/details-customer-account.component';
-import { CustomerAccountLogComponent } from './customer-accounts/customer-account-log/customer-account-log.component';
+
 import { CreatePaymentReceiptComponent } from './components/payment-receipts/create-payment-receipt/create-payment-receipt.component';
 import { EditPaymentReceiptComponent } from './components/payment-receipts/edit-payment-receipt/edit-payment-receipt.component';
 import { ListPaymentReceiptsComponent } from './components/payment-receipts/list-payment-receipts/list-payment-receipts.component';
@@ -26,6 +24,9 @@ import { DetailsCreditNoteComponent } from './components/credit-notes/details-cr
 import { DetailsDebitNoteComponent } from './components/debit-notes/details-debit-note/details-debit-note.component';
 import { ListCreditInvoicesComponent } from './components/credit-invoices/list-credit-invoices/list-credit-invoices.component';
 import { DetailCreditInvoiceComponent } from './components/credit-invoices/detail-credit-invoice/detail-credit-invoice.component';
+import { ListCustomerAccountComponent } from './components/customer-accounts/list-customer-account/list-customer-account.component';
+import { DetailsCustomerAccountComponent } from './components/customer-accounts/details-customer-account/details-customer-account.component';
+import { CustomerAccountLogComponent } from './components/customer-accounts/customer-account-log/customer-account-log.component';
 
 @NgModule({
   declarations: [
