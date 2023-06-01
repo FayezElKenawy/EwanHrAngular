@@ -3,9 +3,9 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { GlobalService, MessageType } from "@shared/services/global.service";
 import { DatePipe } from "@angular/common";
 import { Router, ActivatedRoute } from "@angular/router";
-import { ReturnPaymentReceiptService } from "../../services/return-payment-receipt.service";
 import { CashboxService } from "@shared/services/cashbox.service";
 import { BankAccountService } from "@shared/services/bank-account.service";
+import { ReturnPaymentReceiptService } from "src/app/receipts/services/return-payment-receipt.service";
 
 @Component({
   selector: "app-edit-returned-payment-receipt",
@@ -426,10 +426,10 @@ export class EditReturnedPaymentReceiptComponent implements OnInit {
   }
 
   getLookups(){
-    this._bankAccount.getAll('').subscribe(result=>{
+    this._bankAccount.getSelectList('').subscribe(result=>{
       this.bankAccounts = result;
     });
-    this._cashBox.getAll('').subscribe(result=>{
+    this._cashBox.getSelectList('').subscribe(result=>{
       this.cashboxs = result;
     });
   }

@@ -2,9 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AboutComponent } from '../home/dashboard/dashboard.component';
 import { CoreLayoutComponent } from '@shared/layouts/core-layout/core-layout.component';
-import { ListReturnedPaymentReceiptsComponent } from './returned-payment-receipts/list-returned-payment-receipts/list-returned-payment-receipts.component';
-import { CreateReturnedPaymentReceiptComponent } from './returned-payment-receipts/create-returned-payment-receipt/create-returned-payment-receipt.component';
-import { EditReturnedPaymentReceiptComponent } from './returned-payment-receipts/edit-returned-payment-receipt/edit-returned-payment-receipt.component';
+
 import { ListPaymentReceiptsComponent } from './components/payment-receipts/list-payment-receipts/list-payment-receipts.component';
 import { CreatePaymentReceiptComponent } from './components/payment-receipts/create-payment-receipt/create-payment-receipt.component';
 import { EditPaymentReceiptComponent } from './components/payment-receipts/edit-payment-receipt/edit-payment-receipt.component';
@@ -18,6 +16,9 @@ import { DetailCreditInvoiceComponent } from './components/credit-invoices/detai
 import { ListCreditInvoicesComponent } from './components/credit-invoices/list-credit-invoices/list-credit-invoices.component';
 import { ListCustomerAccountComponent } from './components/customer-accounts/list-customer-account/list-customer-account.component';
 import { DetailsCustomerAccountComponent } from './components/customer-accounts/details-customer-account/details-customer-account.component';
+import { ListReturnedPaymentReceiptsComponent } from './components/returned-payment-receipts/list-returned-payment-receipts/list-returned-payment-receipts.component';
+import { CreateReturnedPaymentReceiptComponent } from './components/returned-payment-receipts/create-returned-payment-receipt/create-returned-payment-receipt.component';
+import { EditReturnedPaymentReceiptComponent } from './components/returned-payment-receipts/edit-returned-payment-receipt/edit-returned-payment-receipt.component';
 
 const routes: Routes = [
   {

@@ -337,6 +337,7 @@
             "CostElementSelect": "Select CostElementS",
             "CostElementAmount": "CostElement Amount",
             "CostElementAmountAfterTax": "CostElement Amount After Tax",
+            "ElementAfterDiscount": "Element Amount After Discount",
             "CostElementId": "CostElementNo",
             "CostElementName": "CostElement Name",
             "TaxRatio": "Tax Ratio",

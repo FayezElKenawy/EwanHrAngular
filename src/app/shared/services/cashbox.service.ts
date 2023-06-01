@@ -14,7 +14,7 @@ export class CashboxService {
     private _http: HttpClient
   ) {}
 
-  getAll(searchTerm:string):Observable<any>{
+  getSelectList(searchTerm:string):Observable<any>{
     return this._http.get<any>(`${this.serviceUrl}/GetSelectList`, {
       params: { searchTerm: searchTerm },
     });

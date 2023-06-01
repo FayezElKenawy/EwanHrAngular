@@ -72,12 +72,12 @@ export class EditPaymentReceiptComponent implements OnInit {
 
     this.defCols();
 
-    this._cashBox.getAll('')
+    this._cashBox.getSelectList('')
       .subscribe(result => {
         this.cashBoxs = result;
       });
 
-    this._bankAccount.getAll('')
+    this._bankAccount.getSelectList('')
       .subscribe(result => {
         this.bankAccounts = result;
       })

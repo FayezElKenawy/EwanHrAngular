@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { MenuItem } from "primeng/api";
-import { ReturnPaymentReceiptService } from "../../services/return-payment-receipt.service";
 import { Router } from "@angular/router";
 import { PagingMetaData } from "@shared/interfaces/paging-meta-data";
 import { FormGroup } from "@angular/forms";
@@ -13,6 +12,7 @@ import { GlobalService } from "@shared/services/global.service";
 import { ColumnPipeFormat } from "@shared/enum/columns-pipe-format.enum";
 import { ColumnPipeType } from "@shared/enum/column-pipe.enum";
 import { environment } from "@environments/environment";
+import { ReturnPaymentReceiptService } from "src/app/receipts/services/return-payment-receipt.service";
 
 @Component({
   selector: "app-list-returned-payment-receipts",

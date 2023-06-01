@@ -2,8 +2,6 @@ import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { DatePipe } from "@angular/common";
 import { Router } from "@angular/router";
-import { ReturnPaymentReceiptService } from "../../services/return-payment-receipt.service";
-import { IServiceResult } from "@shared/interfaces/results";
 
 import { GlobalService, MessageType } from "@shared/services/global.service";
 import { AuthService } from "@shared/services/auth.service";
@@ -12,6 +10,7 @@ import { BankAccountService } from "@shared/services/bank-account.service";
 import { CustomerService } from "@shared/services/customer.service";
 import { ContractService } from "@shared/services/contract.service";
 import { CostCenterService } from "@shared/services/cost-center.service";
+import { ReturnPaymentReceiptService } from "src/app/receipts/services/return-payment-receipt.service";
 @Component({
   selector: "app-create-returned-payment-receipt",
   templateUrl: "./create-returned-payment-receipt.component.html",
@@ -53,7 +52,6 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
     private _cashBox: CashboxService,
     private _bankAccount: BankAccountService,
     private _customer: CustomerService,
-    private _contract: ContractService
   ) {
     this.settlements = [];
   }
@@ -63,6 +61,10 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
     this.createForm();
     this.IsCashOrWithdraw();
 
+
+  }
+
+  defCols() {
     this.vouchersCols = [
       { field: "code", header: "App.Fields.DocumentId", hidden: false },
       {
@@ -255,12 +257,12 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
         this.vouchers = result;
         this.filteredVouchers = this.vouchers;
       });
-    this._cashBox.getAll('')
+    this._cashBox.getSelectList('')
       .subscribe(result => {
         this.CashBoxs = result;
       });
 
-    this._bankAccount.getAll('')
+    this._bankAccount.getSelectList('')
       .subscribe(result => {
         this.BankAccounts = result;
       })

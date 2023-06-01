@@ -2,16 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ReceiptsRoutingModule } from './receipts-routing.module';
 
-import { ListReturnedPaymentReceiptsComponent } from './returned-payment-receipts/list-returned-payment-receipts/list-returned-payment-receipts.component';
-import { CreateReturnedPaymentReceiptComponent } from './returned-payment-receipts/create-returned-payment-receipt/create-returned-payment-receipt.component';
-import { EditReturnedPaymentReceiptComponent } from './returned-payment-receipts/edit-returned-payment-receipt/edit-returned-payment-receipt.component';
 import { HomeModule } from '../home/home.module';
 import { SharedModule } from '@shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
-import { CreateDownpaymentReceiptComponent } from './downpayment-receipt/create-downpayment-receipt/create-downpayment-receipt.component';
 
 import { CreatePaymentReceiptComponent } from './components/payment-receipts/create-payment-receipt/create-payment-receipt.component';
 import { EditPaymentReceiptComponent } from './components/payment-receipts/edit-payment-receipt/edit-payment-receipt.component';
@@ -27,6 +23,10 @@ import { DetailCreditInvoiceComponent } from './components/credit-invoices/detai
 import { ListCustomerAccountComponent } from './components/customer-accounts/list-customer-account/list-customer-account.component';
 import { DetailsCustomerAccountComponent } from './components/customer-accounts/details-customer-account/details-customer-account.component';
 import { CustomerAccountLogComponent } from './components/customer-accounts/customer-account-log/customer-account-log.component';
+import { ListReturnedPaymentReceiptsComponent } from './components/returned-payment-receipts/list-returned-payment-receipts/list-returned-payment-receipts.component';
+import { EditReturnedPaymentReceiptComponent } from './components/returned-payment-receipts/edit-returned-payment-receipt/edit-returned-payment-receipt.component';
+import { CreateReturnedPaymentReceiptComponent } from './components/returned-payment-receipts/create-returned-payment-receipt/create-returned-payment-receipt.component';
+import { CreateDownpaymentReceiptComponent } from './components/downpayment-receipt/create-downpayment-receipt/create-downpayment-receipt.component';
 
 @NgModule({
   declarations: [
