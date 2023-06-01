@@ -14,6 +14,7 @@ import { GetCostElementListModel } from "src/app/receipts/models/costelement/get
 import { CreateCostElementItemModel } from "src/app/receipts/models/costelement/create-cost-element-item.model";
 import { GetCostCenterListModel } from "src/app/receipts/models/costCenter/cost-center.model";
 import { ColumnType } from "@shared/models/column-type.model";
+import { CostElementService } from "src/app/receipts/services/cost-element.service";
 
 @Component({
   selector: "app-create-credit-note",
@@ -34,9 +35,9 @@ export class CreateCreditNoteComponent implements OnInit {
 
   costElementCols: ColumnType[];
   costElements: CreateCostElementItemModel[] = [];
-  allCostElements: CreateCostElementItemModel[] = [];
-  selectedItem: CreateCostElementItemModel;
 
+  selectedItem: CreateCostElementItemModel;
+  customerCode: string;
   netVal: number;
   netValAfterTax: number;
   totalTaxAmount: number;
@@ -62,7 +63,8 @@ export class CreateCreditNoteComponent implements OnInit {
     private _creditNoteService: CreditNoteService,
     private _customerService: CustomerService,
     private _costCenterService: CostCenterService,
-    private _salesPeriodService: SalesPeriodService
+    private _salesPeriodService: SalesPeriodService,
+    private _costElementService: CostElementService
   ) {
     this.settlements = [];
   }
@@ -70,7 +72,6 @@ export class CreateCreditNoteComponent implements OnInit {
   ngOnInit() {
 
     this.createForm();
-    this.getCostElements();
     this.defCols();
     this._salesPeriodService.getMinSelectedDate(this._globalService.getSectorType()).subscribe(
       res => {
@@ -157,13 +158,7 @@ export class CreateCreditNoteComponent implements OnInit {
     ];
   }
 
-  getCostElements() {
-    this._creditNoteService.getCostElements().subscribe(
-      (res: any) => {
-        this.allCostElements = res;
-      }
-    )
-  }
+
 
   createForm() {
     this.form = this._formBuilder.group({
@@ -245,21 +240,42 @@ export class CreateCreditNoteComponent implements OnInit {
   }
 
   searchCustomers(event: any) {
-    this._customerService
-      .getCustomersBySectorId(this._globalService.getSectorType(), event.query)
-      .subscribe((result) => {
-        this.filteredArray = [];
-        this.filteredArray = result;
-      });
+    setTimeout(() => {
+      this._customerService
+        .getCustomersBySectorId(event.query)
+        .subscribe((result) => {
+          this.filteredArray = result;
+        });
+    }, 1500);
+  }
+
+  searchCostElements(event: any) {
+    setTimeout(() => {
+      this._costElementService.getSelectListCostElementsBySectorId(event.query).subscribe(
+        (res: any) => {
+          this.filteredArray = res;
+        }
+      )
+    }, 1500);
+  }
+
+  searchCostCenters(event: any) {
+    setTimeout(() => {
+      this._costCenterService.getCostCenterSelectList(this.customerCode, event.query).subscribe(
+        (res: any) => {
+          this.filteredArray = res;
+        }
+      )
+    }, 1500);
   }
 
   onSelectCustomer(event: any) {
     this.settlements = [];
     this.vouchers = [];
     this.selectedVoucher = undefined;
-    this._costCenterService.getCostCenterSelectList(event.code)
+    this.customerCode = event.code;
+    this._costCenterService.getCostCenterSelectList(event.code, '')
       .subscribe((result) => {
-        this.filteredArray = [];
         this.filteredArray = result;
         this.costCenters = result;
         if (result.length > 0) {
@@ -402,10 +418,10 @@ export class CreateCreditNoteComponent implements OnInit {
         undefined
       ) {
 
-        const costElement:CreateCostElementItemModel = Object.assign({}, this.selectedItem);
+        const costElement: CreateCostElementItemModel = Object.assign({}, this.selectedItem);
         costElement.taxRatio = this.selectedItem.taxRatio;
-        costElement.amount =Number(((this.amount * 100) / (100 + costElement.taxRatio)).toFixed(4));
-        costElement.taxAmount =Number((this.amount - costElement.amount).toFixed(4));
+        costElement.amount = Number(((this.amount * 100) / (100 + costElement.taxRatio)).toFixed(4));
+        costElement.taxAmount = Number((this.amount - costElement.amount).toFixed(4));
 
         this.costElements.push(costElement);
         this.selected = false;
@@ -470,21 +486,6 @@ export class CreateCreditNoteComponent implements OnInit {
     return true;
   }
 
-  filterArray(event, arrayObject: any, ColName = "FullName") {
-    this.filteredArray = [];
-    if (arrayObject) {
-      for (let i = 0; i < arrayObject.length; i++) {
-        const item = arrayObject[i];
-        var itemFullName = item[ColName];
-        itemFullName = itemFullName.replace(/\s/g, "").toLowerCase();
-        var queryString = event.query.replace(/\s/g, "").toLowerCase();
-        if (itemFullName.indexOf(queryString) >= 0) {
-          this.filteredArray.push(item);
-        }
-      }
-    }
-  }
-
   removeSettlement(settlement: SettlementModel) {
     const voucher = this.vouchers.find(
       (v) =>
@@ -497,4 +498,18 @@ export class CreateCreditNoteComponent implements OnInit {
     this.settlements.splice(this.settlements.indexOf(settlement, 0), 1);
     this.onSelectVoucherType();
   }
+
+  filterArray(event, arrayObject: any, ColName = "FullName") {
+    this.filteredArray = [];
+    for (let i = 0; i < arrayObject.length; i++) {
+      const item = arrayObject[i];
+      var itemFullName = item[ColName];
+      itemFullName = itemFullName.replace(/\s/g, "").toLowerCase();
+      var queryString = event.query.replace(/\s/g, "").toLowerCase();
+      if (itemFullName.indexOf(queryString) >= 0) {
+        this.filteredArray.push(item);
+      }
+    }
+  }
+
 }

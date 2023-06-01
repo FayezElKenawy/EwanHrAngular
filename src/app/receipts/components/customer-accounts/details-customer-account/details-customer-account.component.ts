@@ -119,14 +119,16 @@ export class DetailsCustomerAccountComponent implements OnInit {
   }
 
   getCostCenters(code: string) {
+    setTimeout(() => {
     this._costCenterService
-      .getCostCenterSelectList(code)
+      .getCostCenterSelectList(this.viewModel?.customerAccount?.code,code)
       .subscribe((result: any) => {
         this.filteredArray = [];
         this.filteredArray = result;
         this.costCenters = result;
 
       });
+    }, 1500);
   }
 
 

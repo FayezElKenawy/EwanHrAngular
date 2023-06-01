@@ -148,9 +148,7 @@
                   formControlName="costCenter"
                   field="entityCode"
                   [suggestions]="filteredArray"
-                  (completeMethod)="
-                    filterArray($event, costCenters, 'entityCode')
-                  "
+                  (completeMethod)="searchCostCenters($event)"
                   (onClear)="onClear('costCenter')"
                   [forceSelection]="true"
                   [size]="30"
@@ -277,9 +275,7 @@
                   field="name"
                   [suggestions]="filteredArray"
                   (onSelect)="onSelectItem($event)"
-                  (completeMethod)="
-                    filterArray($event, allCostElements, 'name')
-                  "
+                  (completeMethod)="searchCostElements($event)"
                   [forceSelection]="true"
                   [size]="30"
                   [minLength]="1"

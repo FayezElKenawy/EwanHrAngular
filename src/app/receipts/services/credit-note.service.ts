@@ -41,8 +41,4 @@ export class CreditNoteService {
     return this._http.get(`${this.serviceUrl}/v1/Voucher/GetVouchersById?entityCode=${entityCode}`);
   }
 
-
-  getCostElements():Observable<any>{
-    return this._http.get(`${this.serviceUrl}/v1/CostElement/GetSelectList?sectorId=${this._globalService.getSectorType()}`)
-  }
 }

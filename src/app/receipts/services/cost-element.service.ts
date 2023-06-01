@@ -17,8 +17,10 @@ export class CostElementService {
   ) { }
 
 
-  getCostElements(): Observable<any> {
-    return this._http.get(`${this.serviceUrl}/GetSelectList?sectorId=${this._globalService.getSectorType()}`)
+  getSelectListCostElementsBySectorId(searchTerm:string): Observable<any> {
+    return this._http.get<any>(`${this.serviceUrl}/GetSelectList`, {
+      params: { sectorId: this._globalService.getSectorType() , searchTerm: searchTerm },
+    });
   }
 
 }

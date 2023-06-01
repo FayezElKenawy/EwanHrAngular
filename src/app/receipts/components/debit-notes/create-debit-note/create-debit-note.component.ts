@@ -27,10 +27,9 @@ export class CreateDebitNoteComponent implements OnInit {
 
   costElementCols: ColumnType[];
   costElements: CreateCostElementItemModel[] = [];
-  allCostElements: CreateCostElementItemModel[] = [];
   selectedItem: CreateCostElementItemModel;
 
-  costCenters: GetCostCenterListModel[];
+
   filteredArray: any[];
 
   netVal: number;
@@ -45,6 +44,7 @@ export class CreateDebitNoteComponent implements OnInit {
   sectorId: string;
   submitted: boolean;
   currentYear = new Date().getFullYear() + 5;
+  customerCode: string;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -62,7 +62,7 @@ export class CreateDebitNoteComponent implements OnInit {
     this.sectorId = this._globalService.getSectorType();
     this.createForm();
     this.defCols();
-    this.getCostElements();
+
   }
 
   defCols() {
@@ -96,11 +96,31 @@ export class CreateDebitNoteComponent implements OnInit {
 
   searchCustomers(event: any) {
     this._customerService
-      .getCustomersBySectorId(this.sectorId, event.query)
+      .getCustomersBySectorId(event.query)
       .subscribe((result) => {
         this.filteredArray = [];
         this.filteredArray = result;
       });
+  }
+
+  searchCostElements(event: any) {
+    setTimeout(() => {
+      this._costElementService.getSelectListCostElementsBySectorId(event.query).subscribe(
+        (res: any) => {
+          this.filteredArray = res;
+        }
+      )
+    }, 1500);
+  }
+
+  searchCostCenters(event: any) {
+    setTimeout(() => {
+      this._costCenterService.getCostCenterSelectList(this.customerCode, event.query).subscribe(
+        (res: any) => {
+          this.filteredArray = res;
+        }
+      )
+    }, 1500);
   }
 
   createForm() {
@@ -111,14 +131,6 @@ export class CreateDebitNoteComponent implements OnInit {
       costCenter: [{ value: "", disabled: true }, Validators.required],
       arabicRemarks: [""],
     });
-  }
-
-  getCostElements() {
-    this._costElementService.getCostElements().subscribe(
-      (res: any) => {
-        this.allCostElements = res;
-      }
-    )
   }
 
 
@@ -239,12 +251,11 @@ export class CreateDebitNoteComponent implements OnInit {
   }
 
   onSelectCustomer(event: any) {
+    this.customerCode = event.code;
     this._costCenterService
-      .getCostCenterSelectList(event.code)
+      .getCostCenterSelectList(event.code, '')
       .subscribe((result) => {
-        this.filteredArray = [];
         this.filteredArray = result;
-        this.costCenters = result;
         if (result.length > 0) {
           this.form.controls.costCenter.enable();
         } else {
@@ -260,7 +271,6 @@ export class CreateDebitNoteComponent implements OnInit {
 
   filterArray(event, arrayObject: any, ColName = "FullName") {
     this.filteredArray = [];
-
     for (let i = 0; i < arrayObject.length; i++) {
       const item = arrayObject[i];
       var itemFullName = item[ColName];
