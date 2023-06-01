@@ -61,7 +61,7 @@ export class PageListComponent implements OnInit {
         value: field.value,
       });
     });
-    
+
     this._http
       .post<PagedList>(`${this.pageListConfig.getDataAPIURL}`, this.searchModel)
       .subscribe((result: PagedList) => {
