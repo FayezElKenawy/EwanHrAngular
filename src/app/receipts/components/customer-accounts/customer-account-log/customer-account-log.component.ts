@@ -24,13 +24,13 @@ export class CustomerAccountLogComponent implements OnInit {
   ngOnInit() {
     this.logCols = [
       {
-        field: "segmentsCustomerId",
-        header: "Receipts.Fields.SegmentsCustomerId",
+        field: "FinanceCustomerCode",
+        header: "Receipts.Fields.FinanceCustomerCode",
         hidden: true,
       },
 
       {
-        field: "contractId",
+        field: "entityCode",
         header: "Receipts.Fields.ContractId",
         hidden: false,
       },

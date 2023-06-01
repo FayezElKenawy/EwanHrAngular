@@ -26,7 +26,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
 
   debitCols: any[] = [];
   creditCols: any[] = [];
-  logCols: any[] = [];
+
   filteredArray: any[];
   costCenters: any[] = [];
   selectedContract: any;
@@ -81,7 +81,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
         hidden: false,
       },
       {
-        field: "netValue",
+        field: "netValueAfterTax",
         header: "Receipts.Fields.NetValue",
         hidden: false,
       },
@@ -111,29 +111,9 @@ export class DetailsCustomerAccountComponent implements OnInit {
         hidden: false,
       },
       {
-        field: "netValue",
+        field: "netValueAfterTax",
         header: "Receipts.Fields.NetValue",
         hidden: false,
-      },
-    ];
-
-    this.logCols = [
-      {
-        field: "CreationDate",
-        header: "App.Fields.DocumentDate",
-        hidden: false,
-        pipe: "date",
-        pipeFormat: "yyyy-MM-dd",
-      },
-      {
-        field: "SegmentContractId",
-        header: "Receipts.Fields.ContractId",
-        hidden: false,
-      },
-      {
-        field: "Message",
-        header: "Receipts.Fields.ReciptType",
-        hidden: true,
       },
     ];
   }

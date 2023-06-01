@@ -58,7 +58,7 @@
                 {{ "App.Buttons.Ntification1" | translate }}
               </button>
             </ng-container>
-            <ng-container *authorization="'Finance-CustomerAccount-ShowMessages'">
+            <ng-container *authorization="'Finance-CustomerAccount-SecondNotification'">
               <button
                 type="button"
                 *ngIf="showNotification"
@@ -68,7 +68,7 @@
                 {{ "App.Buttons.Ntification2" | translate }}
               </button>
             </ng-container>
-            <ng-container *authorization="'Finance-CustomerAccount-ShowMessages'">
+            <ng-container *authorization="'Finance-CustomerAccount-ThirdNotification'">
               <button
                 type="button"
                 *ngIf="showNotification"
@@ -86,7 +86,7 @@
             <!-- رقم العميل -->
             <div class="details-label">
               <span>{{
-                "Receipts.Fields.SegmentsCustomerId" | translate
+                "Receipts.Fields.FinanceCustomerCode" | translate
               }}</span>
             </div>
             <div class="details-value">
@@ -326,7 +326,7 @@
                     <ng-template #render_data_field>
                       {{
                         !col.pipe
-                          ? rowData[col.field]
+                        ? rowData[col.field] || "---"
                           : col.pipe === "date"
                           ? (rowData[col.field] | date : col.pipeFormat)
                           : rowData[col.field]

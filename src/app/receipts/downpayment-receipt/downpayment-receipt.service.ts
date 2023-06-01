@@ -110,14 +110,14 @@ export class DownpaymentReceiptService {
                 this._globalService.messageAlert(
                   MessageType.Error,
                   this._globalService.translateWordByKey(
-                    "App.Messages.FailedInSegments"
+                    "App.Messages.FailedInFinance"
                   )
                 );
               } else if (resultVM.FailedReason === "period-no-not-exist") {
                 this._globalService.messageAlert(
                   MessageType.Error,
                   this._globalService.translateWordByKey(
-                    "App.Messages.NoPeriodInSegments"
+                    "App.Messages.NoPeriodInFinance"
                   )
                 );
               }else if(resultVM.Message){

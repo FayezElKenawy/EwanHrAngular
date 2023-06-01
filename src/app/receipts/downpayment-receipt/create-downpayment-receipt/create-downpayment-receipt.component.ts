@@ -91,11 +91,11 @@ export class CreateDownpaymentReceiptComponent implements OnInit {
     this._downpaymentReceipt
       .getContract(id)
       .subscribe((result: IServiceResult) => {
-        
+
         this.contract = result.data;
         this.form.controls["DocumentDate"].setValue(new Date());
         this.form.controls["Customer"].setValue(
-          this.contract.SegmentsCustomerId + " - " + this.contract.CustomerName
+          this.contract.FinanceCustomerCode + " - " + this.contract.CustomerName
         );
         this.form.controls["Contract"].setValue(this.contract.SegmentContractId);
         this.form.controls["ContractDownPaymentAmount"].setValue(
@@ -119,14 +119,14 @@ export class CreateDownpaymentReceiptComponent implements OnInit {
         this.form.controls["IsTermAgreements"].setValue(
           this.contract.IsTermAgreements
         );
-        
+
         if (this.viewModel.CurrentDate < this.contract.ContractDate) {
           this.form.disable();
           this.DateValidation = true;
           this.form.controls["CreditCardType"].disable();
           this.form.controls["BankAccount"].disable();
           this.form.controls["CashBox"].disable();
-        } 
+        }
 
         this.IsCashOrDeposit();
         this.progressSpinner = false;

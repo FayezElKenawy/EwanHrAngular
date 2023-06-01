@@ -8,6 +8,7 @@ import { languages } from "@environments/languages";
 import { IServiceResult, IResultVM } from "@shared/interfaces/results";
 import { Setting } from "@shared/interfaces/setting-model";
 import { catchError, map } from "rxjs/operators";
+import { Router } from "@angular/router";
 
 declare let $: any;
 
@@ -32,7 +33,8 @@ export class GlobalService {
 
   constructor(
     private _translatService: TranslateService,
-    private _http: HttpClient
+    private _http: HttpClient,
+    private _router: Router
   ) {
     toastr.options.closeButton = true;
     toastr.options.debug = false;
@@ -51,8 +53,14 @@ export class GlobalService {
     toastr.options.hideMethod = "fadeOut";
   }
 
-  getSectorType(){
-    return sessionStorage.getItem('SectorType');
+  getSectorType() {
+    if (sessionStorage.getItem('SectorType')) {
+      return sessionStorage.getItem('SectorType');
+    } else {
+      this._router.navigate([
+        '/financeSectors'
+      ]);
+    }
   }
 
   //#region Messaging
@@ -286,11 +294,11 @@ export class GlobalService {
     }
     else if (error.status === 400) {
 
-      this.messageAlert(MessageType.Error,error.error)
+      this.messageAlert(MessageType.Error, error.error)
     } else if (error.status === 404) {
 
-      this.messageAlert(MessageType.Error,error.error)
-    }else if (error.status === 0) {
+      this.messageAlert(MessageType.Error, error.error)
+    } else if (error.status === 0) {
       Swal({
         type: "error",
         title:

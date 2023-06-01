@@ -203,8 +203,8 @@
             "SavedSuccessfully": "تم الحفظ بنجاح",
             "SentSuccessFully": "تم الارسال بنجاح",
             "UpdatedSuccessfully": "تم التعديل بنجاح",
-            "FailedInSegments": "حدث خطأ في الترحيل الى سيجمنت",
-            "NoPeriodInSegments": "لا يوجد فترة مفتوحة في سيجمنت",
+            "FailedInFinance": "حدث خطأ في الترحيل الى سيجمنت",
+            "NoPeriodInFinance": "لا يوجد فترة مفتوحة في سيجمنت",
             "DocumentDateIsInvalid": "تاريخ السند غير صحيح",
             "TimedOut": "انتهت جلستك لأن النظام لم يتلق أي مدخلات منك لمدة 5 دقائق",
             "ReplacementDateIsInvalid": "تاريخ الاستبدال يجب ان يكون بعد تاريخ البداية الفعلى"
@@ -249,7 +249,7 @@
         "Fields": {
             "Select": "اختر",
             "InvoiceId": "رقم الفاتورة",
-            "SegmentsInvoiceId": "رقم الفاتورة فى سيجمنت",
+            "FinanceInvoiceId": "رقم الفاتورة ",
             "CostElement": "البند",
             "CostElements": "البنود",
             "CostElementSelect": "اختر البند",
@@ -257,7 +257,7 @@
             "CostElementAmountAfterTax": "قيمة البند بعد الضريبة",
             "InvoiceDate": "تاريخ الفاتورة",
             "CustomerId": "رقم العميل",
-            "SegmentsCustomerId":"رقم العميل",
+            "FinanceCustomerCode":"رقم العميل",
             "CustomerName": "اسم العميل",
             "CustomerTypeName": "تصنيف العميل",
             "CustomerPhone": "رقم هاتف العميل",
