@@ -5,8 +5,6 @@ import { CoreLayoutComponent } from '@shared/layouts/core-layout/core-layout.com
 import { ListReturnedPaymentReceiptsComponent } from './returned-payment-receipts/list-returned-payment-receipts/list-returned-payment-receipts.component';
 import { CreateReturnedPaymentReceiptComponent } from './returned-payment-receipts/create-returned-payment-receipt/create-returned-payment-receipt.component';
 import { EditReturnedPaymentReceiptComponent } from './returned-payment-receipts/edit-returned-payment-receipt/edit-returned-payment-receipt.component';
-import { ListCustomerAccountComponent } from './customer-accounts/list-customer-account/list-customer-account.component';
-import { DetailsCustomerAccountComponent } from './customer-accounts/details-customer-account/details-customer-account.component';
 import { ListPaymentReceiptsComponent } from './components/payment-receipts/list-payment-receipts/list-payment-receipts.component';
 import { CreatePaymentReceiptComponent } from './components/payment-receipts/create-payment-receipt/create-payment-receipt.component';
 import { EditPaymentReceiptComponent } from './components/payment-receipts/edit-payment-receipt/edit-payment-receipt.component';
@@ -18,6 +16,8 @@ import { DetailsCreditNoteComponent } from './components/credit-notes/details-cr
 import { DetailsDebitNoteComponent } from './components/debit-notes/details-debit-note/details-debit-note.component';
 import { DetailCreditInvoiceComponent } from './components/credit-invoices/detail-credit-invoice/detail-credit-invoice.component';
 import { ListCreditInvoicesComponent } from './components/credit-invoices/list-credit-invoices/list-credit-invoices.component';
+import { ListCustomerAccountComponent } from './components/customer-accounts/list-customer-account/list-customer-account.component';
+import { DetailsCustomerAccountComponent } from './components/customer-accounts/details-customer-account/details-customer-account.component';
 
 const routes: Routes = [
   {

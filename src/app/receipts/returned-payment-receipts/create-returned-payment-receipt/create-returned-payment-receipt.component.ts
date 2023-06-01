@@ -23,11 +23,10 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
   viewModel: any;
   filteredArray: any[];
   submitted: Boolean;
-  progressSpinner: boolean;
   toYear = new Date().getFullYear() + 5;
-  Contracts: any;
+
   totalVal: number;
-  vouchers: any[]=[];
+  vouchers: any[] = [];
   selectedVoucher: any;
   settlementCols: any[];
   settlements: any[];
@@ -37,11 +36,13 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
   filteredVouchers: any[];
   voucherType: any;
   minDateValue: any;
-  CashBoxs:any[]=[];
-  Customers:any[]=[];
-  BankAccounts:any[]=[];
-  sectorId:string;
-  disabledVoucher:boolean = true;
+  CashBoxs: any[] = [];
+  Customers: any[] = [];
+  BankAccounts: any[] = [];
+  sectorId: string;
+  disabledVoucher: boolean = true;
+  customerCode: string;
+
   constructor(
     private _formBuilder: FormBuilder,
     private _globalService: GlobalService,
@@ -49,10 +50,10 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
     private _router: Router,
     private _returnPaymentReceipt: ReturnPaymentReceiptService,
     private _costCenterService: CostCenterService,
-    private _cashBox:CashboxService,
-    private _bankAccount:BankAccountService,
-    private _customer:CustomerService,
-    private _contract:ContractService
+    private _cashBox: CashboxService,
+    private _bankAccount: BankAccountService,
+    private _customer: CustomerService,
+    private _contract: ContractService
   ) {
     this.settlements = [];
   }
@@ -173,7 +174,7 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
 
       const postedViewModel = Object.assign({}, this.form.value);
       postedViewModel.customerId = postedViewModel.customer.id;
-      postedViewModel.entityCode =  postedViewModel.contract.entityCode;
+      postedViewModel.entityCode = postedViewModel.contract.entityCode;
       postedViewModel.sectorTypeId = this.sectorId;
       postedViewModel.cashBoxId = postedViewModel.cashBox
         ? postedViewModel.cashBox.code
@@ -182,7 +183,7 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
         ? postedViewModel.bankAccount.code
         : null;
       postedViewModel.documentDate = this._datePipe.transform(
-        postedViewModel.documentDate,'yyyy-MM-ddTHH:mm:ss'
+        postedViewModel.documentDate, 'yyyy-MM-ddTHH:mm:ss'
       );
 
       postedViewModel.refundsTransactions = this.settlements;
@@ -192,7 +193,7 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
             this._globalService.messageAlert(
               MessageType.Success,
               this._globalService.translateWordByKey(
-              "App.Messages.SavedSuccessfully"));
+                "App.Messages.SavedSuccessfully"));
             this.submitted = false;
             this.form.reset();
             this._router.navigate([
@@ -205,23 +206,35 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
   }
 
   searchCustomers(event: any) {
-    this._customer.getCustomersBySectorId(this.sectorId,event.query)
-    .subscribe(result =>{
-      this.Customers = result;
-    });
+    setTimeout(() => {
+      this._customer.getCustomersBySectorId(event.query)
+        .subscribe(result => {
+          this.Customers = result;
+        });
+    }, 1500);
+
+  }
+
+  searchCostCenters(event: any) {
+    setTimeout(() => {
+      this._costCenterService.getCostCenterSelectList(this.customerCode, event.query).subscribe(
+        (res: any) => {
+          this.filteredArray = res;
+        }
+      )
+    }, 1500);
   }
 
   onSelectCustomer(event: any) {
     this.settlements = [];
     this.vouchers = [];
     this.selectedVoucher = undefined;
+    this.customerCode = event.code
     this._costCenterService
-      .getCostCenterSelectList(event.code)
+      .getCostCenterSelectList(event.code, '')
       .subscribe((result: any) => {
 
-        this.filteredArray = [];
         this.filteredArray = result;
-        this.Contracts = result;
         if (result.length > 0) {
           this.form.controls.contract.enable();
           this.form.controls.contract.reset();
@@ -243,14 +256,14 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
         this.filteredVouchers = this.vouchers;
       });
     this._cashBox.getAll('')
-    .subscribe(result =>{
-      this.CashBoxs = result;
-    });
+      .subscribe(result => {
+        this.CashBoxs = result;
+      });
 
     this._bankAccount.getAll('')
-    .subscribe(result =>{
-      this.BankAccounts = result;
-    })
+      .subscribe(result => {
+        this.BankAccounts = result;
+      })
   }
 
   onSelectVoucherType() {
@@ -265,7 +278,7 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
     this.added = true;
     if (this.selectedVoucher && this.refundValue > 0) {
       const settlement = {
-        code : this.selectedVoucher.code,
+        code: this.selectedVoucher.code,
         creditReceivableId: this.selectedVoucher.id,
         creditReceivableVoucherTypeId: this.selectedVoucher.voucherTypeId,
         refundAmount: this.refundValue,

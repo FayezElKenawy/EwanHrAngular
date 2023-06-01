@@ -108,8 +108,8 @@ export class ListReturnedPaymentReceiptsComponent implements OnInit {
           searchType: SearchType.Date
         },
         {
-          field: "segmentsCustomerId",
-          header: "Receipts.Fields.SegmentsCustomerId",
+          field: "FinanceCustomerCode",
+          header: "Receipts.Fields.FinanceCustomerCode",
           hidden: false,
           searchable: true,
           searchType: SearchType.Text
@@ -117,13 +117,6 @@ export class ListReturnedPaymentReceiptsComponent implements OnInit {
         {
           field: "customerFullName",
           header: "Receipts.Fields.CustomerName",
-          hidden: false,
-          searchable: true,
-          searchType: SearchType.Text
-        },
-        {
-          field: "branchName",
-          header: "App.Fields.Branch",
           hidden: false,
           searchable: true,
           searchType: SearchType.Text

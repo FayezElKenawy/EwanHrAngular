@@ -1,17 +1,13 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { CustomerAccountService } from "../customer-account.service";
-import { DatePipe } from "@angular/common";
 import { ActivatedRoute } from "@angular/router";
-import { IServiceResult } from "@shared/interfaces/results";
 import { GlobalService, MessageType } from "@shared/services/global.service";
 import { CustomReportComponent } from "@shared/components/reporting/custom-report/custom-report.component";
 import { Operators } from "@shared/models/Operators";
 import { FieldTypesEnum } from "@shared/models/dynamic-fields";
-import { CustomerAccountModel } from "../../models/customer-account/customer-account.model";
 import { CostCenterService } from "@shared/services/cost-center.service";
-import { CustomerDetailsPageModel } from "../../models/customer-account/customer-details-page.model";
-import { SendCustomerSMSModel } from "../../models/customer-account/send-customer-sms.model";
-import { NotificationType } from "../enum/notification-type.enum";
+import { CustomerAccountService } from "src/app/receipts/services/customer-account.service";
+import { CustomerDetailsPageModel } from "src/app/receipts/models/customer-account/customer-details-page.model";
+import { SendCustomerSMSModel } from "src/app/receipts/models/customer-account/send-customer-sms.model";
 declare let Swal: any;
 
 @Component({
@@ -30,7 +26,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
 
   debitCols: any[] = [];
   creditCols: any[] = [];
-  logCols: any[] = [];
+
   filteredArray: any[];
   costCenters: any[] = [];
   selectedContract: any;
@@ -85,7 +81,7 @@ export class DetailsCustomerAccountComponent implements OnInit {
         hidden: false,
       },
       {
-        field: "netValue",
+        field: "netValueAfterTax",
         header: "Receipts.Fields.NetValue",
         hidden: false,
       },
@@ -115,42 +111,24 @@ export class DetailsCustomerAccountComponent implements OnInit {
         hidden: false,
       },
       {
-        field: "netValue",
+        field: "netValueAfterTax",
         header: "Receipts.Fields.NetValue",
         hidden: false,
-      },
-    ];
-
-    this.logCols = [
-      {
-        field: "CreationDate",
-        header: "App.Fields.DocumentDate",
-        hidden: false,
-        pipe: "date",
-        pipeFormat: "yyyy-MM-dd",
-      },
-      {
-        field: "SegmentContractId",
-        header: "Receipts.Fields.ContractId",
-        hidden: false,
-      },
-      {
-        field: "Message",
-        header: "Receipts.Fields.ReciptType",
-        hidden: true,
       },
     ];
   }
 
   getCostCenters(code: string) {
+    setTimeout(() => {
     this._costCenterService
-      .getCostCenterSelectList(code)
+      .getCostCenterSelectList(this.viewModel?.customerAccount?.code,code)
       .subscribe((result: any) => {
         this.filteredArray = [];
         this.filteredArray = result;
         this.costCenters = result;
 
       });
+    }, 1500);
   }
 
 

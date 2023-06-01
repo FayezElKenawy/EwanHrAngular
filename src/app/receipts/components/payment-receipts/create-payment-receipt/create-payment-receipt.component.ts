@@ -39,7 +39,6 @@ export class CreatePaymentReceiptComponent implements OnInit {
   filteredArray: any[];
   submitted: Boolean;
   toYear = new Date().getFullYear() + 5;
-  costCenters: GetCostCenterListModel[];
   totalVal: number;
 
   paidValue: number;
@@ -49,6 +48,7 @@ export class CreatePaymentReceiptComponent implements OnInit {
   sectorId: string;
   creditCardTypes: any[];
   bankAccounts: any[] = [];
+  customerCode: string;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -235,13 +235,13 @@ export class CreatePaymentReceiptComponent implements OnInit {
         this.submittedObjectModel.documentDate, 'yyyy-MM-ddTHH:mm:ss'
       );
 
-      this.submittedObjectModel.paymentsTransactions=[];
+      this.submittedObjectModel.paymentsTransactions = [];
       this.settlements.forEach((settlement) => {
         let paymentTransaction: CreatePaymentTransactionModel =
         {
           debitReceivableId: settlement.debitReceivableId,
           debitReceivableVoucherTypeId: settlement.debitReceivableVoucherTypeId,
-          paidAmount:settlement.paidAmount
+          paidAmount: settlement.paidAmount
         }
         this.submittedObjectModel.paymentsTransactions.push(paymentTransaction);
       });
@@ -266,7 +266,7 @@ export class CreatePaymentReceiptComponent implements OnInit {
   searchCustomers(event: any) {
     setTimeout(() => {
       this._customerService
-        .getCustomersBySectorId(this.sectorId, event.query)
+        .getCustomersBySectorId(event.query)
         .subscribe((result) => {
           this.filteredArray = [];
           this.filteredArray = result;
@@ -274,16 +274,25 @@ export class CreatePaymentReceiptComponent implements OnInit {
     }, 1500);
   }
 
+  searchCostCenters(event: any) {
+    setTimeout(() => {
+      this._costCenterService.getCostCenterSelectList(this.customerCode, event.query).subscribe(
+        (res: any) => {
+          this.filteredArray = res;
+        }
+      )
+    }, 1500);
+  }
+
   onSelectCustomer(event: any) {
     this.settlements = [];
     this.vouchers = [];
     this.selectedVoucher = undefined;
-
-    this._costCenterService.getCostCenterSelectList(event.code)
+    this.customerCode = event.code;
+    this._costCenterService.getCostCenterSelectList(event.code, '')
       .subscribe((result) => {
         this.filteredArray = [];
         this.filteredArray = result;
-        this.costCenters = result;
         if (result.length > 0) {
           this.form.controls.costCenter.enable();
           this.form.controls.costCenter.reset();
@@ -292,7 +301,6 @@ export class CreatePaymentReceiptComponent implements OnInit {
           this.form.controls.costCenter.disable();
         }
       });
-
   }
 
 
@@ -512,3 +520,4 @@ export class CreatePaymentReceiptComponent implements OnInit {
     this.onSelectVoucherType();
   }
 }
+

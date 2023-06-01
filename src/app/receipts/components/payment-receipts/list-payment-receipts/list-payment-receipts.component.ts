@@ -113,12 +113,6 @@ export class ListPaymentReceiptsComponent implements OnInit {
           isLocalized: true,
         },
         {
-          field: 'branchName',
-          header: 'App.Fields.Branch',
-          customSearchField: 'Branch.Name',
-          isLocalized: true,
-        },
-        {
           field: 'netValueAfterTax',
           header: 'Receipts.Fields.ReciptValue',
         },

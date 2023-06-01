@@ -148,7 +148,7 @@ export class EditPaymentReceiptComponent implements OnInit {
 
   searchCustomers(event: any) {
     this._customerService
-      .getCustomersBySectorId(this._globalService.getSectorType(), event.query)
+      .getCustomersBySectorId(event.query)
       .subscribe((result) => {
         this.filteredArray = [];
         this.filteredArray = result;

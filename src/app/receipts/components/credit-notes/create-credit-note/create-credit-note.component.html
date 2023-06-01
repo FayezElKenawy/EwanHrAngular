@@ -8,7 +8,7 @@
       <div class="m-portlet__head-caption">
         <div class="m-portlet__head-title">
           <h6 class="m-portlet__head-text">
-            <a routerLink="/receipts/credit-notes" class="back-icon">
+            <a routerLink="/finance/receipts/credit-notes" class="back-icon">
               <i class="fa fa-arrow-alt-circle-right"></i>
             </a>
             {{ "Receipts.Titles.CreditNotesCreatePage" | translate }}
@@ -144,9 +144,7 @@
                     formControlName="costCenter"
                     field="entityCode"
                     [suggestions]="filteredArray"
-                    (completeMethod)="
-                      filterArray($event, costCenters, 'entityCode')
-                    "
+                    (completeMethod)="searchCostCenters($event)"
                     (onSelect)="onSelectCostCenter($event)"
                     (onClear)="onClear('costCenter')"
                     [forceSelection]="true"
@@ -274,9 +272,7 @@
                     field="name"
                     [suggestions]="filteredArray"
                     (onSelect)="onSelectItem($event)"
-                    (completeMethod)="
-                      filterArray($event, allCostElements, 'name')
-                    "
+                    (completeMethod)="searchCostElements($event)"
                     [forceSelection]="true"
                     [size]="30"
                     [minLength]="1"
