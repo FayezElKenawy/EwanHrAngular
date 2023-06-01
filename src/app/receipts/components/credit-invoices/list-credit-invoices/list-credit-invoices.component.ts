@@ -97,10 +97,6 @@ export class ListCreditInvoicesComponent implements OnInit {
 
         },
         {
-          field: "BranchName",
-          header: "App.Fields.Branch",
-        },
-        {
           field: "entityCode",
           header: "Receipts.Fields.ContractId",
 

@@ -122,13 +122,6 @@ export class ListReturnedPaymentReceiptsComponent implements OnInit {
           searchType: SearchType.Text
         },
         {
-          field: "branchName",
-          header: "App.Fields.Branch",
-          hidden: false,
-          searchable: true,
-          searchType: SearchType.Text
-        },
-        {
           field: "entityCode",
           header: "Receipts.Fields.ContractId",
           hidden: false,
