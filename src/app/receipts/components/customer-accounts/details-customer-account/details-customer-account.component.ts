@@ -126,6 +126,11 @@ export class DetailsCustomerAccountComponent implements OnInit {
         this.filteredArray = [];
         this.filteredArray = result;
         this.costCenters = result;
+        this.filteredArray.unshift({ entityCode:'الكل' });
+
+        if(!this.selectedContract){
+          this.selectedContract = {entityCode:'الكل' };
+        }
 
       });
     }, 1500);
@@ -151,15 +156,18 @@ export class DetailsCustomerAccountComponent implements OnInit {
   }
 
   onSelectContract(event) {
-    if (event.entityCode === "All" || event.entityCode === "الكل") {
+    debugger
+    if (event.entityCode == 'الكل') {
       this.costCenter = null;
       this.showReport = false;
+      this.getDetails(this.customerId, '')
     } else {
       this.costCenter = event?.entityCode;
       this.showReport = true;
+      this.getDetails(this.customerId, event?.entityCode)
     }
 
-    this.getDetails(this.customerId, event?.entityCode)
+
 
   }
 

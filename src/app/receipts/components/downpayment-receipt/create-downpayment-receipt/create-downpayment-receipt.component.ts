@@ -1,13 +1,10 @@
-import {
-  GlobalService,
-  MessageType
-} from "./../../../shared/services/global.service";
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { DatePipe } from "@angular/common";
 import { IServiceResult } from "@shared/interfaces/results";
-import { DownpaymentReceiptService } from "../downpayment-receipt.service";
+import { DownpaymentReceiptService } from "../../../services/downpayment-receipt.service";
 import { AuthService } from "@shared/services/auth.service";
+import { GlobalService, MessageType } from "@shared/services/global.service";
 
 @Component({
   selector: "app-create-downpayment-receipt",

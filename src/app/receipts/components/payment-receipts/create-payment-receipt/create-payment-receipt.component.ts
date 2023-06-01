@@ -318,12 +318,12 @@ export class CreatePaymentReceiptComponent implements OnInit {
         this.onSelectVoucherType();
       });
 
-    this._cashBox.getAll('')
+    this._cashBox.getSelectList('')
       .subscribe(result => {
         this.cashBoxs = result;
       });
 
-    this._bankAccount.getAll('')
+    this._bankAccount.getSelectList('')
       .subscribe(result => {
         this.bankAccounts = result;
       })

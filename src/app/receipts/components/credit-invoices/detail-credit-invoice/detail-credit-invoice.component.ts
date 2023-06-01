@@ -22,7 +22,7 @@ export class DetailCreditInvoiceComponent implements OnInit {
 
     this.defCols();
     this.getDetails(this._route.snapshot.paramMap.get("id"))
-    
+
   }
 
   defCols(){
@@ -39,7 +39,17 @@ export class DetailCreditInvoiceComponent implements OnInit {
       },
       {
         field: 'netAmount',
-        header: 'Receipts.Fields.Quantity',
+        header: 'Receipts.Fields.CostElementAmount',
+        hidden: false
+      },
+      {
+        field: 'discountAmount',
+        header: 'Receipts.Fields.DiscountValue',
+        hidden: false
+      },
+      {
+        field: 'netValueAfterDiscount',
+        header: 'Receipts.Fields.ElementAfterDiscount',
         hidden: false
       },
       {
@@ -56,6 +66,11 @@ export class DetailCreditInvoiceComponent implements OnInit {
       {
         field: 'taxAmount',
         header: 'Receipts.Fields.TaxValue',
+        hidden: false
+      },
+       {
+        field: 'netAmountAfterTax',
+        header: 'Receipts.Fields.CostElementAmountAfterTax',
         hidden: false
       }
     ];
