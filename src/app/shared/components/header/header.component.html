@@ -1,9 +1,17 @@
 <!-- BEGIN: Header -->
-<header id="m_header" class="m-grid__item m-header " m-minimize-offset="200" m-minimize-mobile-offset="200">
+<header
+  id="m_header"
+  class="m-grid__item m-header"
+  m-minimize-offset="200"
+  m-minimize-mobile-offset="200"
+>
   <div class="m-container m-container--fluid m-container--full-height">
     <div class="m-stack m-stack--ver m-stack--desktop">
-      <div style="cursor: pointer;" class="res-header">
-        <a [href]="coreUrl" class="no-underline d-flex align-items-center py-1 px-2">
+      <div style="cursor: pointer" class="res-header">
+        <a
+          [href]="coreUrl"
+          class="no-underline d-flex align-items-center py-1 px-2"
+        >
           <img src="assets/images/hlogo.png" class="logo_img_header" />
         </a>
       </div>
@@ -23,22 +31,31 @@
 
           <div class="m-stack__item m-stack__item--middle m-brand__tools">
             <!-- BEGIN: Left Aside Minimize Toggle -->
-            <a href="javascript:;" id="m_aside_left_minimize_toggle"
-              class="m-brand__icon m-brand__toggler m-brand__toggler--left m--visible-desktop-inline-block  ">
+            <a
+              href="javascript:;"
+              id="m_aside_left_minimize_toggle"
+              class="m-brand__icon m-brand__toggler m-brand__toggler--left m--visible-desktop-inline-block"
+            >
               <span></span>
             </a>
 
             <!-- END -->
             <!-- BEGIN: Responsive Aside Left Menu Toggler -->
-            <a href="javascript:;" id="m_aside_left_offcanvas_toggle"
-              class="m-brand__icon m-brand__toggler m-brand__toggler--left m--visible-tablet-and-mobile-inline-block">
+            <a
+              href="javascript:;"
+              id="m_aside_left_offcanvas_toggle"
+              class="m-brand__icon m-brand__toggler m-brand__toggler--left m--visible-tablet-and-mobile-inline-block"
+            >
               <span></span>
             </a>
 
             <!-- END -->
             <!-- BEGIN: Topbar Toggler -->
-            <a id="m_aside_header_topbar_mobile_toggle" href="javascript:;"
-              class="m-brand__icon m--visible-tablet-and-mobile-inline-block">
+            <a
+              id="m_aside_header_topbar_mobile_toggle"
+              href="javascript:;"
+              class="m-brand__icon m--visible-tablet-and-mobile-inline-block"
+            >
               <i class="flaticon-more"></i>
             </a>
 
@@ -48,10 +65,16 @@
       </div>
 
       <!-- END: Brand -->
-      <div class="m-stack__item m-stack__item--fluid m-header-head" id="m_header_nav">
+      <div
+        class="m-stack__item m-stack__item--fluid m-header-head"
+        id="m_header_nav"
+      >
         <!-- BEGIN: Topbar -->
-        <div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general m-stack--fluid"
-          style="width: 85vw">
+        <div
+          id="m_header_topbar"
+          class="m-topbar m-stack m-stack--ver m-stack--general m-stack--fluid"
+          style="width: 85vw"
+        >
           <div class="m-stack__item m-topbar__nav-wrapper">
             <ul class="m-topbar__nav m-nav m-nav--inline">
               <!-- <li
@@ -72,11 +95,23 @@
               </li> -->
               <li
                 class="m-nav__item m-topbar__languages m-dropdown m-dropdown--small m-dropdown--header-bg-fill m-dropdown--arrow m-dropdown--align-right m-dropdown--mobile-full-width"
-                m-dropdown-toggle="click">
+                m-dropdown-toggle="click"
+                (click)="financeSectors()"
+              >
                 <span class="m-nav__link m-dropdown__toggle">
                   <span class="m-nav__link-text">
                     <!-- <img src="assets/demo/default/media/img/icons/resume2.png" width="25" height="25"> -->
-                    {{ 'App.Titles.FinanceTitle' | translate }}
+                    {{ "App.Titles.FinanceTitle" | translate }}
+                  </span>
+                </span>
+              </li>
+              <li
+                class="m-nav__item m-topbar__languages m-dropdown m-dropdown--small m-dropdown--header-bg-fill m-dropdown--arrow m-dropdown--align-right m-dropdown--mobile-full-width"
+                m-dropdown-toggle="click"
+              >
+                <span class="m-nav__link m-dropdown__toggle">
+                  <span class="m-nav__link-text">
+                    / {{ getSectorTypeName() | translate }}
                   </span>
                 </span>
               </li>
@@ -88,17 +123,23 @@
                 </span>
               </li> -->
             </ul>
-            <ul class="m-topbar__nav m-nav m-nav--inline sign-out  px-lg-4 float-right">
-              <li *ngIf="showSearchAllBranch"
-              class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img"
+            <ul
+              class="m-topbar__nav m-nav m-nav--inline sign-out px-lg-4 float-right"
+            >
+              <li
+                *ngIf="showSearchAllBranch"
+                class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img"
               >
-              <span class="m-nav__link m-dropdown__toggle">
-                <span class="m-topbar__username">
-                   <input type="checkbox"[(ngModel)]="IsSearchAllBranch"
-                    (change)="IsSearchAllBranchChanged()" />
-                  {{ 'App.Fields.SearchAllBranch' | translate }}
+                <span class="m-nav__link m-dropdown__toggle">
+                  <span class="m-topbar__username">
+                    <input
+                      type="checkbox"
+                      [(ngModel)]="IsSearchAllBranch"
+                      (change)="IsSearchAllBranchChanged()"
+                    />
+                    {{ "App.Fields.SearchAllBranch" | translate }}
+                  </span>
                 </span>
-              </span>
               </li>
 
               <!--  -->
@@ -106,39 +147,64 @@
               <!--  -->
               <!--  -->
               <li
-                class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
-                m-dropdown-toggle="click">
-                <a href="#" (click)="authUserVM?.RoleTypeId === '001'? showBranches():null"
-                  class="m-nav__link m-dropdown__toggle">
+                class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
+                m-dropdown-toggle="click"
+              >
+                <a
+                  href="#"
+                  (click)="
+                    authUserVM?.RoleTypeId === '001' ? showBranches() : null
+                  "
+                  class="m-nav__link m-dropdown__toggle"
+                >
                   <span class="m-topbar__username">
-                    {{authUserVM?.BranchArabicName }}
+                    {{ authUserVM?.BranchArabicName }}
                   </span>
-                  <span *ngIf="authUserVM?.RoleTypeId === '001'" class="m-topbar__userpic">
-                    <img alt="" src="assets/images/change.png" class="m--img-rounded m--marginless"
-                      style="width: 20px;" />
+                  <span
+                    *ngIf="authUserVM?.RoleTypeId === '001'"
+                    class="m-topbar__userpic"
+                  >
+                    <img
+                      alt=""
+                      src="assets/images/change.png"
+                      class="m--img-rounded m--marginless"
+                      style="width: 20px"
+                    />
                   </span>
                 </a>
-                <div *ngIf="authUserVM?.RoleTypeId === '001'" class="m-dropdown__wrapper ">
+                <div
+                  *ngIf="authUserVM?.RoleTypeId === '001'"
+                  class="m-dropdown__wrapper"
+                >
                   <!-- <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust text-white"></span> -->
                   <div class="m-dropdown__inner">
-
-                    <div style="max-height: 220px; overflow: auto;" class="m-dropdown__body nice-scroll" #scrollMe>
+                    <div
+                      style="max-height: 220px; overflow: auto"
+                      class="m-dropdown__body nice-scroll"
+                      #scrollMe
+                    >
                       <div *ngIf="load" class="loader_ajax_small"></div>
                       <div class="m-dropdown__content">
                         <ul class="m-nav m-nav--skin-light">
-                          <li *ngFor="let branch of branches" class="m-nav__item text-left">
-                            <a (click)="changeBranch(branch.Id)" class="m-nav__link cursor-pointer">
+                          <li
+                            *ngFor="let branch of branches"
+                            class="m-nav__item text-left"
+                          >
+                            <a
+                              (click)="changeBranch(branch.Id)"
+                              class="m-nav__link cursor-pointer"
+                            >
                               <i class="m-nav__link-icon flaticon-globe"></i>
                               <span class="m-nav__link-title">
                                 <span class="m-nav__link-wrap">
                                   <span class="m-nav__link-text">
-                                    {{ branch.ArabicName }}</span>
+                                    {{ branch.ArabicName }}</span
+                                  >
                                 </span>
                               </span>
                             </a>
                           </li>
                           <!-- <li class="m-nav__separator m-nav__separator--fit"></li> -->
-
                         </ul>
                       </div>
                     </div>
@@ -150,17 +216,21 @@
               <!--  -->
               <!--  -->
 
-
-
               <li
-                class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
-                m-dropdown-toggle="click">
+                class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
+                m-dropdown-toggle="click"
+              >
                 <a href="#" class="m-nav__link m-dropdown__toggle">
                   <span class="m-topbar__username">
-                    {{ authUserVM?.ArabicFullName }}</span>
+                    {{ authUserVM?.ArabicFullName }}</span
+                  >
                   <span class="m-topbar__userpic">
-                    <img alt="" src="assets/images/images.png" class="m--img-rounded m--marginless"
-                      style="width: 30px;" />
+                    <img
+                      alt=""
+                      src="assets/images/images.png"
+                      class="m--img-rounded m--marginless"
+                      style="width: 30px"
+                    />
                   </span>
                 </a>
                 <div class="m-dropdown__wrapper">
@@ -169,13 +239,17 @@
                     <div class="m-dropdown__header m--align-center">
                       <div class="m-card-user">
                         <div class="m-card-user__pic">
-                          <img alt="" src="assets/images/images.png" class="m--img-rounded m--marginless"
-                            style="width: 55px; border: 1px solid #ddd;" />
+                          <img
+                            alt=""
+                            src="assets/images/images.png"
+                            class="m--img-rounded m--marginless"
+                            style="width: 55px; border: 1px solid #ddd"
+                          />
                         </div>
                         <div class="m-card-user__details">
                           <div class="d-flex">
                             <span class="m-dropdown__header-subtitle d-block">
-                              {{ 'App.Fields.UserFullName' | translate }}
+                              {{ "App.Fields.UserFullName" | translate }}
                             </span>
                             <span class="dropdown__header-value">
                               {{ authUserVM?.ArabicFullName }}
@@ -183,7 +257,7 @@
                           </div>
                           <div class="d-flex">
                             <span class="m-dropdown__header-subtitle d-block">
-                              {{ 'App.Fields.Profession' | translate }}
+                              {{ "App.Fields.Profession" | translate }}
                             </span>
                             <span class="dropdown__header-value">
                               {{ authUserVM?.RoleArabicName }}
@@ -191,19 +265,19 @@
                           </div>
                           <div class="d-flex">
                             <span class="m-dropdown__header-subtitle d-block">
-                              {{ 'App.Fields.Branch' | translate }}
+                              {{ "App.Fields.Branch" | translate }}
                             </span>
                             <span class="dropdown__header-value">{{
                               authUserVM?.BranchArabicName
-                              }}</span>
+                            }}</span>
                           </div>
                           <div class="d-flex">
                             <span class="m-dropdown__header-subtitle d-block">
-                              {{ 'App.Fields.Area' | translate }}
+                              {{ "App.Fields.Area" | translate }}
                             </span>
                             <span class="dropdown__header-value">{{
                               authUserVM?.BranchAreaArabicName
-                              }}</span>
+                            }}</span>
                           </div>
                         </div>
                       </div>
@@ -212,27 +286,35 @@
                       <div class="m-dropdown__content">
                         <ul class="m-nav m-nav--skin-light">
                           <li class="m-nav__item text-left">
-                            <a [routerLink]="['/auth/profile/user-profile']" class="m-nav__link">
+                            <a
+                              [routerLink]="['/auth/profile/user-profile']"
+                              class="m-nav__link"
+                            >
                               <i class="m-nav__link-icon la la-user"></i>
                               <span class="m-nav__link-title">
                                 <span class="m-nav__link-wrap">
                                   <span class="m-nav__link-text">{{
-                                    'App.Fields.Profile' | translate
-                                    }}</span>
+                                    "App.Fields.Profile" | translate
+                                  }}</span>
                                   <!--<span class="m-nav__link-badge"><span class="m-badge m-badge&#45;&#45;success">2</span></span>-->
                                 </span>
                               </span>
                             </a>
                           </li>
-                          <li class="m-nav__separator m-nav__separator--fit"></li>
+                          <li
+                            class="m-nav__separator m-nav__separator--fit"
+                          ></li>
                           <li class="m-nav__item">
-                            <a class="m-nav__link cursor-pointer" (click)="logOut()">
+                            <a
+                              class="m-nav__link cursor-pointer"
+                              (click)="logOut()"
+                            >
                               <i class="m-nav__link-icon la la-sign-out"></i>
                               <span class="m-nav__link-title">
                                 <span class="m-nav__link-wrap">
                                   <span class="m-nav__link-text">{{
-                                    'App.Fields.LogOut' | translate
-                                    }}</span>
+                                    "App.Fields.LogOut" | translate
+                                  }}</span>
                                 </span>
                               </span>
                             </a>
@@ -244,68 +326,117 @@
                 </div>
               </li>
               <!-- Notification icon -->
-              <li class="m-nav__item m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right
-                              m-dropdown--mobile-full-width m-dropdown--skin-light" m-dropdown-toggle="click"
-                (click)="showNotifications()">
+              <li
+                class="m-nav__item m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
+                m-dropdown-toggle="click"
+                (click)="showNotifications()"
+              >
                 <div class="dropdown">
-                  <a class="m-nav__link notification-icon m-dropdown__toggle" href="#">
+                  <a
+                    class="m-nav__link notification-icon m-dropdown__toggle"
+                    href="#"
+                  >
                     <i class="la la-bell"></i>
                     <!-- <span *ngIf="signalRService.notificationCount != 0">{{signalRService.notificationCount}}</span> -->
-                    <span *ngIf="signalRService.notificationCount > 99" style="direction: ltr;">{{'+99'}}</span>
                     <span
-                      *ngIf="signalRService.notificationCount > 0 && signalRService.notificationCount <= 99">{{signalRService.notificationCount}}</span>
+                      *ngIf="signalRService.notificationCount > 99"
+                      style="direction: ltr"
+                      >{{ "+99" }}</span
+                    >
+                    <span
+                      *ngIf="
+                        signalRService.notificationCount > 0 &&
+                        signalRService.notificationCount <= 99
+                      "
+                      >{{ signalRService.notificationCount }}</span
+                    >
                   </a>
-                  <div class="m-dropdown__wrapper" style="padding-top: 20px;">
+                  <div class="m-dropdown__wrapper" style="padding-top: 20px">
                     <app-user-notification-list></app-user-notification-list>
                   </div>
                 </div>
               </li>
-              <li class=" language m-nav__item m-topbar__user-profile m-topbar__user-profile--img
-                m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill
-                 m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light mx-lg-2">
-                <div class="  dropdown">
-                  <button class="btn btn-language " data-toggle="dropdown">
-                    {{ currentLang == 'en' ? 'EN' : 'AR' }}
+              <li
+                class="language m-nav__item m-topbar__user-profile m-topbar__user-profile--img m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light mx-lg-2"
+              >
+                <div class="dropdown">
+                  <button class="btn btn-language" data-toggle="dropdown">
+                    {{ currentLang == "en" ? "EN" : "AR" }}
                   </button>
                   <ul class="dropdown-menu">
                     <li *ngFor="let item of langList">
-                      <a class="dropdown-item text-right " *ngIf="item.code != currentLang" style="cursor: pointer;"
-                        (click)="_globalService.languageChanging(item.code)">{{ item.name }}</a>
+                      <a
+                        class="dropdown-item text-right"
+                        *ngIf="item.code != currentLang"
+                        style="cursor: pointer"
+                        (click)="_globalService.languageChanging(item.code)"
+                        >{{ item.name }}</a
+                      >
                     </li>
                   </ul>
                 </div>
               </li>
 
+              <!-- start app launcher dropdown  -->
 
- <!-- start app launcher dropdown  -->
+              <li
+                class="language m-nav__item m-topbar__user-profile m-topbar__user-profile--img m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light mx-lg-1 pt-lg-1"
+              >
+                <div class="dropdown">
+                  <button
+                    class="btn btn-secondary dropdown-toggle"
+                    type="button"
+                    id="triggerId"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <img
+                      src="assets/images/oicons8-coderwall.png"
+                      class="img-launcher"
+                      alt=""
+                    />
+                  </button>
+                  <div
+                    class="dropdown-menu app-launcher dropdown-menu"
+                    aria-labelledby="triggerId"
+                  >
+                    <ng-container *ngFor="let module of modules">
+                      <a
+                        class="dropdown-item ml-3"
+                        [href]="
+                          module.URLPath
+                            ? env['coreUrl'] + module.URLPath
+                            : null
+                        "
+                        *ngIf="module?.URLPath?.includes('/')"
+                      >
+                        <img
+                          [src]="module?.IconFont"
+                          class="img-btn0 ml-2"
+                          alt=""
+                        />
+                        {{ module?.Name }}
+                      </a>
 
- <li
- class="language m-nav__item m-topbar__user-profile m-topbar__user-profile--img m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light mx-lg-1 pt-lg-1">
- <div class="dropdown">
-   <button class="btn btn-secondary dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown"
-     aria-haspopup="true" aria-expanded="false">
-     <img src="assets/images/oicons8-coderwall.png" class="img-launcher" alt="" />
-   </button>
-   <div class="dropdown-menu app-launcher dropdown-menu" aria-labelledby="triggerId">
-     <ng-container *ngFor="let module of modules">
-       <a class="dropdown-item ml-3" [href]="module.URLPath ? env['coreUrl'] + module.URLPath : null"
-         *ngIf="module?.URLPath?.includes('/')">
-         <img [src]="module?.IconFont" class="img-btn0 ml-2" alt="" />
-         {{ module?.Name }}
-       </a>
+                      <a
+                        class="dropdown-item ml-3"
+                        *ngIf="!module?.URLPath?.includes('/')"
+                        [href]="env[module.URLPath] ? env[module.URLPath] : '#'"
+                      >
+                        <img
+                          [src]="module?.IconFont"
+                          class="img-btn0 ml-2"
+                          alt=""
+                        />
+                        {{ module?.Name }}
+                      </a>
+                    </ng-container>
+                  </div>
+                </div>
+              </li>
 
-       <a class="dropdown-item ml-3" *ngIf="!module?.URLPath?.includes('/')"
-         [href]="env[module.URLPath] ? env[module.URLPath] : '#'">
-         <img [src]="module?.IconFont" class="img-btn0 ml-2" alt="" />
-         {{ module?.Name }}
-       </a>
-     </ng-container>
-   </div>
- </div>
-</li>
-
-<!-- End app launcher dropdown -->
-
+              <!-- End app launcher dropdown -->
             </ul>
           </div>
         </div>

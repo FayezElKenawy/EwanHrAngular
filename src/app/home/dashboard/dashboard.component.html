@@ -1,2 +1,173 @@
+<div class="row mx-0 pt-4">
+  <div class="col-lg-3 col-md-6 col-12">
+    <div class="ewan-card d-flex justify-content-between bg-white px-2 pt-4 pb-3">
+      <div class="ewan-card-body">
+        <h3 class="mb-0 px-3">{{'App.Charts.ServiceRequestChartCount' | translate}}</h3>
+        <h1 class="mb-0 pt-3 pl-4">{{viewModel?.ServiceRequestCount}}</h1>
+      </div>
+      <img src="assets/images/news.png" alt="">
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6 col-12">
+    <div class="ewan-card d-flex justify-content-between bg-white px-2 pt-4 pb-3">
+      <div class="ewan-card-body">
+        <h3 class="mb-0 px-3">{{'App.Charts.ContractsChartCount' | translate}}</h3>
+        <h1 class="mb-0 pt-3 pl-4">{{viewModel?.ContractsCount}}</h1>
+      </div>
+      <img src="assets/images/warranty.png" alt="">
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6 col-12">
+    <div class="ewan-card d-flex justify-content-between bg-white px-2 pt-4 pb-3">
+      <div class="ewan-card-body">
+        <h3 class="mb-0 px-3">{{'App.Charts.financialChart' | translate}}</h3>
+        <h1 class="mb-0 pt-3 pl-4">---</h1>
+      </div>
+      <img src="assets/images/debt.png" alt="">
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6 col-12">
+    <div class="ewan-card d-flex justify-content-between bg-white px-2 pt-4 pb-3">
+      <div class="ewan-card-body">
+        <h3 class="mb-0 px-3">{{'App.Charts.BundlesChart' | translate}}</h3>
+        <h1 class="mb-0 pt-3 pl-4">{{viewModel?.BundlesCount}}</h1>
+      </div>
+      <img src="assets/images/statement.png" alt="">
+    </div>
+  </div>
 
-<h1>Financial Charts</h1>
+  <div class="col-xs-12 col-md-6 px-md-3 px-0 mt-3  ">
+    <!-- <div class="card">
+      <div class="card-header"> {{'App.Charts.ServiceRequestChart' | translate}}
+
+      </div>
+      <div class="card-body position-relative">
+        <p-chart *ngIf="showChart" [hidden]="progressSpinner" type="pie" [data]="charts?.serviceRequestChart">
+        </p-chart>
+
+        <div [hidden]="!progressSpinner" class="home-card-loader">
+          <app-shimmer [rows]='2' [repeat]='2'></app-shimmer>
+        </div>
+
+
+      </div>
+      <div class="card-footer"> {{'App.Charts.ServiceRequestChartCount' | translate}} {{viewModel?.ServiceRequestCount}}
+      </div>
+    </div> -->
+    <!-- <div class="stati">
+      <i class="la la-newspaper-o"></i>
+      <div class='stati-Div'>
+        <p>{{viewModel?.ServiceRequestCount}}</p>
+        <span> {{'App.Charts.ServiceRequestChartCount' | translate}}</span>
+      </div>
+    </div> -->
+    <div class="stati">
+      <p-chart *ngIf="showChart" [hidden]="progressSpinner" type="pie" [data]="charts?.serviceRequestChart">
+      </p-chart>
+      <h5 class="text-center">
+      </h5>
+      <h5 class='text-center mt-3' style='color:black;clear: both;'>
+        {{'App.Charts.ServiceRequestChart' | translate}}</h5>
+    </div>
+  </div>
+
+  <div class="col-xs-12  col-md-6  px-md-3 px-0 mt-3 ">
+    <!-- <div class="card">
+      <div class="card-header"> {{'App.Charts.ContractsChart' | translate}}
+
+      </div>
+      <div class="card-body position-relative">
+        <p-chart *ngIf="showChart" [hidden]="progressSpinner" type="pie" [data]="charts?.contractsChart"></p-chart>
+
+        <div [hidden]="!progressSpinner" class="home-card-loader">
+          <app-shimmer [rows]='2' [repeat]='2'></app-shimmer>
+        </div>
+
+      </div>
+      <div class="card-footer">{{'App.Charts.ContractsChartCount' | translate}} {{viewModel?.ContractsCount}}
+      </div>
+    </div> -->
+    <!-- <div class="stati">
+      <i class="la la-newspaper-o"></i>
+      <div class='stati-Div'>
+        <p>{{viewModel?.ContractsCount}}</p>
+        <span> {{'App.Charts.ContractsChartCount' | translate}}</span>
+      </div>
+    </div> -->
+    <div class="stati">
+      <p-chart *ngIf="showChart" [hidden]="progressSpinner" type="pie" [data]="charts?.contractsChart"></p-chart>
+      <h5 class="text-center">
+      </h5>
+      <h5 class='text-center mt-3' style='color:black;clear: both;'>
+        {{'App.Charts.ContractsChart' | translate}}</h5>
+    </div>
+  </div>
+  <div class="col-xs-12  col-md-6 px-md-3 px-0 mt-3">
+    <!-- <div class="card">
+      <div class="card-header"> {{'App.Charts.financialChart' | translate}}
+
+      </div>
+      <div class="card-body position-relative">
+        <p-chart *ngIf="showChart" [hidden]="progressSpinner" type="doughnut" [data]="charts?.financialChart">
+        </p-chart>
+
+        <div [hidden]="!progressSpinner" class="home-card-loader">
+          <app-shimmer [rows]='2' [repeat]='2'></app-shimmer>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        {{'App.Charts.financialChart' | translate}}</div>
+    </div> -->
+
+    <!-- <div class="stati">
+      <i class="la la-newspaper-o"></i>
+      <div class='stati-Div'>
+        <p>{{viewModel?.ContractsCount}}</p>
+        <span> {{'App.Charts.financialChart' | translate}}</span>
+      </div>
+    </div> -->
+    <div class="stati">
+      <p-chart *ngIf="showChart" [hidden]="progressSpinner" type="doughnut" [data]="charts?.financialChart">
+      </p-chart>
+      <h5 class="text-center">
+      </h5>
+      <h5 class='text-center mt-3' style='color:black;clear: both;'>
+        {{'App.Charts.financialChart' | translate}}</h5>
+    </div>
+  </div>
+  <div class="col-xs-12  col-md-6 px-md-3 px-0 mt-3">
+    <!-- <div class="card">
+      <div class="card-header"> {{'App.Charts.BundlesChart' | translate}}
+
+      </div>
+      <div class="card-body position-relative">
+        <p-chart *ngIf="showChart" [hidden]="progressSpinner" type="doughnut" [data]="charts?.BundlesChart">
+        </p-chart>
+
+        <div [hidden]="!progressSpinner" class="home-card-loader">
+          <app-shimmer [rows]='2' [repeat]='2'></app-shimmer>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        {{'App.Charts.BundlesChart' | translate}}</div>
+    </div>
+ -->
+    <!-- <div class="stati">
+      <i class="la la-newspaper-o"></i>
+      <div class='stati-Div'>
+        <p>{{viewModel?.ContractsCount}}</p>
+        <span> {{'App.Charts.BundlesChart' | translate}}</span>
+      </div>
+    </div> -->
+    <div class="stati">
+      <p-chart *ngIf="showChart" [hidden]="progressSpinner" type="doughnut" [data]="charts?.BundlesChart">
+      </p-chart>
+      <h5 class="text-center">
+      </h5>
+      <h5 class='text-center mt-3' style='color:black;clear: both;'>
+        {{'App.Charts.BundlesChart' | translate}}</h5>
+    </div>
+  </div>
+</div>

@@ -17,7 +17,7 @@ export class SectorsComponent implements OnInit {
   getModules() {
     this.modules = [
       {
-        URLPath: '/',
+        URLPath: '/dashboard',
         Icon: 'assets/images/cards/hour.png',
         Name: 'App.Titles.mymaidSector',
         Description: 'App.Titles.mymaidSectorDesc',
@@ -27,7 +27,7 @@ export class SectorsComponent implements OnInit {
         }
       },
       {
-        URLPath: '/',
+        URLPath: '/dashboard',
         Icon: 'assets/images/cards/individual.png',
         Name: 'App.Titles.individualSector',
         Description: 'App.Titles.individualSectorDesc',
@@ -37,7 +37,7 @@ export class SectorsComponent implements OnInit {
         }
       },
       {
-        URLPath: '/',
+        URLPath: '/dashboard',
         Icon: 'assets/images/cards/bus.png',
         Name: 'App.Titles.businessSector',
         Description: 'App.Titles.businessSectorDesc',

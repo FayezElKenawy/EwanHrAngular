@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AboutComponent } from '../home/dashboard/dashboard.component';
+import { DashboardComponent } from '../home/dashboard/dashboard.component';
 import { CoreLayoutComponent } from '@shared/layouts/core-layout/core-layout.component';
 
 import { ListPaymentReceiptsComponent } from './components/payment-receipts/list-payment-receipts/list-payment-receipts.component';
@@ -24,7 +24,7 @@ const routes: Routes = [
   {
     path: '',
     children: [
-      { path: '', component: AboutComponent },
+      { path: '', component: DashboardComponent },
       { path: 'credit-invoices', component: ListCreditInvoicesComponent },
       {
         path: 'details-credit-invoices/:id',

@@ -9,7 +9,7 @@ declare let $;
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class AboutComponent implements OnInit {
+export class DashboardComponent implements OnInit {
   viewModel: any;
   circleChartColors: string[];
   progressSpinner: boolean;
@@ -19,7 +19,7 @@ export class AboutComponent implements OnInit {
   constructor(
     private _homeService: HomeService,
     private _globalService: GlobalService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.circleChartColors = [
