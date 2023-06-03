@@ -17,8 +17,8 @@ import { UserNotificationListComponent } from "src/app/notification/user-notific
   styleUrls: ["./header.component.scss"],
 })
 export class HeaderComponent implements OnInit {
-  showSearchAllBranch:boolean=false;
-  IsSearchAllBranch:boolean;
+  showSearchAllBranch: boolean = false;
+  IsSearchAllBranch: boolean;
   userInfoVM: any;
   coreUrl: string;
   authUserVM: any;
@@ -67,8 +67,6 @@ export class HeaderComponent implements OnInit {
   }
 
   getAuthUser() {
-    console.log('header component');
-
     this.authService.getAuthUser().subscribe(
       (res) => {
         if (res.isSuccess) {
@@ -145,5 +143,27 @@ export class HeaderComponent implements OnInit {
       null,
       null
     );
+  }
+
+  getSectorTypeName(): string {
+    if(!this.router.url.includes('financeSectors')){
+      switch (this._globalService.getSectorType()) {
+        case '01-01':
+          return 'App.Titles.mymaidSector'
+        case '01-02':
+          return 'App.Titles.individualSector'
+        case '01-03':
+          return 'App.Titles.businessSector'
+      }
+    }else{
+      return '';
+    }
+
+  }
+
+  financeSectors() {
+    this.router.navigate([
+      '/financeSectors',
+    ]);
   }
 }

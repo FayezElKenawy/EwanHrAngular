@@ -474,7 +474,7 @@
           <div class="col-12" *ngIf="filteredVouchers">
             <div class="m-portlet__body box-shadow">
               <p-table [columns]="vouchersCols" [value]="filteredVouchers" [(selection)]="selectedVoucher"
-                dataKey="VoucherId" [paginator]="true" [rows]="4">
+                dataKey="voucherId" [paginator]="true" [rows]="4">
                 <ng-template pTemplate="header" let-columns>
                   <tr>
                     <th style="width: 3em"></th>

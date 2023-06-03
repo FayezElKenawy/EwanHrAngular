@@ -54,13 +54,14 @@ export class GlobalService {
   }
 
   getSectorType() {
-    if (sessionStorage.getItem('SectorType')) {
+    if (sessionStorage.getItem('SectorType') ) {
       return sessionStorage.getItem('SectorType');
     } else {
       this._router.navigate([
         '/financeSectors'
       ]);
     }
+    return sessionStorage.getItem('SectorType');
   }
 
   //#region Messaging
