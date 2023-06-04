@@ -108,7 +108,7 @@ export class ListReturnedPaymentReceiptsComponent implements OnInit {
           searchType: SearchType.Date
         },
         {
-          field: "FinanceCustomerCode",
+          field: "financeCustomerCode",
           header: "Receipts.Fields.FinanceCustomerCode",
           hidden: false,
           searchable: true,

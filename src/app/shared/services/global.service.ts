@@ -65,7 +65,9 @@ export class GlobalService {
   }
 
   checkSectorType():boolean{
-    return sessionStorage.getItem('SectorType').length >1
+    if (sessionStorage.getItem('SectorType'))
+    return sessionStorage.getItem('SectorType').length > 1
+    else return false
   }
 
   //#region Messaging
