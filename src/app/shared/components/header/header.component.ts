@@ -146,7 +146,7 @@ export class HeaderComponent implements OnInit {
   }
 
   getSectorTypeName(): string {
-    if(!this.router.url.includes('financeSectors')){
+    if(!this.router.url.includes('financeSectors') && this._globalService.checkSectorType()){
       switch (this._globalService.getSectorType()) {
         case '01-01':
           return 'App.Titles.mymaidSector'

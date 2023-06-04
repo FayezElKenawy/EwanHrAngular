@@ -221,10 +221,10 @@ export class CreatePaymentReceiptComponent implements OnInit {
       this.submittedObjectModel.entityCode = this.form.value.costCenter.entityCode;
       this.submittedObjectModel.sectorTypeId = this.sectorId;
 
-      if (this.submittedObjectModel.creditCardTypeId) {
+      if (this.form.value.creditCardType) {
         this.submittedObjectModel.creditCardTypeId = this.form.value.creditCardType.code;
       }
-      if (this.submittedObjectModel.cashBoxAmount) {
+      if (this.form.value.cashbox) {
         this.submittedObjectModel.cashBoxId = this.form.value.cashBox.code;
       }
 

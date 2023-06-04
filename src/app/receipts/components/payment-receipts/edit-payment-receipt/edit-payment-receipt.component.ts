@@ -291,8 +291,8 @@ export class EditPaymentReceiptComponent implements OnInit {
       if (this.form.value.creditCardType) {
         this.submittedObjectModel.creditCardTypeId = this.form.value.creditCardType.code;
       }
-      if (this.form.value.creditCardType) {
-        this.submittedObjectModel.cashBoxId = this.form.value.cashBox.id;
+      if (this.form.value.cashBox) {
+        this.submittedObjectModel.cashBoxId = this.form.value.cashBox.code;
       }
       this.submittedObjectModel.bankAccountId = this.form.value.bankAccount
         ? this.form.value.bankAccount.code
