@@ -59,6 +59,7 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
   ngOnInit() {
     this.sectorId = this._globalService.getSectorType();
     this.createForm();
+    this.defCols();
     this.IsCashOrWithdraw();
 
 
@@ -96,14 +97,14 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
 
     this.settlementCols = [
       {
-        field: "voucherId",
-        header: "Receipts.Fields.DocumentId",
-        hidden: true,
-      },
-      {
         field: "code",
         header: "Receipts.Fields.DocumentId",
         hidden: false,
+      },
+      {
+        field: "creditReceivableId",
+        header: "Receipts.Fields.DocumentId",
+        hidden: true,
       },
       {
         field: "voucherTypeName",
@@ -277,6 +278,7 @@ export class CreateReturnedPaymentReceiptComponent implements OnInit {
   }
 
   addSettlement() {
+    debugger
     this.added = true;
     if (this.selectedVoucher && this.refundValue > 0) {
       const settlement = {

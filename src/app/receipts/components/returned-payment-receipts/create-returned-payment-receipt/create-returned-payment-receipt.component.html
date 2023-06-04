@@ -357,9 +357,9 @@
           </div>
           <!-- settlement grid -->
           <div class="col-12">
-            <div class="m-portlet__body box-shadow mx-0 px-0">
+            <div class="box-shadow">
               <p-table [columns]="settlementCols" [value]="settlements" [paginator]="true" [rows]="5"
-                dataKey="DebitReceivableId" [totalRecords]="settlementCols?.length" [autoLayout]="true"
+                dataKey="creditReceivableId" [totalRecords]="settlementCols?.length" [autoLayout]="true"
                 [responsive]="true" class="full-width" (onEditComplete)="onEdit($event)"
                 (onEditInit)="onEditChange($event)">
                 <ng-template pTemplate="header" let-columns>
@@ -374,10 +374,10 @@
                   <tr [pSelectableRow]="rowData">
                     <td *ngFor="let col of columns" [hidden]="col.hidden">
                       <ng-container *ngIf="
-                              col.field === 'ActionButtons';
-                              then render_action_buttons;
-                              else render_data_field
-                            "></ng-container>
+                                col.field === 'ActionButtons';
+                                then render_action_buttons;
+                                else render_data_field
+                              "></ng-container>
                       <ng-template #render_action_buttons>
                         <a class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill"
                           title="{{'App.Buttons.Delete' | translate}}" (click)="removeSettlement(rowData)">
@@ -386,10 +386,10 @@
                       </ng-template>
                       <ng-template #render_data_field>
                         <ng-container *ngIf="
-                              col.field === 'refundAmount';
-                              then editable_col;
-                              else fixed_col
-                            "></ng-container>
+                                col.field === 'RefundAmount';
+                                then editable_col;
+                                else fixed_col
+                              "></ng-container>
                         <ng-template #fixed_col>
                           {{ rowData[col.field] }}
                         </ng-template>
@@ -414,7 +414,7 @@
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="emptymessage" let-columns>
-                  <tr *ngIf="settlements.length === 0">
+                  <tr *ngIf="settlements?.length === 0">
                     <td [attr.colspan]="columns?.length" class="empty-grid-table">
                       <span class="emp-msg">
                         {{ 'App.Fields.NoData' | translate }}
@@ -424,9 +424,6 @@
                 </ng-template>
               </p-table>
             </div>
-            <!-- <div class="p-2" style="color: #f4516c" *ngIf="!selectedBundle && submitted">
-              {{'App.Fields.RequiredField' | translate}}
-            </div> -->
           </div>
           <!-- remark  -->
           <div class="col-12">

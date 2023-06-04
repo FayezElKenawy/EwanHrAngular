@@ -377,7 +377,7 @@
           <div class="col-12">
             <div class="box-shadow">
               <p-table [columns]="settlementCols" [value]="settlements" [paginator]="true" [rows]="5"
-                dataKey="CreditReceivableId" [totalRecords]="settlementCols?.length" [autoLayout]="true"
+                dataKey="creditReceivableId" [totalRecords]="settlementCols?.length" [autoLayout]="true"
                 [responsive]="true" class="full-width" (onEditComplete)="onEdit($event)"
                 (onEditInit)="onEditChange($event)">
                 <ng-template pTemplate="header" let-columns>
