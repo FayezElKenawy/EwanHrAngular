@@ -48,70 +48,70 @@ export class DashboardComponent implements OnInit {
 
   getData() {
     this.progressSpinner = true;
-    this._homeService.getDashboard().subscribe(
-      (result: IServiceResult) => {
-        if (result.isSuccess) {
-          this.charts = {};
-          this.viewModel = result.data;
-          const ServiceRequestsStatuses = result.data.ServiceRequestChart.map(
-            l => l.ArabicName
-          );
-          const ServiceRequestsData = result.data.ServiceRequestChart.map(
-            l => l.ServiceRequestsCount
-          );
-          result.data.ServiceRequestStatuses.forEach(e => {
-            if (!ServiceRequestsStatuses.includes(e.ArabicName)) {
-              ServiceRequestsStatuses.push(e.ArabicName);
-              ServiceRequestsData.push(0);
-            }
-          });
+    // this._homeService.getDashboard().subscribe(
+    //   (result: IServiceResult) => {
+    //     if (result.isSuccess) {
+    //       this.charts = {};
+    //       this.viewModel = result.data;
+    //       const ServiceRequestsStatuses = result.data.ServiceRequestChart.map(
+    //         l => l.ArabicName
+    //       );
+    //       const ServiceRequestsData = result.data.ServiceRequestChart.map(
+    //         l => l.ServiceRequestsCount
+    //       );
+    //       result.data.ServiceRequestStatuses.forEach(e => {
+    //         if (!ServiceRequestsStatuses.includes(e.ArabicName)) {
+    //           ServiceRequestsStatuses.push(e.ArabicName);
+    //           ServiceRequestsData.push(0);
+    //         }
+    //       });
 
-          const contrcactStatuses = result.data.ContractsChart.map(
-            l => l.ArabicName
-          );
-          const contrcactStatusesData = result.data.ContractsChart.map(
-            l => l.ContractsCount
-          );
-          result.data.ContractStatuses.forEach(e => {
-            if (!contrcactStatuses.includes(e.ArabicName)) {
-              contrcactStatuses.push(e.ArabicName);
-              contrcactStatusesData.push(0);
-            }
-          });
+    //       const contrcactStatuses = result.data.ContractsChart.map(
+    //         l => l.ArabicName
+    //       );
+    //       const contrcactStatusesData = result.data.ContractsChart.map(
+    //         l => l.ContractsCount
+    //       );
+    //       result.data.ContractStatuses.forEach(e => {
+    //         if (!contrcactStatuses.includes(e.ArabicName)) {
+    //           contrcactStatuses.push(e.ArabicName);
+    //           contrcactStatusesData.push(0);
+    //         }
+    //       });
 
-          this.setChartData(
-            'serviceRequestChart',
-            ServiceRequestsData,
-            ServiceRequestsStatuses,
-            'label'
-          );
-          this.setChartData(
-            'contractsChart',
-            contrcactStatusesData,
-            contrcactStatuses,
-            'label'
-          );
-          this.setChartData(
-            'financialChart',
-            [result.data.CreditBalance, result.data.DebitBalance],
-            ['الصادرات(Debit)', 'الواردات (Credit)'],
-            'label'
-          );
+    //       this.setChartData(
+    //         'serviceRequestChart',
+    //         ServiceRequestsData,
+    //         ServiceRequestsStatuses,
+    //         'label'
+    //       );
+    //       this.setChartData(
+    //         'contractsChart',
+    //         contrcactStatusesData,
+    //         contrcactStatuses,
+    //         'label'
+    //       );
+    //       this.setChartData(
+    //         'financialChart',
+    //         [result.data.CreditBalance, result.data.DebitBalance],
+    //         ['الصادرات(Debit)', 'الواردات (Credit)'],
+    //         'label'
+    //       );
 
-          this.setChartData(
-            'BundlesChart',
-            [result.data.BundlesCount, result.data.DebitReceivableCRCount],
-            [
-              'عدد الباقات المفعله(Active Bundles)',
-              'الفواتير (CreditReceivables)'
-            ],
-            'label'
-          );
-        }
-      },
-      () => (this.progressSpinner = false),
-      () => (this.progressSpinner = false)
-    );
+    //       this.setChartData(
+    //         'BundlesChart',
+    //         [result.data.BundlesCount, result.data.DebitReceivableCRCount],
+    //         [
+    //           'عدد الباقات المفعله(Active Bundles)',
+    //           'الفواتير (CreditReceivables)'
+    //         ],
+    //         'label'
+    //       );
+    //     }
+    //   },
+    //   () => (this.progressSpinner = false),
+    //   () => (this.progressSpinner = false)
+    // );
   }
   setChartData(source, data, labels, label) {
     this.charts[source] = {
