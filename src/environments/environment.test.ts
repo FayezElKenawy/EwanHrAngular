@@ -1,17 +1,17 @@
 export const environment = {
   production: false,
   name: 'App.Titles.DevelopingVersion',
-  hostingFolder: "/ERP.Finance",
+  hostingFolder: "/ERP.HR",
 
   coreApiUrl: 'http://ewan1.uksouth.cloudapp.azure.com:62/BroaERP.Core.API',
   reportingApiUrl: 'http://ewan1.uksouth.cloudapp.azure.com:62/BroaERP.Reporting.API',
-  financeSectorAPIURL:"http://ewan1.uksouth.cloudapp.azure.com:62/Ewan.Finance.API/api",
+  //financeSectorAPIURL:"http://ewan1.uksouth.cloudapp.azure.com:62/Ewan.Finance.API/api",
   
   coreUrl: "http://ewan1.uksouth.cloudapp.azure.com:62/ERP.Core",
   businessSectorURL: "http://ewan1.uksouth.cloudapp.azure.com:62/ERP.BusinessSector",
   houseLabourSectorUrl: "http://ewan1.uksouth.cloudapp.azure.com:62/ERP.HouseLabourSector",
   individualSectorURL: "http://ewan1.uksouth.cloudapp.azure.com:62/ERP.IndividualSector",
-  financeURL:"http://ewan1.uksouth.cloudapp.azure.com:62/ERP.Finance",
+  //financeURL:"http://ewan1.uksouth.cloudapp.azure.com:62/ERP.Finance",
 
   storagePath: 'http://localhost/BroaERP.Core.API/Uploading/File/Public',
   storagePhysicalPath: "C:\\inetpub\\BroaERP\\Developing\\UploadFolder\\",

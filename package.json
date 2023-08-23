@@ -2,7 +2,7 @@
   "name": "ewan-financial-ui",
   "version": "0.0.0",
   "scripts": {
-    "publish-web-test": "ng build --base-href /ERP.Finance/ --configuration test --output-path C:/Publish/RMS/Test/ERP.FinanceSector"
+    "publish-web-test": "ng build --base-href /ERP.HR/ --configuration test --output-path C:/Publish/RMS/Test/ERP.HRSector"
 
   },
   "private": true,

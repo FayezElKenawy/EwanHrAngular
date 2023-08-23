@@ -58,7 +58,7 @@ export class GlobalService {
       return sessionStorage.getItem('SectorType');
     } else {
       this._router.navigate([
-        '/financeSectors'
+        '/hrSectors'
       ]);
     }
     return sessionStorage.getItem('SectorType');
@@ -297,7 +297,7 @@ export class GlobalService {
             : `You don't have permission`,
         confirmButtonText: currentLang === "ar" ? "اغلاق" : "Close",
       });
-      document.location.href = environment.financeURL + "/finance/auth/login";
+     // document.location.href = environment.hrURL + "/hr/auth/login";
     }
     else if (error.status === 400) {
 

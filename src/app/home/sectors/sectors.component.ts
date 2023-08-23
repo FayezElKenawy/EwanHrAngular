@@ -16,36 +16,18 @@ export class SectorsComponent implements OnInit {
 
   getModules() {
     this.modules = [
+     
       {
         URLPath: '/dashboard',
         Icon: 'assets/images/cards/hour.png',
-        Name: 'App.Titles.mymaidSector',
-        Description: 'App.Titles.mymaidSectorDesc',
+        Name: 'App.Titles.HrSector',
+        Description: 'App.Titles.HrSectorDesc',
         onClick:()=>{
           sessionStorage.removeItem("SectorType")
           sessionStorage.setItem("SectorType",'01-01')
         }
       },
-      {
-        URLPath: '/dashboard',
-        Icon: 'assets/images/cards/individual.png',
-        Name: 'App.Titles.individualSector',
-        Description: 'App.Titles.individualSectorDesc',
-        onClick:()=>{
-          sessionStorage.removeItem("SectorType")
-          sessionStorage.setItem("SectorType",'01-02')
-        }
-      },
-      {
-        URLPath: '/dashboard',
-        Icon: 'assets/images/cards/bus.png',
-        Name: 'App.Titles.businessSector',
-        Description: 'App.Titles.businessSectorDesc',
-        onClick:()=>{
-          sessionStorage.removeItem("SectorType")
-          sessionStorage.setItem("SectorType",'01-03')
-        }
-      },
+
     ];
   }
 }

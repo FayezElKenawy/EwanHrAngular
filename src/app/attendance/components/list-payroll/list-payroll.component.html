@@ -1,0 +1,21 @@
+<div class="bg-white p-3">
+    <div class="row">
+        <div class="col-md-2">
+            <p-calendar 
+            [(ngModel)]="month"
+            class="calender form-control"
+             view="month" 
+             dataType="date"
+             dateFormat="mm/yy" 
+             (onSelect)="onSelectFromDate()"
+             placeholder="{{ 'Attendance.Titles.Month' | translate }}"
+             [readonlyInput]="true">
+            </p-calendar>
+        </div>
+        <div class="col-md-2">
+            <button class="form-control btn btn-brand" (click)="onClaculate(from)">{{'Attendance.Titles.Calculate' | translate}}</button>
+        </div>
+    </div>
+</div>
+
+<app-page-list [pageListConfig]="pageListConfig" ></app-page-list>

@@ -20,14 +20,18 @@ export class CoreLayoutComponent implements OnInit {
   coreUrl: string;
   menus: any[] = [];
   mainmenus: any[] = [];
-  isRouteLoadedStart: boolean;
+  isRouteLoadedStart: boolean ;
   lang: any = this._globalService.languageGetCurrent;
-  hideContent: boolean;
+  //comment
+  hideContent: boolean=false;
+
   constructor(
     private _router: Router,
     private _AuthService: AuthService,
     private _globalService: GlobalService
   ) {
+    //debugger;
+    //comment
     _router.events.subscribe((event: RouterEvent): void => {
       if (event instanceof RouteConfigLoadStart) {
         this.isRouteLoadedStart = true;
@@ -41,24 +45,26 @@ export class CoreLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
+    //debugger;
     this.coreUrl = environment.coreUrl;
-    this.hideContent = true;
+    this.hideContent = false; //comment => true
 
-    this._AuthService.getUserMenuItems(13).subscribe(
-      (serviceResult: IServiceResult) => {
-        this.menus = serviceResult.data;
-        this.mainmenus = Object.assign(
-          [],
-          this.menus.filter((m) => m.ParentId === null)
-        );
-      },
-      () => {
-        this.hideContent = false;
-      },
-      () => {
-        this.hideContent = false;
-      }
-    );
+    //comment
+    // this._AuthService.getUserMenuItems(13).subscribe(
+    //   (serviceResult: IServiceResult) => {
+    //     this.menus = serviceResult.data;
+    //     this.mainmenus = Object.assign(
+    //       [],
+    //       this.menus.filter((m) => m.ParentId === null)
+    //     );
+    //   },
+    //   () => {
+    //     this.hideContent = false;
+    //   },
+    //   () => {
+    //     this.hideContent = false;
+    //   }
+    // );
 
     mLayout.init();
 

@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   name: "App.Titles.TrialVersion",
-  hostingFolder: "/ERP.Finance",
+  hostingFolder: "/ERP.HR",
 
   coreApiUrl: "http://185.230.211.136:74/BroaERP.Core.API",
   reportingApiUrl: "http://185.230.211.136:74/BroaERP.Reporting.API",

@@ -18,7 +18,7 @@ export class FileUploadComponent implements OnInit {
   @Input() contractId: any;
 
   serviceUrl = `${
-    environment.financeSectorAPIURL
+    environment.hrSectorAPIURL
     }/LaborerAffairs/LaborerAttendanceLog`;
   uploader: FileUploader;
   hasBaseDropZoneOver = false;

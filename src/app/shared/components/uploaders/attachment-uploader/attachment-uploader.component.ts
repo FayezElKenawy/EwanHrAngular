@@ -180,7 +180,7 @@ export class AttachmentUploaderComponent
   }
   // End Value Accessor
   loadFile(url, callback: any) {
-    debugger
+    //debugger
     if (url.includes("http")) {
       this.loading = true;
       this._http.get(url, { responseType: "blob" }).subscribe(

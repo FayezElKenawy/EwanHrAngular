@@ -33,6 +33,7 @@ export class PageListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    //debugger;
     this._globalService
       .languageOnChange()
       .subscribe((event: LangChangeEvent) => {
@@ -48,13 +49,14 @@ export class PageListComponent implements OnInit {
   }
 
   getPagedList() {
-
+    //debugger;
     if (this.pageListConfig.defaultOrder && !this.searchModel.orderBy) {
       this.searchModel.orderBy = this.pageListConfig.defaultOrder;
       this.searchModel.orderType = this.pageListConfig.defaultOrderType;
     }
 
     this.pageListConfig.searchFields.forEach((field) => {
+      //debugger;
       this.searchModel.searchFields.push({
         fieldName: field.fieldName,
         operator: field.operator,
@@ -67,6 +69,7 @@ export class PageListComponent implements OnInit {
       .subscribe((result: PagedList) => {
         this.dataItems = result.entities;
         this.pagingMetaData = result.pagingData;
+        this.searchModel.searchFields = [];
       });
   }
 }

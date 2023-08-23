@@ -17,7 +17,7 @@ const routes: Routes = [
     component: CoreLayoutComponent
   },
   {
-    path: 'financeSectors', component: SectorsComponent
+    path: 'hrSectors', component: SectorsComponent
   }
 ];
 

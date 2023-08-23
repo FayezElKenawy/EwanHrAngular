@@ -1,4 +1,5 @@
 export enum ColumnPipeType {
     Date = 'date',
-    Currency='currency'
+    Currency='currency',
+    Time='time'
   }

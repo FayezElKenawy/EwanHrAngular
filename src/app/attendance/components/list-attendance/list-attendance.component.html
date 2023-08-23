@@ -1,0 +1,32 @@
+
+<div class=" col-md-12 p-3 border bg-white">
+    <div class="row">
+        <div class="col-md-3">
+            <p-calendar
+            class="form-control calendar-form-control  p-0  p-0" [(ngModel)]="from" name="from"
+            [monthNavigator]="true" [yearNavigator]="true" yearRange="1990:2030" 
+            (onSelect)="onSelectFromDate()"
+            placeholder="{{ 'Attendance.Titles.From' | translate }}"
+            dateFormat="dd/mm/yy">
+            </p-calendar>
+        </div>
+        <div class="col-md-3">
+            <p-calendar
+            class="form-control calendar-form-control  p-0  p-0"
+             [(ngModel)]="to" name="to"
+            [monthNavigator]="true" [yearNavigator]="true" yearRange="1990:2030" 
+            (onSelect)="onSelectFromDate()"
+            placeholder="{{ 'Attendance.Titles.To' | translate }}"
+            dateFormat="dd/mm/yy">
+            </p-calendar>
+        </div>
+        <div class="col-md-3">
+            <input type="text" class="form-control" placeholder="{{ 'Attendance.Titles.EmployeeId' | translate }}"  name="id" [(ngModel)]="id"/>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-brand" id="" (click)="onDownload(from,to,id)">{{'Attendance.Titles.DownloadAttendance' | translate}}</button>
+        </div>
+    </div>
+</div>
+
+<app-page-list [pageListConfig]="pageListConfig" ></app-page-list>

@@ -1,0 +1,111 @@
+<div class=" d-flex justify-content-center">
+    <form action="" #settingForm="ngForm" (submit)="settingForm" class="border p-5 col-md-8">
+        <h3>إعدادات الشهور</h3>
+        <div class="row p-5">
+            <div>
+                <label class="label p-2 ">إعدادات التاريخ :</label>
+            </div>
+            <div class="col-md-3 p-inputgroup">
+                <span class="p-inputgroup-addon">من</span>
+                <input pInputText pKeyFilter="int" name="from"  placeholder="البداية" [(ngModel)]="month.from" />
+            </div>
+            <div class="col-md-3 p-inputgroup">
+                <span class="p-inputgroup-addon">الى</span>
+                <input pInputText pKeyFilter="int" name="to"  placeholder="النهاية" [(ngModel)]="month.to" />
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-brand" (click)="onSaveSettings()">حفظ</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<!--div class="card">
+    <p-table [value]="months" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width:15%">Code</th>
+                <th style="width:15%">Month Name</th>
+                <th style="width:15%">Start Day</th>
+                <th style="width:15%">Start Month</th>
+                <th style="width:15%">End Day</th>
+                <th style="width:15%">End Month</th>
+                <th style="width:15%"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-month let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="month">
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text" [(ngModel)]="month.id">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{month.id}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text" [(ngModel)]="month.monthName" required>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{month.monthName}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text" [(ngModel)]="month.startDay" required>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{month.startDay}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <p-dropdown [options]="monthsName" appendTo="body" [(ngModel)]="month.startMonth" [style]="{'width':'100%'}"></p-dropdown>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{month.startMonth}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text" [(ngModel)]="month.endDay" required>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{month.endDay}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <p-dropdown [options]="monthsName" appendTo="body" [(ngModel)]="month.endMonth" [style]="{'width':'100%'}"></p-dropdown>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{month.endMonth}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <div class="flex align-items-center justify-content-center gap-2">
+                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(month)" class="p-button-rounded p-button-text"></button>
+                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(month)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(month,ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div-->
+

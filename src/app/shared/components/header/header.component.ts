@@ -44,8 +44,10 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    //debugger;
     this.authUserVM = this._route.snapshot.firstChild.data["authUserVM"];
-    this.getAuthUser();
+    //comment
+    //this.getAuthUser();
     this.coreUrl = environment.coreUrl;
     this.envName = environment.name;
     this.env = environment;
@@ -55,15 +57,17 @@ export class HeaderComponent implements OnInit {
       .subscribe((event: LangChangeEvent) => {
         this.currentLang = event.lang;
       });
-    this.companyLogoText = this._globalService.systemSettingsGetValues(
-      "CompanyLogo"
-    ).Value;
 
-    this.authService.getModuels().subscribe((res: any) => {
-      if (res.isSuccess) {
-        this.modules = res.data;
-      }
-    });
+      //comment
+    // this.companyLogoText = this._globalService.systemSettingsGetValues(
+    //   "CompanyLogo"
+    // ).Value;
+
+    // this.authService.getModuels().subscribe((res: any) => {
+    //   if (res.isSuccess) {
+    //     this.modules = res.data;
+    //   }
+    // });
   }
 
   getAuthUser() {
@@ -84,7 +88,7 @@ export class HeaderComponent implements OnInit {
 
   logOut() {
     this.authService.logOut();
-    this.router.navigateByUrl("/finance/auth/login");
+    this.router.navigateByUrl("/HR/auth/login");
   }
 
 
@@ -146,7 +150,7 @@ export class HeaderComponent implements OnInit {
   }
 
   getSectorTypeName(): string {
-    if(!this.router.url.includes('financeSectors') && this._globalService.checkSectorType()){
+    if(!this.router.url.includes('hrSectors') && this._globalService.checkSectorType()){
       switch (this._globalService.getSectorType()) {
         case '01-01':
           return 'App.Titles.mymaidSector'
@@ -161,9 +165,9 @@ export class HeaderComponent implements OnInit {
 
   }
 
-  financeSectors() {
+  hrSectors() {
     this.router.navigate([
-      '/financeSectors',
+      '/hrSectors',
     ]);
   }
 }

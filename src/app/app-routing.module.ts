@@ -5,29 +5,20 @@ import { AuthGuard } from '@shared/guards/auth.guard';
 
 const routes: Routes = [
   {
-    path: 'finance/auth',
-    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
-  },
-
-  {
-    path: '',
-    canActivateChild: [AuthGuard],
-    loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
+    path:'',
+    loadChildren:()=>import('./home/home.module').then(m=>m.HomeModule)
   },
   {
-    path: 'finance',
-    canActivateChild: [AuthGuard],
-    loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
+    path:'hr',
+    loadChildren:()=>import('./home/home.module').then(m=>m.HomeModule)
   },
   {
-    path: 'finance/home',
-    canActivateChild: [AuthGuard],
-    loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
+    path:'hr/attendance',
+    loadChildren:()=>import('./attendance/attendance.module').then(m=>m.AttendanceModule)
   },
   {
-    path: 'finance/receipts',
-    canActivateChild: [AuthGuard],
-    loadChildren: () => import('./receipts/receipts.module').then(m => m.ReceiptsModule)
+    path:'hr/payroll',
+    loadChildren:()=>import('./attendance/attendance.module').then(m=>m.AttendanceModule)
   },
   {
     path: '**',

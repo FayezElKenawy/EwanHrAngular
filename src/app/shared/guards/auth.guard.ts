@@ -22,41 +22,47 @@ export class AuthGuard implements CanActivateChild, CanActivate {
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean | Observable<boolean> | Promise<boolean> {
-    if (childRoute.children && childRoute.children.length > 0) {
-      // NO Authintication For Main Routes
-      return true;
-    } else {
-      return this.canActivate(childRoute, state);
-    }
+    //debugger;
+    return true;
+    //comment
+    // if (childRoute.children && childRoute.children.length > 0) {
+    //   // NO Authintication For Main Routes
+    //   return true;
+    // } else {
+    //   return this.canActivate(childRoute, state);
+    // }
   }
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean | Observable<boolean> | Promise<boolean> {
+    //debugger;
     console.log('auth guard');
 
-    history.pushState(null, null, environment.hostingFolder + state.url);
-    return this._authService.getAuthUser().pipe(
-      map((res) => {
-          debugger
-        if (res.isSuccess &&  !res.data.MustChangePassword) {
-          route.data = { authUserVM: res.data };
-          return true;
-        }
-        this.router.navigate(["/finance/auth/login"], {
-          queryParams: { returnUrl: state.url },
-        });
-        return false;
-      }),
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 401) {
-          this.router.navigate(["/finance/auth/login"], {
-            queryParams: { returnUrl: state.url },
-          });
-        }
-        return throwError(error);
-      })
-    );
+    return true
+    //comment
+    // history.pushState(null, null, environment.hostingFolder + state.url);
+    // return this._authService.getAuthUser().pipe(
+    //   map((res) => {
+    //       debugger
+    //     if (res.isSuccess &&  !res.data.MustChangePassword) {
+    //       route.data = { authUserVM: res.data };
+    //       return true;
+    //     }
+    //     this.router.navigate(["/finance/auth/login"], {
+    //       queryParams: { returnUrl: state.url },
+    //     });
+    //     return false;
+    //   }),
+    //   catchError((error: HttpErrorResponse) => {
+    //     if (error.status === 401) {
+    //       this.router.navigate(["/finance/auth/login"], {
+    //         queryParams: { returnUrl: state.url },
+    //       });
+    //     }
+    //     return throwError(error);
+    //   })
+    // );
   }
 }

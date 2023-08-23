@@ -23,7 +23,7 @@ export class AuthorizationDirective implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const actionName =
+   /* const actionName =
       typeof this.authorization == "string"
         ? this.authorization
         : this.authorization.actionName;
@@ -32,9 +32,10 @@ export class AuthorizationDirective implements OnInit {
         ? false
         : this.authorization.pageLevel;
 
-    if (
-      this._authService.currentAuthUser.CurrentPermission.includes(actionName)
-    ) {
+   // if (
+      //this._authService.currentAuthUser.CurrentPermission.includes(actionName)
+   // ) 
+   {
       this._viewContainer.createEmbeddedView(this.templateRef);
     } else {
       this._viewContainer.clear();
@@ -43,6 +44,6 @@ export class AuthorizationDirective implements OnInit {
           this._resolver.resolveComponentFactory(NotAuthorizedComponent)
         );
       }
-    }
+    }*/
   }
 }
