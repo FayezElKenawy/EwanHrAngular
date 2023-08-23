@@ -20,7 +20,7 @@ export class PayrollService {
 
 
   calculate(from:string):Observable<any>{
-    debugger;
+    //debugger;
     const[day,month,day1,year]=new Date(from).toDateString().split(' ');
     return this._http.get(`${this.serviceUrl}/Calculate`, {
       params:{fromDate:month+'/'+year}

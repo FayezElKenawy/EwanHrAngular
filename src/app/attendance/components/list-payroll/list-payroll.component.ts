@@ -2,11 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from '@environments/environment';
 import { ColumnPipeType } from '@shared/enum/column-pipe.enum';
 import { ColumnPipeFormat } from '@shared/enum/columns-pipe-format.enum';
-import { SearchType } from '@shared/enum/searchType.enum';
 import { PageListConfig } from '@shared/models/page-list-config.model';
 import { PayrollService } from '../../services/payroll.service';
-import { DateFormatPipe } from 'angular2-moment';
-import { from } from 'rxjs';
 import { GlobalService, MessageType } from '@shared/services/global.service';
 
 @Component({
@@ -32,6 +29,7 @@ onSelectFromDate(){
 onClaculate(date:string){
   this._payrollService.calculate(this.month).subscribe((res)=>{
     if(res){
+      console.log(res);
       this._globalService.messageAlert(MessageType.Info,"تم احتساب البيانات");
     }else{
       console.log(res);
