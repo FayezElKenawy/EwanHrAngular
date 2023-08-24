@@ -49,6 +49,7 @@ export class PageListComponent implements OnInit {
   }
 
   getPagedList() {
+    this.progressSpinner=true;
     //debugger;
     if (this.pageListConfig.defaultOrder && !this.searchModel.orderBy) {
       this.searchModel.orderBy = this.pageListConfig.defaultOrder;
@@ -67,9 +68,11 @@ export class PageListComponent implements OnInit {
     this._http
       .post<PagedList>(`${this.pageListConfig.getDataAPIURL}`, this.searchModel)
       .subscribe((result: PagedList) => {
+        debugger;
         this.dataItems = result.entities;
         this.pagingMetaData = result.pagingData;
         this.searchModel.searchFields = [];
+        this.progressSpinner=false;
       });
   }
 }

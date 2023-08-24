@@ -80,6 +80,10 @@ onDownload(startTime:string,endTime:string,id:string){
       ],
        cols:[
         {
+          field: 'id',
+          header: 'Attendance.Titles.id'
+        },
+        {
           field: 'employeeCode',
           header: 'Attendance.Titles.EmployeeId'
         },
