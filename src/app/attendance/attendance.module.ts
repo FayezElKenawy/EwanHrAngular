@@ -5,7 +5,7 @@ import { AttendanceRoutingModule } from './attendance-routing.module';
 import { SharedModule } from "../shared/shared.module";
 import { ListPayrollComponent } from './components/list-payroll/list-payroll.component';
 import { MonthSettingsComponent } from './components/month-settings/month-settings.component';
-
+import {MultiSelectModule} from 'primeng/multiselect';
 
 
 @NgModule({
@@ -17,7 +17,8 @@ import { MonthSettingsComponent } from './components/month-settings/month-settin
     imports: [
         CommonModule,
         AttendanceRoutingModule,
-        SharedModule
+        SharedModule,
+        MultiSelectModule
     ]
 })
 export class AttendanceModule { }

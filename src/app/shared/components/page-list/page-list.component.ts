@@ -8,7 +8,7 @@ import { SearchModel } from '@shared/interfaces/search-model';
 import { PageListConfig } from '@shared/models/page-list-config.model';
 import { DynamicSearchService } from '@shared/services/dynamic-search.service';
 import { GlobalService } from '@shared/services/global.service';
-import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-page-list',
@@ -25,13 +25,12 @@ export class PageListComponent implements OnInit {
   searchModel: SearchModel = {};
   operators: string[];
   dataItems: any[] = [];
-
+  subscription:Subscription;
   constructor(
     public _dynamicSearchService: DynamicSearchService,
     private _http: HttpClient,
     private _globalService: GlobalService
-  ) { }
-
+  ) {}
   ngOnInit() {
     //debugger;
     this._globalService
@@ -48,7 +47,7 @@ export class PageListComponent implements OnInit {
     this.searchModel.searchFields = [];
   }
 
-  getPagedList() {
+  getPagedList() {debugger;
     this.progressSpinner=true;
     //debugger;
     if (this.pageListConfig.defaultOrder && !this.searchModel.orderBy) {
@@ -57,18 +56,18 @@ export class PageListComponent implements OnInit {
     }
 
     this.pageListConfig.searchFields.forEach((field) => {
-      //debugger;
+      debugger;
       this.searchModel.searchFields.push({
         fieldName: field.fieldName,
         operator: field.operator,
         value: field.value,
       });
     });
-
+//debugger;
     this._http
       .post<PagedList>(`${this.pageListConfig.getDataAPIURL}`, this.searchModel)
       .subscribe((result: PagedList) => {
-        debugger;
+       // debugger;
         this.dataItems = result.entities;
         this.pagingMetaData = result.pagingData;
         this.searchModel.searchFields = [];

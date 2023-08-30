@@ -4,6 +4,9 @@ import { environment } from '@environments/environment';
 import { GlobalService } from '@shared/services/global.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { MonthSettings } from '../models/get-Month-Settings.model';
+import { Employees } from '../models/emps-info.model';
+import { GetAttendance } from '../models/get-attendance.model';
+import { SearchModel } from '@shared/interfaces/search-model';
 
 @Injectable({
   providedIn: "root",
@@ -24,9 +27,10 @@ export class attendnaceService {
     });
   }
 
-  downloadAttendanceList(from:string,to:string,id:string){
+  downloadAttendanceList(from:string,to:string,id:Employees[]){
+    //debugger;
     return this._http.get(`${this.serviceUrl}/DownloadAttendnace`, {
-      params:{id:id,start:from.toString(),end:to.toString()},
+      params:{id:JSON.stringify(id) ,start:from.toString(),end:to.toString()},
       observe:"response",
       responseType:"blob"
     });
@@ -39,5 +43,12 @@ export class attendnaceService {
 
   onPostMonthSettings(GetSettings:any): Observable<any>{
     return this._http.post(`${this.serviceUrl}/InsertSettings`,GetSettings);
+  }
+  onGetEmployeesData(){//debugger;
+    return this._http.get<Employees[]>(`${this.serviceUrl}/GetEmployeeInfo`);
+  }
+
+  onPagedLoad(){
+    return this._http.get<GetAttendance[]>(`${this.serviceUrl}/GetEmployeesAttendance`);
   }
 }

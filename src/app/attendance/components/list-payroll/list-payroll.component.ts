@@ -5,6 +5,8 @@ import { ColumnPipeFormat } from '@shared/enum/columns-pipe-format.enum';
 import { PageListConfig } from '@shared/models/page-list-config.model';
 import { PayrollService } from '../../services/payroll.service';
 import { GlobalService, MessageType } from '@shared/services/global.service';
+import { Employees } from '../../models/emps-info.model';
+import { attendnaceService } from '../../services/attendance.service';
 
 @Component({
   selector: 'app-list-payroll',
@@ -16,11 +18,23 @@ export class ListPayrollComponent implements OnInit {
   from:string;
   to:string;
   month:string;
+  employees:Employees[];
+  selectedEmps:Employees[];
+  maxDate:Date;
 
 constructor(
   private _payrollService:PayrollService,
   private _globalService: GlobalService,
+  private _attendanceService:attendnaceService
 ){}
+
+ngOnInit(): void {
+  this.createPageListConfig();
+  this._attendanceService.onGetEmployeesData().subscribe((res)=>{
+    this.employees=res;
+  });
+  this.maxDate=new Date();
+}
 
 onSelectFromDate(){
   this.createPageListConfig();
@@ -28,19 +42,31 @@ onSelectFromDate(){
 
 onClaculate(date:string){
   this._payrollService.calculate(this.month).subscribe((res)=>{
-    if(res){
-      console.log(res);
-      this._globalService.messageAlert(MessageType.Info,"تم احتساب البيانات");
+    if(res){debugger;
+      if(res=[]){
+        this._globalService.messageAlert(MessageType.Info,"تم الإحتساب لهذا الشهر مسبقا");
+      }else{
+        this._globalService.messageAlert(MessageType.Success,"تم الإحتساب لهذا الشهر بنجاح");
+      }
     }else{
-      console.log(res);
       this._globalService.messageAlert(MessageType.Error ,"حدث خطأ ما")
     }
     
   });
 }
-  ngOnInit(): void {
-    this.createPageListConfig();
-  }
+
+onDownload(month,selectedEmps){
+  this._payrollService.downloadPayroll(month,selectedEmps).subscribe((res)=>{
+    let fileName=res.headers.get('content-disposition').split(';')[1];
+    let blob=res.body as Blob;
+    let url=window.URL.createObjectURL(blob);
+    const a: HTMLAnchorElement = document.createElement('a') as HTMLAnchorElement;
+    a.href = url;
+    a.download = fileName.substring(fileName.length-1,1);
+    document.body.appendChild(a);
+    a.click();
+  });
+}
   createPageListConfig() {
     this.pageListConfig = {
       pageAuthorization: '',

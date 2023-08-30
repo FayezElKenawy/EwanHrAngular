@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit,  ViewChild, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '@environments/environment';
 import { ColumnPipeType } from '@shared/enum/column-pipe.enum';
@@ -9,7 +8,9 @@ import { PageListConfig } from '@shared/models/page-list-config.model';
 import { DynamicSearchService } from '@shared/services/dynamic-search.service';
 import { GlobalService } from '@shared/services/global.service';
 import { attendnaceService } from '../../services/attendance.service';
-import { identifierName } from '@angular/compiler';
+import { Employees } from '../../models/emps-info.model';
+import { GetAttendance } from '../../models/get-attendance.model';
+import { PageListComponent } from '@shared/components/page-list/page-list.component';
 
 @Component({
   selector: 'app-list-attendance',
@@ -17,27 +18,48 @@ import { identifierName } from '@angular/compiler';
   styleUrls: ['./list-attendance.component.scss']
 })
 export class ListAttendanceComponent implements OnInit {
-      from:string;
-      to:string;
-      id:string;
+  from:string;
+  to:string;
+  id:string;
   pageListConfig: PageListConfig;
-  
+  employees!:Employees[];
+  selectedEmps:Employees[];
+  attendance!:GetAttendance[];
+  minDate:Date;
+  maxDate:Date;
+
+  @ViewChild(PageListComponent) pagelist: PageListComponent;
+
   constructor(
     public _dynamicSearchService: DynamicSearchService,
     private globalService: GlobalService,
     private _router: Router,
     private _attendanceService:attendnaceService,
-    
   ){}
 
-  ngOnInit(): void {
+  ngOnInit(): void {//debugger;
+    this.createPageListConfig();
+    this.onGetEmployeesData();
+  }
+
+  onGetEmployeesData(){//debugger;
+    this._attendanceService.onGetEmployeesData().subscribe((res)=>{
+      this.employees=res;
+    });
+  }
+
+  onSelectFromDate(from:string){//debugger;
+    this.minDate=new Date(from);
     this.createPageListConfig();
   }
 
-  onSelectFromDate(){
+  onSelectToDate(to:string){//debugger;
+    this.maxDate=new Date(to);
     this.createPageListConfig();
   }
-onDownload(startTime:string,endTime:string,id:string){
+
+ onDownload(startTime:string,endTime:string,id:Employees[]){
+  //debugger;
   this._attendanceService.downloadAttendanceList(startTime,endTime,id).subscribe((res) => {
     //debugger;
     let fileName=res.headers.get('content-disposition').split(';')[1].split('=')[1];
@@ -50,7 +72,17 @@ onDownload(startTime:string,endTime:string,id:string){
     a.click();
   });
 }
-  createPageListConfig() {
+
+onSelectItem(){
+  this.createPageListConfig();
+}
+onAdvancedSearch(selectedemp:Employees[]) {debugger;
+  this.selectedEmps=selectedemp;
+  this.pagelist.getPagedList();
+  //this.globalService.triggerEvent();
+}
+
+  createPageListConfig() {//debugger;
     this.pageListConfig = {
       pageAuthorization: '',
       pageTitle: 'Attendance.Titles.AttendanceListPage',
@@ -70,9 +102,9 @@ onDownload(startTime:string,endTime:string,id:string){
           value: this.to
         },
         {
-          fieldName: 'id',
+          fieldName: 'selectedEmps',
           operator: 'equal',
-          value: this.id
+          value: JSON.stringify(this.selectedEmps)
         },
       ],
       actions: [

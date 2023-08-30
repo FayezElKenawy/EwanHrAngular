@@ -7,13 +7,29 @@
              view="month" 
              dataType="date"
              dateFormat="mm/yy" 
+             [maxDate]="maxDate"
              (onSelect)="onSelectFromDate()"
              placeholder="{{ 'Attendance.Titles.Month' | translate }}"
              [readonlyInput]="true">
             </p-calendar>
         </div>
         <div class="col-md-2">
+            <div class="card flex justify-content-center">
+                <p-multiSelect 
+                [options]="employees" 
+                [(ngModel)]="selectedEmps" 
+                name="selectedEmps" 
+                defaultLabel="{{'Attendance.Titles.SelectEmployee'|translate}}" 
+                optionLabel="empName"
+                display="chip">
+                </p-multiSelect>
+            </div>
+        </div>
+        <div class="col-md-2">
             <button class="form-control btn btn-brand" (click)="onClaculate(from)">{{'Attendance.Titles.Calculate' | translate}}</button>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-brand" (click)="onDownload(month,selectedEmps)" id="">{{'Attendance.Titles.DownloadPayroll' | translate}}</button>
         </div>
     </div>
 </div>

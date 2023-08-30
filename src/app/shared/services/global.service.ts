@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { EventEmitter, Injectable } from "@angular/core";
 import { HttpErrorResponse, HttpClient } from "@angular/common/http";
 import * as toastr from "toastr";
 import { throwError, BehaviorSubject } from "rxjs";
@@ -31,6 +31,8 @@ export class GlobalService {
 
   systemSettingsServiceUrl = `${environment.coreApiUrl}/Configuration/SystemSettings`;
 
+  myEvent: EventEmitter<void> = new EventEmitter<void>();
+  
   constructor(
     private _translatService: TranslateService,
     private _http: HttpClient,
@@ -62,6 +64,11 @@ export class GlobalService {
       ]);
     }
     return sessionStorage.getItem('SectorType');
+  }
+  
+//trigerEvents
+  triggerEvent() {
+    this.myEvent.emit();
   }
 
   checkSectorType():boolean{

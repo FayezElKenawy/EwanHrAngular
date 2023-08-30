@@ -26,4 +26,12 @@ export class PayrollService {
       params:{fromDate:month+'/'+year}
     });
   }
+
+  downloadPayroll(month:string,selectedEmps:[]){
+    return this._http.get(`${this.serviceUrl}/DownloadPayrollSheet`, {
+      params:{month:month ,emps:JSON.stringify(selectedEmps)},
+      observe:"response",
+      responseType:"blob"
+    });
+  }
 }

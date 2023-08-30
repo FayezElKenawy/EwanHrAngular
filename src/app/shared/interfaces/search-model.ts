@@ -1,3 +1,5 @@
+import { Employees } from "src/app/attendance/models/emps-info.model";
+
 export class SearchModel {
   searchFields?: SearchField[];
   orderBy?: string;

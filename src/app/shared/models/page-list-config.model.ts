@@ -1,4 +1,4 @@
-import { SearchField } from '@shared/interfaces/search-model';
+import {  SearchField } from '@shared/interfaces/search-model';
 import { ListAction } from './action';
 import { ColumnType } from './column-type.model';
 

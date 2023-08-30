@@ -246,7 +246,11 @@
     "Calculate":"إحتساب",
     "Month":"الشهر",
     "Year":"السنة",
-    "Save":"حفظ"
+    "Save":"حفظ",
+    "DownloadPayroll":"تحميل مسير الرواتب",
+    "SelectEmployee":"إختيار الموظفين",
+    "SelectDepartment":"إختيار القسم",
+    "ShowAttendance":"عرض بيانات البصمة"
 }
 },
    
